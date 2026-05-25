@@ -344,14 +344,10 @@
 <!-- ░░ SCHEDULE SECTION ░░ -->
 <section class="section schedule-section" id="schedule">
   <div class="container">
-    <div class="section-label">Real-time Update</div>
-    <h2 class="section-title">Jadwal <span class="accent">Pertandingan</span></h2>
-    <p class="section-desc">Data jadwal dan hasil pertandingan diperbarui otomatis dari Google Spreadsheet setiap 30 detik.</p>
+    <div class="section-label">Live Match Center</div>
+    <h2 class="section-title">Jadwal & <span class="accent">Hasil Live</span></h2>
+    <p class="section-desc">Menampilkan pertandingan khusus Hari Ini & Besok. Diperbarui otomatis dari Spreadsheet.</p>
 
-    <!-- Config Panel -->
-   
-
-    <!-- Schedule Tabs -->
     <div class="schedule-tabs" style="margin-top:2.5rem;">
       <button class="tab-btn active" data-tab="futsal">Futsal</button>
       <button class="tab-btn" data-tab="basket">Basket</button>
@@ -363,108 +359,75 @@
       <button class="tab-btn" data-tab="esport">E-Sport</button>
     </div>
 
-    <!-- Panels -->
-    <div id="panel-futsal" class="schedule-panel active">
-      <div class="schedule-status-bar">
-        <div class="status-indicator">
-          <div class="status-dot"></div>
-          <span class="status-live-text">Memuat...</span>
+    <div class="match-center-wrapper">
+      
+      <div id="panel-futsal" class="schedule-panel active">
+        <div class="schedule-status-bar">
+          <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Futsal Live Track</span></div>
+          <span class="last-update">Update: -</span>
         </div>
-        <span>Futsal · KCH Fighter 2026</span>
-        <span class="last-update">-</span>
+        <div class="schedule-content match-flyer-grid"></div>
       </div>
-      <div class="schedule-content">
-        <div class="no-data">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
-          </svg>
-          <p>Konfigurasi Google Sheets untuk melihat jadwal.</p>
+
+      <div id="panel-basket" class="schedule-panel">
+        <div class="schedule-status-bar">
+          <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Basket Live Track</span></div>
+          <span class="last-update">Update: -</span>
         </div>
+        <div class="schedule-content match-flyer-grid"></div>
       </div>
-    </div>
 
-    <div id="panel-basket" class="schedule-panel">
-      <div class="schedule-status-bar">
-        <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Memuat...</span></div>
-        <span>Basket · KCH Fighter 2026</span>
-        <span class="last-update">-</span>
+      <div id="panel-volly" class="schedule-panel">
+        <div class="schedule-status-bar">
+          <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Volly Live Track</span></div>
+          <span class="last-update">Update: -</span>
+        </div>
+        <div class="schedule-content match-flyer-grid"></div>
       </div>
-      <div class="schedule-content">
-        <div class="no-data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><p>Konfigurasi Google Sheets untuk melihat jadwal.</p></div>
-      </div>
-    </div>
 
-    <div id="panel-volly" class="schedule-panel">
-      <div class="schedule-status-bar">
-        <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Memuat...</span></div>
-        <span>Volly · KCH Fighter 2026</span>
-        <span class="last-update">-</span>
+      <div id="panel-bulutangkis" class="schedule-panel">
+        <div class="schedule-status-bar">
+          <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Bulu Tangkis Live Track</span></div>
+          <span class="last-update">Update: -</span>
+        </div>
+        <div class="schedule-content match-flyer-grid"></div>
       </div>
-      <div class="schedule-content">
-        <div class="no-data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><p>Konfigurasi Google Sheets untuk melihat jadwal.</p></div>
-      </div>
-    </div>
 
-    <div id="panel-bulutangkis" class="schedule-panel">
-      <div class="schedule-status-bar">
-        <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Memuat...</span></div>
-        <span>Bulu Tangkis · KCH Fighter 2026</span>
-        <span class="last-update">-</span>
+      <div id="panel-dance" class="schedule-panel">
+        <div class="schedule-status-bar">
+          <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Dance Live Track</span></div>
+          <span class="last-update">Update: -</span>
+        </div>
+        <div class="schedule-content match-flyer-grid"></div>
       </div>
-      <div class="schedule-content">
-        <div class="no-data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><p>Konfigurasi Google Sheets untuk melihat jadwal.</p></div>
-      </div>
-    </div>
 
-    <div id="panel-dance" class="schedule-panel">
-      <div class="schedule-status-bar">
-        <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Memuat...</span></div>
-        <span>Dance · KCH Fighter 2026</span>
-        <span class="last-update">-</span>
+      <div id="panel-tenismeja" class="schedule-panel">
+        <div class="schedule-status-bar">
+          <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Tenis Meja Live Track</span></div>
+          <span class="last-update">Update: -</span>
+        </div>
+        <div class="schedule-content match-flyer-grid"></div>
       </div>
-      <div class="schedule-content">
-        <div class="no-data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><p>Konfigurasi Google Sheets untuk melihat jadwal.</p></div>
-      </div>
-    </div>
 
-    <div id="panel-tenismeja" class="schedule-panel">
-      <div class="schedule-status-bar">
-        <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Memuat...</span></div>
-        <span>Tenis Meja · KCH Fighter 2026</span>
-        <span class="last-update">-</span>
+      <div id="panel-karaoke" class="schedule-panel">
+        <div class="schedule-status-bar">
+          <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Karaoke Live Track</span></div>
+          <span class="last-update">Update: -</span>
+        </div>
+        <div class="schedule-content match-flyer-grid"></div>
       </div>
-      <div class="schedule-content">
-        <div class="no-data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><p>Konfigurasi Google Sheets untuk melihat jadwal.</p></div>
-      </div>
-    </div>
 
-    <div id="panel-karaoke" class="schedule-panel">
-      <div class="schedule-status-bar">
-        <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Memuat...</span></div>
-        <span>Karaoke · KCH Fighter 2026</span>
-        <span class="last-update">-</span>
+      <div id="panel-esport" class="schedule-panel">
+        <div class="schedule-status-bar">
+          <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">E-Sport Live Track</span></div>
+          <span class="last-update">Update: -</span>
+        </div>
+        <div class="schedule-content match-flyer-grid"></div>
       </div>
-      <div class="schedule-content">
-        <div class="no-data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><p>Konfigurasi Google Sheets untuk melihat jadwal.</p></div>
-      </div>
-    </div>
 
-    <div id="panel-esport" class="schedule-panel">
-      <div class="schedule-status-bar">
-        <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Memuat...</span></div>
-        <span>E-Sport MLBB · KCH Fighter 2026</span>
-        <span class="last-update">-</span>
-      </div>
-      <div class="schedule-content">
-        <div class="no-data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><p>Konfigurasi Google Sheets untuk melihat jadwal.</p></div>
-      </div>
-    </div>
-
-  </div>
+    </div></div>
 </section>
-
+  
 <!-- ░░ GALLERY SECTION ░░ -->
 <section class="section gallery-section" id="gallery">
   <div class="container">
