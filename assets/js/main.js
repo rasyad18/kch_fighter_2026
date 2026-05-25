@@ -116,59 +116,177 @@ function winnerCell(pemenang) {
     </div>`;
 }
 
-function renderTable(matches) {
+// ─── DESAIN FLYER PERTANDINGAN & FILTER OTOMATIS (BARU) ────────────────
+function renderMatchFlyers(matches) {
   if (!matches || matches.length === 0) {
+    return `<div class="no-matches-today-box"><p>Belum ada data jadwal di Spreadsheet.</p></div>`;
+  }
+
+  // 1. Dapatkan objek tanggal hari ini dan besok (Waktu Lokal)
+  const hariIni = new Date();
+  const besok = new Date();
+  besok.setDate(hariIni.getDate() + 1);
+
+  // Fungsi helper untuk mengubah format Date menjadi string "YYYY-MM-DD" agar akurat saat dicocokkan
+  const formatTanggalKomparasi = (dateObj) => {
+    const yyyy = dateObj.getFullYear();
+    const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const dd = String(dateObj.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  const strHariIni = formatTanggalKomparasi(hariIni);
+  const strBesok = formatTanggalKomparasi(besok);
+
+  // 2. Filter data pertandingan: HANYA ambil data Hari Ini dan Besok
+  const matchesFiltered = matches.filter(m => {
+    if (!m.tanggal || m.tanggal === '-') return false;
+    
+    // Konversi tanggal dari spreadsheet ke objek Date javascript
+    // Mendukung format umum spreadsheet: "YYYY-MM-DD" atau "DD/MM/YYYY" atau "MM/DD/YYYY"
+    let matchDateObj = new Date(m.tanggal);
+    
+    // Deteksi jika input menggunakan garis miring lokal (misal: 25/05/2026)
+    if (isNaN(matchDateObj.getTime()) && m.tanggal.includes('/')) {
+      const parts = m.tanggal.split('/');
+      if (parts[0].length === 4) { // YYYY/MM/DD
+        matchDateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+      } else { // DD/MM/YYYY
+        matchDateObj = new Date(parts[2], parts[1] - 1, parts[0]);
+      }
+    }
+
+    if (isNaN(matchDateObj.getTime())) return false; // Abaikan jika format teks rusak
+    
+    const strMatchDate = formatTanggalKomparasi(matchDateObj);
+    return strMatchDate === strHariIni || strMatchDate === strBesok;
+  });
+
+  // Jika setelah difilter ternyata tidak ada pertandingan untuk hari ini & besok
+  if (matchesFiltered.length === 0) {
     return `
-      <div class="no-data">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="3" y="4" width="18" height="18" rx="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
+      <div class="no-matches-today-box">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:0.5rem; opacity:0.6;">
+          <circle cx="12" cy="12" r="10"/><path d="M8 12h8"/>
         </svg>
-        <p>Belum ada data jadwal. Silakan isi spreadsheet terlebih dahulu.</p>
+        <p>Tidak ada jadwal pertandingan untuk Hari Ini &amp; Besok.</p>
       </div>`;
   }
 
-  const rows = matches.map(m => {
-    const scoreHTML = (m.skorA !== '' || m.skorB !== '')
-      ? `<div class="score-display">${m.skorA}<span class="score-separator">:</span>${m.skorB}</div>`
-      : `<span style="color:var(--text-muted)">–</span>`;
-    return `
-      <tr>
-        <td>${m.tanggal}</td>
-        <td>${m.waktu}</td>
-        <td>
-          <div class="match-vs">
-            <span class="team-name">${m.timA}</span>
-            <span class="vs-badge">VS</span>
-            <span class="team-name">${m.timB}</span>
-          </div>
-        </td>
-        <td>${scoreHTML}</td>
-        <td>${statusBadge(m.status)}</td>
-        <td>${winnerCell(m.pemenang)}</td>
-      </tr>`;
-  }).join('');
+  // 3. Render data yang lolos filter ke dalam bentuk Match Card Flyer
+  return matchesFiltered.map(m => {
+    // Tentukan badge penanda hari lokal
+    let dayBadgeHTML = `<span class="match-time-text">${m.tanggal}</span>`;
+    let matchDateObj = new Date(m.tanggal);
+    if (m.tanggal.includes('/')) {
+      const parts = m.tanggal.split('/');
+      matchDateObj = parts[0].length === 4 ? new Date(parts[0], parts[1]-1, parts[2]) : new Date(parts[2], parts[1]-1, parts[0]);
+    }
+    const strMatchDate = formatTanggalKomparasi(matchDateObj);
 
-  return `
-    <div class="schedule-table-wrap">
-      <table class="schedule-table">
-        <thead>
-          <tr>
-            <th>Tanggal</th>
-            <th>Waktu</th>
-            <th>Pertandingan</th>
-            <th>Skor</th>
-            <th>Status</th>
-            <th>Pemenang</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
+    if (strMatchDate === strHariIni) {
+      dayBadgeHTML = `<span class="match-day-badge today">Hari Ini</span>`;
+    } else if (strMatchDate === strBesok) {
+      dayBadgeHTML = `<span class="match-day-badge tomorrow">Besok</span>`;
+    }
+
+    // Olah display skor & tanda hubung VS
+    const statusClean = m.status.toLowerCase();
+    let scoreOrVsHTML = `<div class="flyer-vs-box">VS</div>`;
+    let statusBadgeHTML = `<span class="flyer-badge-status status-upcoming-match">Upcoming</span>`;
+
+    if (statusClean === 'berlangsung' || statusClean === 'live') {
+      statusBadgeHTML = `<span class="flyer-badge-status status-live-match">LIVE</span>`;
+      scoreOrVsHTML = `<div class="flyer-score-box">${m.skorA || '0'}:${m.skorB || '0'}</div>`;
+    } else if (statusClean === 'selesai' || statusClean === 'wo') {
+      statusBadgeHTML = `<span class="flyer-badge-status status-ended-match">Ended</span>`;
+      scoreOrVsHTML = `<div class="flyer-score-box">${m.skorA || '0'}:${m.skorB || '0'}</div>`;
+    }
+
+    // Tampilkan pengumuman pemenang di bagian bawah jika ada
+    let footerHTML = `<div class="match-card-footer">${statusBadgeHTML}</div>`;
+    if ((statusClean === 'selesai' || statusClean === 'wo') && m.pemenang && m.pemenang !== '-') {
+      footerHTML = `
+        <div class="match-card-footer">
+          <div class="flyer-winner-announcement">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span>Winner: ${m.pemenang}</span>
+          </div>
+        </div>`;
+    }
+
+    // Ambil inisial tim untuk ditaruh di dalam lingkaran logo mockup
+    const inisialA = m.timA ? m.timA.substring(0, 2).toUpperCase() : '??';
+    const inisialB = m.timB ? m.timB.substring(0, 2).toUpperCase() : '??';
+
+    return `
+      <div class="match-card-flyer reveal visible">
+        <div class="match-card-header">
+          ${dayBadgeHTML}
+          <div class="match-time-text">${m.waktu} WITA</div>
+        </div>
+        
+        <div class="match-card-body">
+          <div class="match-team-block">
+            <div class="match-team-logo-placeholder" style="border-color: #39FF14;">${inisialA}</div>
+            <div class="match-team-name-text">${m.timA}</div>
+          </div>
+          
+          <div class="match-center-score-block">
+            ${scoreOrVsHTML}
+          </div>
+          
+          <div class="match-team-block">
+            <div class="match-team-logo-placeholder" style="border-color: #00CFFF;">${inisialB}</div>
+            <div class="match-team-name-text">${m.timB}</div>
+          </div>
+        </div>
+        
+        ${footerHTML}
+      </div>
+    `;
+  }).join('');
 }
 
+// ─── AMBIL DATA PER CABANG (DIUBAH UNTUK MENDUKUNG FLYER) ────────────────
+async function loadSchedule(sport, panelId) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+  const container = panel.querySelector('.schedule-content');
+  if (!container) return;
+
+  // Efek loading animasi shimmer modern
+  container.innerHTML = `
+    <div class="shimmer" style="height:160px; border-radius:16px; grid-column:1/-1;"></div>
+  `;
+
+  const gid = CONFIG.SHEET_GIDS[sport];
+  const rows = await fetchSheetData(gid);
+  const matches = parseScheduleRows(rows);
+  
+  // Memasukkan hasil render flyer pertandingan baru ke dalam kontainer grid
+  container.innerHTML = renderMatchFlyers(matches);
+
+  const lastUpdate = panel.querySelector('.last-update');
+  if (lastUpdate) {
+    const now = new Date();
+    lastUpdate.textContent = `Update: ${now.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})}`;
+  }
+
+  const dot = panel.querySelector('.status-dot');
+  if (dot) {
+    if (rows !== null) {
+      dot.classList.remove('offline');
+      // Jika status aktif/live, berikan kedipan merah di indikator status bar
+      dot.style.background = '#39FF14';
+    } else {
+      dot.classList.add('offline');
+      dot.style.background = '#ff3838';
+    }
+  }
+}
 // ─── LOAD ONE PANEL ──────────────────────────
 async function loadSchedule(sport, panelId) {
   const panel = document.getElementById(panelId);
