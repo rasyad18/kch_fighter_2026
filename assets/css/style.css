@@ -1443,3 +1443,192 @@ body::before {
 }
 
 .btn-config:hover { background: var(--electric-blue); color: #fff; }
+/* ─── MATCH CARD FLYER SYSTEM ──────────────── */
+.match-flyer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+/* Base Card Design */
+.match-card-flyer {
+  background: linear-gradient(135deg, rgba(25, 25, 35, 0.85) 0%, rgba(15, 15, 20, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.match-card-flyer:hover {
+  transform: translateY(-5px);
+  border-color: var(--neon-accent, #39FF14);
+  box-shadow: 0 12px 40px rgba(57, 255, 20, 0.15);
+}
+
+/* Card Header (Hari, Jam, Status) */
+.match-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.match-day-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+.match-day-badge.today {
+  background: #ff3838;
+  color: #fff;
+  animation: pulseNeon 2s infinite;
+}
+
+.match-day-badge.tomorrow {
+  background: #00cfff;
+  color: #000;
+  font-weight: 900;
+}
+
+.match-time-text {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: bold;
+}
+
+/* Card Body (Susunan Tim & Skor) */
+.match-card-body {
+  padding: 1.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  flex-grow: 1;
+}
+
+.match-team-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.match-team-logo-placeholder {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
+
+.match-team-name-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.3px;
+  max-width: 110px;
+  word-wrap: break-word;
+}
+
+/* Center Score & VS Block */
+.match-center-score-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  gap: 0.25rem;
+}
+
+.flyer-score-box {
+  font-size: 1.8rem;
+  font-weight: 900;
+  font-family: 'Arial Black', sans-serif;
+  letter-spacing: 2px;
+  color: var(--neon-accent, #39FF14);
+  text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+}
+
+.flyer-vs-box {
+  font-size: 0.75rem;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  color: rgba(255,255,255,0.5);
+}
+
+/* Card Footer (Status Lomba & Pemenang) */
+.match-card-footer {
+  padding: 0.85rem 1.25rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.flyer-winner-announcement {
+  color: #ffca28;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.flyer-winner-announcement svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+/* Badges Status */
+.flyer-badge-status {
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.status-live-match { background: rgba(255, 56, 56, 0.15); color: #ff3838; border: 1px solid #ff3838; }
+.status-upcoming-match { background: rgba(255, 255, 255, 0.05); color: rgba(255,255,255,0.6); }
+.status-ended-match { background: rgba(57, 255, 20, 0.1); color: #39FF14; }
+
+/* Empty State Wrapper */
+.no-matches-today-box {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: rgba(255,255,255,0.4);
+}
+
+@keyframes pulseNeon {
+  0% { box-shadow: 0 0 0 0 rgba(255, 56, 56, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(255, 56, 56, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 56, 56, 0); }
+}
