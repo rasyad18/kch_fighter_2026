@@ -10,21 +10,20 @@
 // Cukup isi SHEET_ID dari URL Google Sheets kamu
 // Tidak perlu API Key sama sekali!
 const CONFIG = {
-  SHEET_ID: localStorage.getItem('kch_sheet_id') || '',
+  // Langsung tanam ID spreadsheet kamu di sini di dalam tanda kutip
+  SHEET_ID: '2PACX-1vREikVDcDlwJBoN-Fh84AkVftrKTS_nARZDXP-oNoRngokwjRR0pgezNJhamccD7_tZMNeilX_pPZ4s',
   REFRESH_INTERVAL: 30000, // auto-refresh tiap 30 detik
 
-  // GID = nomor unik tiap tab/sheet
-  // Cara lihat GID: klik tab sheet → lihat di URL: ...#gid=ANGKA
-  // Default GID 0 = sheet pertama. Isi setelah kamu buat sheet-nya.
+  // Pastikan GID (ID Tab) disesuaikan jika kamu pakai tab berbeda untuk tiap cabang
   SHEET_GIDS: {
-    futsal:       localStorage.getItem('gid_futsal')       || '0',
-    basket:       localStorage.getItem('gid_basket')       || '0',
-    volly:        localStorage.getItem('gid_volly')        || '0',
-    bulutangkis:  localStorage.getItem('gid_bulutangkis')  || '0',
-    dance:        localStorage.getItem('gid_dance')        || '0',
-    tenismeja:    localStorage.getItem('gid_tenismeja')    || '0',
-    karaoke:      localStorage.getItem('gid_karaoke')      || '0',
-    esport:       localStorage.getItem('gid_esport')       || '0',
+    futsal:       '0', // '0' biasanya adalah tab pertama (Futsal)
+    basket:       '12345678', // Ganti dengan GID tab Basket kamu
+    volly:        '87654321', // Ganti dengan GID tab Volly kamu
+    bulutangkis:  '0',
+    dance:        '0',
+    tenismeja:    '0',
+    karaoke:      '0',
+    esport:       '0',
   }
 };
 
