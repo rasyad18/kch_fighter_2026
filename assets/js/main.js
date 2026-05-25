@@ -17,13 +17,13 @@ const CONFIG = {
   // Pastikan GID (ID Tab) disesuaikan jika kamu pakai tab berbeda untuk tiap cabang
   SHEET_GIDS: {
     futsal:       '0', // '0' biasanya adalah tab pertama (Futsal)
-    basket:       '12345678', // Ganti dengan GID tab Basket kamu
-    volly:        '87654321', // Ganti dengan GID tab Volly kamu
-    bulutangkis:  '0',
-    dance:        '0',
-    tenismeja:    '0',
-    karaoke:      '0',
-    esport:       '0',
+    basket:       '1602342405', // Ganti dengan GID tab Basket kamu
+    volly:        '1905666751', // Ganti dengan GID tab Volly kamu
+    bulutangkis:  '1645421078',
+    dance:        '1433423859',
+    tenismeja:    '720813413',
+    karaoke:      '2118822557',
+    esport:       '20640519',
   }
 };
 
