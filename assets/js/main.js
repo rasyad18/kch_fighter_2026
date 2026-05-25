@@ -27,12 +27,10 @@ const CONFIG = {
   }
 };
 
-// ─── BUILD CSV URL ───────────────────────────
-// Menggunakan endpoint export CSV dari Google Sheets
-// Format: https://docs.google.com/spreadsheets/d/SHEET_ID/export?format=csv&gid=GID
 function buildCsvUrl(gid) {
   if (!CONFIG.SHEET_ID) return null;
-  return `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/export?format=csv&gid=${gid}`;
+  // Perubahan struktur URL menjadi /d/e/.../pub untuk mendukung link web publish kamu
+  return `https://docs.google.com/spreadsheets/d/e/${CONFIG.SHEET_ID}/pub?output=csv&gid=${gid}`;
 }
 
 // ─── FETCH & PARSE CSV ───────────────────────
