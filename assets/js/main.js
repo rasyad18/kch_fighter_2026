@@ -295,16 +295,7 @@ function saveConfig() {
 
 window.saveConfig = saveConfig;
 
-// ─── THEME TOGGLE ────────────────────────────
-const themeToggle = document.getElementById('themeToggle');
-const savedTheme = localStorage.getItem('kch_theme') || 'dark';
-document.documentElement.setAttribute('data-theme', savedTheme);
-themeToggle?.addEventListener('click', () => {
-  const current = document.documentElement.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('kch_theme', next);
-});
+
 
 // ─── HAMBURGER MENU ──────────────────────────
 const hamburger = document.getElementById('hamburger');
