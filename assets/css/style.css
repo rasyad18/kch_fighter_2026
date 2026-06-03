@@ -1378,3 +1378,8 @@ body::before {
   .btn-primary, .btn-secondary { text-align: center; }
   .about-floating-card { left: 0; }
 }
+.nav-logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
