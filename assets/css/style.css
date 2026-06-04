@@ -1383,3 +1383,30 @@ body::before {
   width: auto;
   object-fit: contain;
 }
+.btn-drive-gallery {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid rgba(255, 107, 0, 0.5);
+  border-radius: 8px;
+  color: var(--color-text, #fff);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-drive-gallery:hover {
+  background: rgba(255, 107, 0, 0.1);
+  border-color: #FF6B00;
+}
+.btn-drive-gallery svg {
+  stroke: #FF6B00;
+  flex-shrink: 0;
+}
+.btn-drive-gallery svg:last-child {
+  stroke: currentColor;
+  opacity: 0.5;
+}
