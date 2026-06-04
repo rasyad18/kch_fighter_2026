@@ -441,14 +441,14 @@ window.addEventListener('scroll', () => {
 
 // ─── REGISTRATION LINKS ──────────────────────
 const REG_LINKS = {
-  futsal:       'https://forms.gle/your-futsal-form-link',
-  basket:       'https://forms.gle/your-basket-form-link',
-  volly:        'https://forms.gle/your-volly-form-link',
-  bulutangkis:  'https://forms.gle/your-badminton-form-link',
-  dance:        'https://forms.gle/your-dance-form-link',
-  tenismeja:    'https://forms.gle/your-tabletennis-form-link',
-  karaoke:      'https://forms.gle/your-karaoke-form-link',
-  esport:       'https://forms.gle/your-esport-form-link'
+  futsal:       'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551',
+  basket:       'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551',
+  volly:        'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551',
+  bulutangkis:  'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551',
+  dance:        'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551',
+  tenismeja:    'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551',
+  karaoke:      'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551',
+  esport:       'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551'
 };
 
 window.daftarNow = function(sport) {
