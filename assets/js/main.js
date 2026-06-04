@@ -344,35 +344,340 @@ const modalBody    = document.getElementById('modalBody');
 const TNC_DATA = {
   futsal: {
     title: 'Term & Condition — Futsal',
-    content: `<h3>Ketentuan Umum</h3><ul><li>Peserta wajib berdomisili di Kecamatan/Kabupaten Kolaka</li><li>Tim terdiri dari 5 pemain inti + 5 cadangan (max)</li><li>Usia peserta 15–35 tahun</li><li>Wajib membawa KTP/KTM saat pertandingan</li></ul><h3>Peraturan Pertandingan</h3><ul><li>Menggunakan peraturan FIFA Futsal resmi</li><li>Durasi: 2×20 menit waktu bersih</li><li>Tim yang terlambat lebih dari 10 menit dianggap WO</li><li>Keputusan wasit bersifat mutlak dan final</li></ul><h3>Pendaftaran</h3><ul><li>Biaya pendaftaran: Rp 300.000/tim</li><li>Pendaftaran ditutup 3 hari sebelum pelaksanaan</li><li>Kuota maksimal 16 tim</li></ul>`
+    content: `
+      <h3>Peraturan Teknis</h3>
+      <ul>
+        <li>Drawing dilakukan sebelum Opening Turnamen (acak/random), hasil drawing bersifat final</li>
+      </ul>
+
+      <h3>Prosedur Sebelum Pertandingan</h3>
+      <ul>
+        <li>Pemeriksaan pemain (jersey, sepatu, aksesoris)</li>
+        <li>Briefing singkat oleh wasit</li>
+        <li>Toss koin: menentukan kick-off atau sisi lapangan</li>
+        <li>Foto tim (opsional)</li>
+      </ul>
+
+      <h3>Sistem Point & Klasemen</h3>
+      <ul>
+        <li>Menang = 3 Point, Seri = 1 Point, Kalah = 0 Point</li>
+        <li>Klasemen: Point tertinggi → Selisih Gol → Jumlah Gol Kemasukan → Head-to-head → Fair Play</li>
+      </ul>
+
+      <h3>Durasi Pertandingan</h3>
+      <ul>
+        <li><strong>Putra:</strong> Penyisihan 2×15 menit | 8 Besar/SF/Final 2×20 menit | Istirahat 2–5 menit</li>
+        <li><strong>Putri:</strong> Penyisihan 2×10 menit | 8 Besar/SF/Final 2×12 menit | Istirahat 2–5 menit</li>
+      </ul>
+
+      <h3>Jumlah & Kelengkapan Pemain</h3>
+      <ul>
+        <li>5 pemain inti (termasuk 1 kiper) + cadangan bebas sesuai departemen</li>
+        <li>Minimal 3 pemain untuk memulai pertandingan. Kurang dari 3 saat berlangsung → kalah</li>
+        <li>Wajib: jersey seragam, celana olahraga, kaos kaki panjang, sepatu futsal sol karet</li>
+        <li>Kiper wajib jersey berbeda warna dari pemain lain</li>
+        <li>Dilarang: sandal, sepatu metal/stud, jam tangan, cincin/kalung/aksesoris berbahaya</li>
+      </ul>
+
+      <h3>Peraturan Permainan</h3>
+      <ul>
+        <li>Pergantian pemain: rolling substitution, bebas kapan saja tanpa menghentikan pertandingan</li>
+        <li>Kick-off dari titik tengah, pemain lawan minimal 3 meter dari bola</li>
+        <li>Kick-in: bola di garis, dilakukan dalam 4 detik. Gagal → bola untuk lawan</li>
+        <li>Corner kick: jarak minimal ±5 meter, dilakukan dalam 4 detik</li>
+        <li>Back pass: kiper tidak boleh menerima umpan kaki dari rekan menggunakan tangan</li>
+        <li>Akumulasi foul: dicatat tiap babak, foul ke-6 → second penalty</li>
+      </ul>
+
+      <h3>Kartu & Sanksi</h3>
+      <ul>
+        <li><strong>Kartu Kuning:</strong> denda Rp25.000. 2 kartu kuning dalam 1 pertandingan = kartu merah</li>
+        <li><strong>Kartu Merah:</strong> denda Rp50.000, keluar pertandingan, skorsing minimal 1 pertandingan berikutnya. Tim bermain kurang 2 menit penuh atau hingga lawan cetak gol</li>
+      </ul>
+
+      <h3>Fair Play</h3>
+      <ul>
+        <li>Semua pemain wajib menjaga sportivitas selama pertandingan</li>
+        <li>Dilarang provokasi terhadap lawan maupun suporter</li>
+        <li>Panitia berhak memberikan sanksi tambahan atas tindakan yang merugikan turnamen</li>
+      </ul>
+    `
   },
-  basket: {
-    title: 'Term & Condition — Basket',
-    content: `<h3>Ketentuan Umum</h3><ul><li>Tim terdiri dari 5 pemain inti + 7 cadangan</li><li>Usia peserta 15–35 tahun</li><li>Format 5on5</li></ul><h3>Peraturan Pertandingan</h3><ul><li>Menggunakan peraturan FIBA resmi</li><li>Durasi: 4×10 menit</li><li>Pakaian seragam wajib bernomor</li><li>Sepatu olahraga wajib digunakan</li></ul><h3>Pendaftaran</h3><ul><li>Biaya pendaftaran: Rp 250.000/tim</li><li>Kuota maksimal 12 tim</li></ul>`
-  },
-  volly: {
-    title: 'Term & Condition — Volley Ball',
-    content: `<h3>Ketentuan Umum</h3><ul><li>Tim terdiri dari 6 pemain inti + 6 cadangan</li><li>Kategori putra dan putri (terpisah)</li><li>Usia peserta tidak dibatasi</li></ul><h3>Peraturan Pertandingan</h3><ul><li>Menggunakan peraturan FIVB resmi</li><li>Format best of 3 set</li><li>Pakaian seragam wajib</li></ul><h3>Pendaftaran</h3><ul><li>Biaya pendaftaran: Rp 200.000/tim</li><li>Kuota maksimal 16 tim per kategori</li></ul>`
-  },
+
   bulutangkis: {
     title: 'Term & Condition — Bulu Tangkis',
-    content: `<h3>Ketentuan Umum</h3><ul><li>Kategori: Tunggal Pria, Tunggal Wanita, Ganda Campuran</li><li>Usia peserta 12 tahun ke atas</li></ul><h3>Peraturan Pertandingan</h3><ul><li>Menggunakan peraturan BWF resmi</li><li>Sistem gugur, best of 3 (21 poin)</li><li>Shuttlecock disediakan panitia</li></ul><h3>Pendaftaran</h3><ul><li>Biaya pendaftaran: Rp 50.000/orang/kategori</li><li>Dapat mendaftar lebih dari satu kategori</li></ul>`
+    content: `
+      <h3>Format Tim</h3>
+      <ul>
+        <li>Sistem beregu campuran, 1 tim terdiri dari: 1 Tunggal Putra, 1 Tunggal Putri, 1 Ganda Putra, 1 Ganda Putri, 1 Ganda Campuran</li>
+        <li>Maksimal 6 pemain cadangan</li>
+        <li>Pemain putra dan putri tidak boleh bermain rangkap (2 partai)</li>
+      </ul>
+
+      <h3>Urutan Pertandingan</h3>
+      <ul>
+        <li>1. Tunggal Putra</li>
+        <li>2. Tunggal Putri</li>
+        <li>3. Ganda Putra</li>
+        <li>4. Ganda Putri</li>
+        <li>5. Ganda Campuran</li>
+        <li>Urutan tidak boleh ditukar dan tidak ada partai yang dilewati/skip</li>
+      </ul>
+
+      <h3>Sistem Score</h3>
+      <ul>
+        <li>Rally Point, poin 21 pemain pindah tempat</li>
+        <li>Pemain yang mencapai 42 poin sebagai pemenang, tidak ada deuce</li>
+        <li>Berlaku untuk semua nomor</li>
+      </ul>
+
+      <h3>Babak Penyisihan</h3>
+      <ul>
+        <li>Semua 5 partai dipertandingkan dengan sistem Round Robin per Site</li>
+        <li>Jika 1 grup per site: peringkat 1 & 2 lolos ke Quarter Final</li>
+        <li>Jika 2 grup per site: hanya peringkat 1 tiap grup yang lolos ke Quarter Final</li>
+        <li>Klasemen: Jumlah Kemenangan Tim → Selisih Kemenangan Partai → Selisih Poin → Head-to-Head</li>
+      </ul>
+
+      <h3>Babak Quarter Final, Semi Final & Final</h3>
+      <ul>
+        <li>Menggunakan sistem Best of 5 (menang 3 partai terlebih dahulu)</li>
+      </ul>
+
+      <h3>Ketentuan Lain</h3>
+      <ul>
+        <li>Istirahat 1 menit pada poin 11 & 32 tiap partai, serta saat pergantian tempat antara game 1 dan 2</li>
+        <li>Pemain tidak boleh meninggalkan lapangan tanpa izin wasit</li>
+        <li>Pemain dipanggil 3 kali dalam 15 menit tidak hadir → WO (skor 42–0)</li>
+        <li>Pemain cedera tidak dapat dilanjutkan → kalah, lawan mendapat poin kemenangan partai: 1 dengan skor 42</li>
+        <li>Wajib berpakaian olahraga bulutangkis dan menggunakan sepatu olahraga</li>
+        <li>Setiap departemen wajib mengirimkan nama wasit utama dan hakim garis</li>
+        <li>Ketentuan lain disampaikan saat Technical Meeting</li>
+      </ul>
+    `
   },
-  dance: {
-    title: 'Term & Condition — Dance',
-    content: `<h3>Ketentuan Umum</h3><ul><li>Kategori: Solo, Duet, Group (min 3 max 10 orang)</li><li>Tema bebas namun tidak mengandung SARA</li><li>Usia peserta 12–30 tahun</li></ul><h3>Peraturan Penampilan</h3><ul><li>Durasi penampilan: 3–5 menit</li><li>Music dikirim H-2 dalam format MP3/WAV</li><li>Penilaian: Koreografi, Kostum, Ekspresi, Kekompakan</li></ul><h3>Pendaftaran</h3><ul><li>Biaya: Rp 75.000/orang</li><li>Kuota terbatas</li></ul>`
+
+  volly: {
+    title: 'Term & Condition — Volley Ball',
+    content: `
+      <h3>Ketentuan Tim</h3>
+      <ul>
+        <li>6 pemain inti + maksimal 6 cadangan (total 12 pemain)</li>
+        <li>Pemain kurang dari 4 saat bertanding → WO (skor otomatis 30–0)</li>
+        <li>Maksimal 3 kali pukulan per regu</li>
+        <li>Bola menyentuh garis = masuk. Menyentuh antena/di luar garis = keluar</li>
+        <li>Dilarang menangkap atau melempar bola saat rally berlangsung</li>
+      </ul>
+
+      <h3>Babak Penyisihan</h3>
+      <ul>
+        <li>2 game set, rally @15 poin, tukar lapangan setelah game set 1</li>
+        <li>Menang jika mencapai 30 poin lebih dulu dengan selisih 2 poin</li>
+        <li>Jika 29–29, berlanjut hingga selisih 2 poin (maksimal deuce poin 35)</li>
+        <li>Time out: 1x per set, durasi 1 menit</li>
+      </ul>
+
+      <h3>Babak Semi Final & Final</h3>
+      <ul>
+        <li>Sistem rally @25 poin, best of three games (3×25)</li>
+        <li>Menang jika telah memenangkan 2 game set (maksimal deuce poin 30)</li>
+        <li>Game ke-3: pindah lapangan di poin 13</li>
+        <li>Time out: 1x per set, durasi 1 menit</li>
+        <li>Water break 1x di skor 15 (Quarter hingga Final), maksimal 1 menit</li>
+      </ul>
+
+      <h3>Pergantian Pemain</h3>
+      <ul>
+        <li>Maksimal 6x pergantian tiap set, dilakukan setelah rally selesai</li>
+        <li>Pemain yang diganti boleh kembali setelah posisi melewati 1 putaran</li>
+        <li>Pemain cedera tidak dihitung dalam kuota 6 pergantian dan tidak boleh bermain lagi</li>
+      </ul>
+
+      <h3>Pelanggaran</h3>
+      <ul>
+        <li>Menyentuh net saat pertandingan berlangsung</li>
+        <li>Kaki masuk lapangan/menginjak garis saat serve</li>
+        <li>Melewati garis tengah atau masuk area lawan saat permainan berlangsung</li>
+        <li>Menyentuh bola lebih dari 1 kali (kecuali saat blocking smash)</li>
+      </ul>
+
+      <h3>Sistem Point & Klasemen</h3>
+      <ul>
+        <li>Menang = 3 Point | Kalah = 0 Point</li>
+        <li>Klasemen: Point kemenangan → Selisih skor kemenangan → Head to Head → Pertandingan ulang jika masih sama</li>
+      </ul>
+    `
   },
+
+  basket: {
+    title: 'Term & Condition — Basket (3x3)',
+    content: `
+      <h3>Format Permainan</h3>
+      <ul>
+        <li>3on3 di setengah lapangan basket</li>
+        <li><strong>Putra:</strong> 2×7 menit (kotor) | <strong>Putri:</strong> 2×5 menit (kotor) | Istirahat 3 menit</li>
+        <li>Mulai Quarter Final: waktu bersih (bola out/foul → timer berhenti)</li>
+        <li>Shot clock 12 detik. Tanpa shot clock → wasit hitung mundur 5 detik terakhir</li>
+      </ul>
+
+      <h3>Jumlah Pemain</h3>
+      <ul>
+        <li>3 pemain inti + maksimal 4 cadangan (total 7)</li>
+        <li>Minimal 3 pemain harus ada di lapangan, toleransi menunggu 5 menit dari jam pertandingan</li>
+      </ul>
+
+      <h3>Perhitungan Skor</h3>
+      <ul>
+        <li>Tembakan di dalam garis 3 angka = 1 poin</li>
+        <li>Tembakan di belakang garis 3 angka = 2 poin</li>
+        <li>Tim yang lebih dulu mencapai 21 poin sebelum waktu habis → menang</li>
+        <li>Adu freethrow jika waktu habis dan poin draw (3x tembakan atau selisih 1 poin)</li>
+      </ul>
+
+      <h3>Team Foul</h3>
+      <ul>
+        <li>6 kali team foul (tidak direset di babak kedua)</li>
+        <li>Foul ke-7, 8, 9 → 1x lemparan bebas</li>
+        <li>Foul ke-10 dan seterusnya → 2x lemparan bebas + penguasaan bola kembali</li>
+        <li>Free throw: 1 lemparan bebas. 2 lemparan bebas jika foul terjadi di luar garis 3 poin</li>
+      </ul>
+
+      <h3>Aturan Bola</h3>
+      <ul>
+        <li>Check ball selalu dilakukan setelah dead ball atau permulaan game (1x peringatan, 2x → pindah penguasaan bola)</li>
+        <li>After point: tim non-scoring melanjutkan dari dalam lapangan di bawah keranjang ke belakang garis 3 poin (clear out)</li>
+        <li>Rebound tim menyerang → boleh langsung cetak skor tanpa harus ke belakang garis 3 poin</li>
+        <li>Rebound/steal tim bertahan → wajib keluarkan bola ke belakang garis 3 poin</li>
+        <li>Bola clear: kedua kaki dan bola sudah berada di belakang garis 3 poin</li>
+      </ul>
+
+      <h3>Pergantian Pemain & Wasit</h3>
+      <ul>
+        <li>Pergantian saat dead ball sebelum check ball. Tidak perlu tindakan dari wasit</li>
+        <li>Time out: 1x per babak per tim (30 detik)</li>
+        <li>Penyisihan: wasit internal Bintang Toedjoe. Semi Final & Final: wasit eksternal</li>
+      </ul>
+    `
+  },
+
   tenismeja: {
     title: 'Term & Condition — Tenis Meja',
-    content: `<h3>Ketentuan Umum</h3><ul><li>Kategori: Tunggal Pria, Tunggal Wanita</li><li>Usia peserta tidak dibatasi</li></ul><h3>Peraturan Pertandingan</h3><ul><li>Menggunakan peraturan ITTF resmi</li><li>Sistem gugur, best of 5 game (@11 poin)</li><li>Bola disediakan panitia</li></ul><h3>Pendaftaran</h3><ul><li>Biaya pendaftaran: Rp 30.000/orang/kategori</li></ul>`
+    content: `
+      <h3>Sistem Pertandingan</h3>
+      <ul>
+        <li>Site PG, PLM, SFL: Single Round Robin (setiap tim bertanding melawan seluruh tim 1 kali)</li>
+        <li>Site B7 CKR: format khusus, setiap tim bertanding 2 kali berdasarkan hasil undian</li>
+        <li>Semua match wajib dimainkan untuk perhitungan poin</li>
+      </ul>
+
+      <h3>Kategori & Format</h3>
+      <ul>
+        <li>Kategori beregu: Tunggal Putra, Ganda Putra, Ganda Campuran</li>
+        <li>Urutan: 1. Tunggal Putra → 2. Ganda Putra → 3. Ganda Campuran</li>
+        <li>Urutan dapat berubah atas kesepakatan kedua tim. Jika tidak ada kesepakatan, kembali ke urutan awal</li>
+        <li>Kemenangan tim ditentukan dari 2 kemenangan dari 3 kategori</li>
+      </ul>
+
+      <h3>Komposisi Tim</h3>
+      <ul>
+        <li>5 pemain inti + 5 pemain cadangan</li>
+        <li>Pemain tidak boleh bermain rangkap dalam satu pertandingan</li>
+        <li>Perubahan komposisi diperbolehkan saat pendaftaran ulang sebelum pertandingan</li>
+      </ul>
+
+      <h3>Sistem Penilaian</h3>
+      <ul>
+        <li>Setiap match: 11 poin, servis pindah tiap 2 poin, best of 3 set</li>
+        <li>Menang 3–0 = 3 poin | Menang 2–1 = 2 poin | Kalah 1–2 = 1 poin | Kalah 0–3 = 0 poin</li>
+        <li>Jika poin sama: total kemenangan → total kemenangan set → score tiap set</li>
+      </ul>
+
+      <h3>Peraturan Servis & Permainan</h3>
+      <ul>
+        <li>Bola harus dilambungkan saat servis</li>
+        <li>Pelanggaran servis: peringatan 1x → diulang, peringatan 2x → poin lawan</li>
+        <li>3 kali net berturut-turut saat servis → poin lawan</li>
+        <li>Ganda: servis harus menyilang, salah kamar → poin lawan</li>
+        <li>Bet menyentuh meja saat rally → poin lawan</li>
+      </ul>
+
+      <h3>Kehadiran & Perlengkapan</h3>
+      <ul>
+        <li>Toleransi keterlambatan 5 menit. Lebih dari itu → WO</li>
+        <li>Pemain cedera tidak bisa melanjutkan → kalah, tidak bisa diganti</li>
+        <li>Wajib menggunakan sepatu olahraga / pelindung kaki</li>
+      </ul>
+    `
   },
+
+  dance: {
+    title: 'Term & Condition — Dance',
+    content: `
+      <p>Peraturan lengkap Dance dapat dilihat di:</p>
+      <p style="margin-top:0.75rem;">
+        <a href="https://tinyurl.com/RulesARTKCHFighter2026" target="_blank" rel="noopener"
+          style="display:inline-flex; align-items:center; gap:6px; color:#FF6B00; font-weight:500; text-decoration:none; border:1px solid rgba(255,107,0,0.4); padding:10px 18px; border-radius:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Lihat Peraturan Dance (ART)
+        </a>
+      </p>
+    `
+  },
+
   karaoke: {
     title: 'Term & Condition — Karaoke',
-    content: `<h3>Ketentuan Umum</h3><ul><li>Perorangan atau duet</li><li>Lagu bebas (Indonesia/Daerah/Internasional)</li><li>Konten lagu tidak mengandung unsur negatif</li></ul><h3>Peraturan</h3><ul><li>Durasi per penampilan: max 5 menit</li><li>Urutan tampil ditentukan melalui undian</li><li>Penilaian: Intonasi, Teknik, Penghayatan, Penampilan</li></ul><h3>Pendaftaran</h3><ul><li>Biaya: Rp 50.000/peserta</li><li>Kuota maksimal 30 peserta</li></ul>`
+    content: `
+      <p>Peraturan lengkap Karaoke dapat dilihat di:</p>
+      <p style="margin-top:0.75rem;">
+        <a href="https://tinyurl.com/RulesARTKCHFighter2026" target="_blank" rel="noopener"
+          style="display:inline-flex; align-items:center; gap:6px; color:#FF6B00; font-weight:500; text-decoration:none; border:1px solid rgba(255,107,0,0.4); padding:10px 18px; border-radius:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Lihat Peraturan Karaoke (ART)
+        </a>
+      </p>
+    `
   },
+
   esport: {
-    title: 'Term & Condition — E-Sport Mobile Legend',
-    content: `<h3>Ketentuan Umum</h3><ul><li>Tim terdiri dari 5 pemain + 1 cadangan</li><li>Akun Mobile Legend minimal Advanced Server</li><li>Menggunakan device masing-masing (HP/tablet)</li></ul><h3>Peraturan Pertandingan</h3><ul><li>Format: Custom Room, Draft Pick</li><li>Mode: Classic 5v5, sistem gugur</li><li>Best of 3, final best of 5</li><li>Dilarang menggunakan cheat, hack, atau bug</li></ul><h3>Pendaftaran</h3><ul><li>Biaya: Rp 150.000/tim</li><li>Kuota maksimal 16 tim</li><li>Koneksi WiFi disediakan panitia</li></ul>`
+    title: 'Term & Condition — E-Sport Mobile Legends',
+    content: `
+      <h3>Ketentuan Umum</h3>
+      <ul>
+        <li>Pertandingan menggunakan Mobile Legends: Bang Bang</li>
+        <li>Format Best of 3 (BO3), final opsional Best of 5 (BO5)</li>
+        <li>Mode: Custom Mode + Draft Pick</li>
+        <li>5 pemain inti + maksimal 2 cadangan per tim</li>
+        <li>Pergantian pemain hanya sebelum masuk lobby atau sebelum match dimulai</li>
+        <li>Semua peserta wajib menggunakan akun pribadi</li>
+      </ul>
+
+      <h3>Setting Pertandingan</h3>
+      <ul>
+        <li>Skin: ON | Chat Team: ON | Chat All: OFF</li>
+        <li>Dilarang: cheat, script, map hack, bug abuse → langsung DQ</li>
+        <li>Kesalahan draft pick, emblem, spell, atau koneksi menjadi tanggung jawab tim masing-masing</li>
+        <li>Pause hanya dengan izin panitia atau kendala teknis serius</li>
+      </ul>
+
+      <h3>Keterlambatan & WO</h3>
+      <ul>
+        <li>Wajib hadir minimal 10 menit sebelum jadwal dan registrasi ulang beserta list pemain</li>
+        <li>Toleransi keterlambatan maksimal 10 menit. Lewat batas → WO</li>
+      </ul>
+
+      <h3>Etika Bermain</h3>
+      <ul>
+        <li>Dilarang berkata kasar, toxic, atau menghina lawan/panitia</li>
+        <li>Dilarang spam chat atau provokasi</li>
+        <li>Sanksi: warning → pengurangan poin → diskualifikasi</li>
+      </ul>
+
+      <h3>Hasil Pertandingan</h3>
+      <ul>
+        <li>Captain wajib screenshot hasil pertandingan dan kirim ke panitia</li>
+        <li>Keputusan panitia bersifat mutlak dan tidak dapat diganggu gugat</li>
+      </ul>
+    `
   }
 };
 
