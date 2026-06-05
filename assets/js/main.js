@@ -67,22 +67,52 @@ function parseCsv(text) {
 }
 
 // ─── PARSE SCHEDULE ROWS ─────────────────────
-// Kolom sheet: Tanggal | Waktu | Tim A | Tim B | Skor A | Skor B | Status | Pemenang | Site
+// Kolom sheet: Site | Tanggal | Waktu | Tim A | Tim B | Skor A | Skor B | Status | Pemenang
 function parseScheduleRows(rows) {
   if (!rows || rows.length < 2) return [];
+
+  // Deteksi posisi kolom dari header row secara otomatis (case-insensitive)
+  const headerRow = rows[0].map(h => h.toLowerCase().trim());
+  const idx = {
+    site:     headerRow.findIndex(h => h === 'site'),
+    tanggal:  headerRow.findIndex(h => h.includes('tanggal') || h.includes('date')),
+    waktu:    headerRow.findIndex(h => h.includes('waktu') || h.includes('time') || h.includes('jam')),
+    timA:     headerRow.findIndex(h => h.includes('tim a') || h === 'tima' || h.includes('team a')),
+    timB:     headerRow.findIndex(h => h.includes('tim b') || h === 'timb' || h.includes('team b')),
+    skorA:    headerRow.findIndex(h => h.includes('skor a') || h === 'skora' || h.includes('score a')),
+    skorB:    headerRow.findIndex(h => h.includes('skor b') || h === 'skorb' || h.includes('score b')),
+    status:   headerRow.findIndex(h => h.includes('status')),
+    pemenang: headerRow.findIndex(h => h.includes('pemenang') || h.includes('winner')),
+  };
+
+  // Fallback ke urutan default jika header tidak ditemukan
+  // Mendukung dua kemungkinan urutan kolom:
+  //   (A) Site | Tanggal | Waktu | Tim A | Tim B | Skor A | Skor B | Status | Pemenang
+  //   (B) Tanggal | Waktu | Tim A | Tim B | Skor A | Skor B | Status | Pemenang | Site
+  const hasSiteFirst = idx.site === 0 || (idx.site === -1 && idx.tanggal === 1);
+  if (idx.site     === -1) idx.site     = hasSiteFirst ? 0 : 8;
+  if (idx.tanggal  === -1) idx.tanggal  = hasSiteFirst ? 1 : 0;
+  if (idx.waktu    === -1) idx.waktu    = hasSiteFirst ? 2 : 1;
+  if (idx.timA     === -1) idx.timA     = hasSiteFirst ? 3 : 2;
+  if (idx.timB     === -1) idx.timB     = hasSiteFirst ? 4 : 3;
+  if (idx.skorA    === -1) idx.skorA    = hasSiteFirst ? 5 : 4;
+  if (idx.skorB    === -1) idx.skorB    = hasSiteFirst ? 6 : 5;
+  if (idx.status   === -1) idx.status   = hasSiteFirst ? 7 : 6;
+  if (idx.pemenang === -1) idx.pemenang = hasSiteFirst ? 8 : 7;
+
   const [, ...data] = rows; // skip header row
   return data
-    .filter(row => row.some(cell => cell && cell.length > 0)) 
+    .filter(row => row.some(cell => cell && cell.length > 0))
     .map(row => ({
-      tanggal:  row[0] || '-',
-      waktu:    row[1] || '-',
-      timA:     row[2] || '-',
-      timB:     row[3] || '-',
-      skorA:    row[4] || '',
-      skorB:    row[5] || '',
-      status:   (row[6] || 'Belum').trim(),
-      pemenang: row[7] || '',
-      site:     (row[8] || '').trim(), // ← kolom Site
+      site:     (row[idx.site]     || '').trim(),
+      tanggal:  row[idx.tanggal]   || '-',
+      waktu:    row[idx.waktu]     || '-',
+      timA:     row[idx.timA]      || '-',
+      timB:     row[idx.timB]      || '-',
+      skorA:    row[idx.skorA]     || '',
+      skorB:    row[idx.skorB]     || '',
+      status:   (row[idx.status]   || 'Belum').trim(),
+      pemenang: row[idx.pemenang]  || '',
     }));
 }
 
