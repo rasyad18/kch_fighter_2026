@@ -67,6 +67,7 @@ function parseCsv(text) {
 }
 
 // ─── PARSE SCHEDULE ROWS ─────────────────────
+// Kolom sheet: Tanggal | Waktu | Tim A | Tim B | Skor A | Skor B | Status | Pemenang | Site
 function parseScheduleRows(rows) {
   if (!rows || rows.length < 2) return [];
   const [, ...data] = rows; // skip header row
@@ -80,7 +81,8 @@ function parseScheduleRows(rows) {
       skorA:    row[4] || '',
       skorB:    row[5] || '',
       status:   (row[6] || 'Belum').trim(),
-      pemenang: row[7] || ''
+      pemenang: row[7] || '',
+      site:     (row[8] || '').trim(), // ← kolom Site
     }));
 }
 
@@ -88,28 +90,104 @@ function parseScheduleRows(rows) {
 function parseFlexibleDate(dateStr) {
   if (!dateStr || dateStr === '-') return new Error('Invalid');
   
-  // Jika format menggunakan "/" (misal: 25/05/2026 atau 2026/05/25)
   if (dateStr.includes('/')) {
     const parts = dateStr.split('/');
-    if (parts[0].length === 4) { // YYYY/MM/DD
+    if (parts[0].length === 4) {
       return new Date(parts[0], parts[1] - 1, parts[2]);
-    } else { // DD/MM/YYYY
+    } else {
       return new Date(parts[2], parts[1] - 1, parts[0]);
     }
   }
   
-  // Jika format menggunakan "-" (misal: 2026-05-25 atau 25-05-2026)
   if (dateStr.includes('-')) {
     const parts = dateStr.split('-');
-    if (parts[0].length === 4) { // YYYY-MM-DD
+    if (parts[0].length === 4) {
       return new Date(parts[0], parts[1] - 1, parts[2]);
-    } else { // DD-MM-YYYY
+    } else {
       return new Date(parts[2], parts[1] - 1, parts[0]);
     }
   }
 
   return new Date(dateStr);
 }
+
+// ─── RENDER SATU MATCH CARD ──────────────────
+function renderMatchCard(m, strHariIni, strBesok) {
+  const matchDateObj = parseFlexibleDate(m.tanggal);
+  const formatTanggalKomparasi = (d) => {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+  const strMatchDate = formatTanggalKomparasi(matchDateObj);
+
+  let dayBadgeHTML = `<span class="match-time-text">${m.tanggal}</span>`;
+  if (strMatchDate === strHariIni) {
+    dayBadgeHTML = `<span class="match-day-badge today">Hari Ini</span>`;
+  } else if (strMatchDate === strBesok) {
+    dayBadgeHTML = `<span class="match-day-badge tomorrow">Besok</span>`;
+  }
+
+  const statusClean = m.status.toLowerCase();
+  let scoreOrVsHTML = `<div class="flyer-vs-box">VS</div>`;
+  let statusBadgeHTML = `<span class="flyer-badge-status status-upcoming-match">Upcoming</span>`;
+
+  if (statusClean === 'berlangsung' || statusClean === 'live') {
+    statusBadgeHTML = `<span class="flyer-badge-status status-live-match">LIVE</span>`;
+    scoreOrVsHTML = `<div class="flyer-score-box">${m.skorA || '0'}:${m.skorB || '0'}</div>`;
+  } else if (statusClean === 'selesai' || statusClean === 'wo') {
+    statusBadgeHTML = `<span class="flyer-badge-status status-ended-match">Ended</span>`;
+    scoreOrVsHTML = `<div class="flyer-score-box">${m.skorA || '0'}:${m.skorB || '0'}</div>`;
+  }
+
+  let footerHTML = `<div class="match-card-footer">${statusBadgeHTML}</div>`;
+  if ((statusClean === 'selesai' || statusClean === 'wo') && m.pemenang && m.pemenang !== '-') {
+    footerHTML = `
+      <div class="match-card-footer">
+        <div class="flyer-winner-announcement">
+          <svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:currentColor; margin-right:4px;">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span>Winner: ${m.pemenang}</span>
+        </div>
+      </div>`;
+  }
+
+  const inisialA = m.timA ? m.timA.substring(0, 2).toUpperCase() : '??';
+  const inisialB = m.timB ? m.timB.substring(0, 2).toUpperCase() : '??';
+
+  return `
+    <div class="match-card-flyer reveal visible">
+      <div class="match-card-header">
+        ${dayBadgeHTML}
+        <div class="match-time-text">${m.waktu} WIB</div>
+      </div>
+      <div class="match-card-body">
+        <div class="match-team-block">
+          <div class="match-team-logo-placeholder" style="border-color: #39FF14;">${inisialA}</div>
+          <div class="match-team-name-text">${m.timA}</div>
+        </div>
+        <div class="match-center-score-block">
+          ${scoreOrVsHTML}
+        </div>
+        <div class="match-team-block">
+          <div class="match-team-logo-placeholder" style="border-color: #00CFFF;">${inisialB}</div>
+          <div class="match-team-name-text">${m.timB}</div>
+        </div>
+      </div>
+      ${footerHTML}
+    </div>
+  `;
+}
+
+// ─── ICON TIAP SITE ──────────────────────────
+const SITE_META = {
+  'Cikarang':   { icon: '🏭', color: '#FF6B00' },
+  'Pulogadung': { icon: '🏢', color: '#00CFFF' },
+  'Pulomas':    { icon: '🏟️', color: '#39FF14' },
+};
+const SITE_ORDER = ['Cikarang', 'Pulogadung', 'Pulomas'];
 
 // ─── DESAIN FLYER PERTANDINGAN & FILTER OTOMATIS ────────────────
 function renderMatchFlyers(matches) {
@@ -129,13 +207,12 @@ function renderMatchFlyers(matches) {
   };
 
   const strHariIni = formatTanggalKomparasi(hariIni);
-  const strBesok = formatTanggalKomparasi(besok);
+  const strBesok   = formatTanggalKomparasi(besok);
 
-  // Filter data pertandingan: HANYA Hari Ini dan Besok
+  // Filter: hanya hari ini & besok
   const matchesFiltered = matches.filter(m => {
     const matchDateObj = parseFlexibleDate(m.tanggal);
-    if (isNaN(matchDateObj.getTime())) return false; 
-    
+    if (isNaN(matchDateObj.getTime())) return false;
     const strMatchDate = formatTanggalKomparasi(matchDateObj);
     return strMatchDate === strHariIni || strMatchDate === strBesok;
   });
@@ -150,72 +227,54 @@ function renderMatchFlyers(matches) {
       </div>`;
   }
 
-  return matchesFiltered.map(m => {
-    let dayBadgeHTML = `<span class="match-time-text">${m.tanggal}</span>`;
-    const matchDateObj = parseFlexibleDate(m.tanggal);
-    const strMatchDate = formatTanggalKomparasi(matchDateObj);
+  // ── Kelompokkan per site ──────────────────
+  // Cek apakah ada kolom site yang terisi
+  const hasSiteData = matchesFiltered.some(m => m.site && m.site.length > 0);
 
-    if (strMatchDate === strHariIni) {
-      dayBadgeHTML = `<span class="match-day-badge today">Hari Ini</span>`;
-    } else if (strMatchDate === strBesok) {
-      dayBadgeHTML = `<span class="match-day-badge tomorrow">Besok</span>`;
-    }
+  if (!hasSiteData) {
+    // Fallback: tampilkan tanpa pemisah site (perilaku lama)
+    return `<div class="match-flyer-grid">${matchesFiltered.map(m => renderMatchCard(m, strHariIni, strBesok)).join('')}</div>`;
+  }
 
-    const statusClean = m.status.toLowerCase();
-    let scoreOrVsHTML = `<div class="flyer-vs-box">VS</div>`;
-    let statusBadgeHTML = `<span class="flyer-badge-status status-upcoming-match">Upcoming</span>`;
+  // Kelompokkan
+  const grouped = {};
+  matchesFiltered.forEach(m => {
+    const siteKey = m.site || 'Lainnya';
+    if (!grouped[siteKey]) grouped[siteKey] = [];
+    grouped[siteKey].push(m);
+  });
 
-    if (statusClean === 'berlangsung' || statusClean === 'live') {
-      statusBadgeHTML = `<span class="flyer-badge-status status-live-match">LIVE</span>`;
-      scoreOrVsHTML = `<div class="flyer-score-box">${m.skorA || '0'}:${m.skorB || '0'}</div>`;
-    } else if (statusClean === 'selesai' || statusClean === 'wo') {
-      statusBadgeHTML = `<span class="flyer-badge-status status-ended-match">Ended</span>`;
-      scoreOrVsHTML = `<div class="flyer-score-box">${m.skorA || '0'}:${m.skorB || '0'}</div>`;
-    }
+  // Urutan site: Cikarang → Pulogadung → Pulomas → sisanya
+  const siteKeys = [
+    ...SITE_ORDER.filter(s => grouped[s]),
+    ...Object.keys(grouped).filter(s => !SITE_ORDER.includes(s))
+  ];
 
-    let footerHTML = `<div class="match-card-footer">${statusBadgeHTML}</div>`;
-    if ((statusClean === 'selesai' || statusClean === 'wo') && m.pemenang && m.pemenang !== '-') {
-      footerHTML = `
-        <div class="match-card-footer">
-          <div class="flyer-winner-announcement">
-            <svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:currentColor; margin-right:4px;">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
-            <span>Winner: ${m.pemenang}</span>
+  let html = '';
+  siteKeys.forEach((site, idx) => {
+    const meta   = SITE_META[site] || { icon: '📍', color: '#FF6B00' };
+    const cards  = grouped[site];
+    const count  = cards.length;
+
+    html += `
+      <div class="site-section${idx > 0 ? ' site-section--gap' : ''}">
+        <div class="site-divider">
+          <div class="site-divider-line"></div>
+          <div class="site-divider-badge" style="--site-color:${meta.color};">
+            <span class="site-divider-icon">${meta.icon}</span>
+            <span class="site-divider-label">Site ${site}</span>
+            <span class="site-divider-count">${count} Match</span>
           </div>
-        </div>`;
-    }
-
-    const inisialA = m.timA ? m.timA.substring(0, 2).toUpperCase() : '??';
-    const inisialB = m.timB ? m.timB.substring(0, 2).toUpperCase() : '??';
-
-    return `
-      <div class="match-card-flyer reveal visible">
-        <div class="match-card-header">
-          ${dayBadgeHTML}
-          <div class="match-time-text">${m.waktu} WITA</div>
+          <div class="site-divider-line"></div>
         </div>
-        
-        <div class="match-card-body">
-          <div class="match-team-block">
-            <div class="match-team-logo-placeholder" style="border-color: #39FF14;">${inisialA}</div>
-            <div class="match-team-name-text">${m.timA}</div>
-          </div>
-          
-          <div class="match-center-score-block">
-            ${scoreOrVsHTML}
-          </div>
-          
-          <div class="match-team-block">
-            <div class="match-team-logo-placeholder" style="border-color: #00CFFF;">${inisialB}</div>
-            <div class="match-team-name-text">${m.timB}</div>
-          </div>
+        <div class="match-flyer-grid">
+          ${cards.map(m => renderMatchCard(m, strHariIni, strBesok)).join('')}
         </div>
-        
-        ${footerHTML}
       </div>
     `;
-  }).join('');
+  });
+
+  return html;
 }
 
 // ─── AMBIL DATA PER CABANG (LOAD ONE PANEL) ──────────────────────────
