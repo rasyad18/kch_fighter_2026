@@ -7,6 +7,72 @@
   <title>KCH Fighter 2026</title>
   <link rel="icon" href="assets/images/logokch.png" />
   <link rel="stylesheet" href="assets/css/style.css" />
+
+  <!-- ░░ SITE DIVIDER STYLES ░░ -->
+  <style>
+    /* Wrapper tiap section site */
+    .site-section {
+      width: 100%;
+    }
+    .site-section--gap {
+      margin-top: 2.5rem;
+    }
+
+    /* Pemisah header site */
+    .site-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .site-divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    }
+    .site-divider-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--site-color, #FF6B00) 40%, transparent);
+      background: color-mix(in srgb, var(--site-color, #FF6B00) 10%, transparent);
+      white-space: nowrap;
+    }
+    .site-divider-icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .site-divider-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--site-color, #FF6B00);
+    }
+    .site-divider-count {
+      font-size: 0.7rem;
+      font-weight: 500;
+      opacity: 0.65;
+      color: var(--site-color, #FF6B00);
+      background: color-mix(in srgb, var(--site-color, #FF6B00) 15%, transparent);
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+    }
+
+    /* Pastikan match-flyer-grid di dalam site-section tampil normal */
+    .site-section .match-flyer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    @media (max-width: 600px) {
+      .site-section .match-flyer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -54,7 +120,6 @@
 <!-- ░░ HERO SECTION ░░ -->
 <section class="hero" id="home">
   <div class="hero-bg">
-    <!-- Ganti dengan foto hero event kamu: assets/images/hero-bg.jpg -->
     <img
       src="assets/images/hero-bg.jpg"
       alt="KCH Fighter 2026 Hero"
@@ -120,7 +185,6 @@
           <div class="txt">May-Aug</div>
         </div>
         <div class="about-img-frame">
-          <!-- Ganti dengan: assets/images/about-event.jpg -->
           <img
             src="assets/images/DSC00652.JPG"
             alt="KCH Fighter Event"
@@ -194,7 +258,6 @@
 
     <div class="sports-grid">
 
-      <!-- FUTSAL — assets/images/sport-futsal.jpg -->
       <div class="sport-card reveal">
         <div class="sport-card-img">
           <span class="sport-card-number">01</span>
@@ -212,7 +275,6 @@
         </div>
       </div>
 
-      <!-- BASKET — assets/images/sport-basket.jpg -->
       <div class="sport-card reveal reveal-delay-1">
         <div class="sport-card-img">
           <span class="sport-card-number">02</span>
@@ -230,7 +292,6 @@
         </div>
       </div>
 
-      <!-- VOLLY — assets/images/sport-volly.jpg -->
       <div class="sport-card reveal reveal-delay-2">
         <div class="sport-card-img">
           <span class="sport-card-number">03</span>
@@ -248,7 +309,6 @@
         </div>
       </div>
 
-      <!-- BULU TANGKIS — assets/images/sport-bulutangkis.jpg -->
       <div class="sport-card reveal reveal-delay-3">
         <div class="sport-card-img">
           <span class="sport-card-number">04</span>
@@ -266,7 +326,6 @@
         </div>
       </div>
 
-      <!-- DANCE — assets/images/sport-dance.jpg -->
       <div class="sport-card reveal">
         <div class="sport-card-img">
           <span class="sport-card-number">05</span>
@@ -284,7 +343,6 @@
         </div>
       </div>
 
-      <!-- TENIS MEJA — assets/images/sport-tenismeja.jpg -->
       <div class="sport-card reveal reveal-delay-1">
         <div class="sport-card-img">
           <span class="sport-card-number">06</span>
@@ -302,7 +360,6 @@
         </div>
       </div>
 
-      <!-- KARAOKE — assets/images/sport-karaoke.jpg -->
       <div class="sport-card reveal reveal-delay-2">
         <div class="sport-card-img">
           <span class="sport-card-number">07</span>
@@ -320,7 +377,6 @@
         </div>
       </div>
 
-      <!-- E-SPORT — assets/images/sport-esport.jpg -->
       <div class="sport-card reveal reveal-delay-3">
         <div class="sport-card-img">
           <span class="sport-card-number">08</span>
@@ -347,7 +403,7 @@
   <div class="container">
     <div class="section-label">Live Match Center</div>
     <h2 class="section-title">Jadwal & <span class="accent">Hasil Live</span></h2>
-    <p class="section-desc">Menampilkan pertandingan khusus Hari Ini & Besok. Diperbarui otomatis dari Spreadsheet.</p>
+    <p class="section-desc">Menampilkan pertandingan khusus Hari Ini &amp; Besok, dikelompokkan per Site. Diperbarui otomatis dari Spreadsheet.</p>
 
     <div class="schedule-tabs" style="margin-top:2.5rem;">
       <button class="tab-btn active" data-tab="futsal">Futsal</button>
@@ -366,56 +422,56 @@
           <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Futsal Live Track</span></div>
           <span class="last-update">Update: -</span>
         </div>
-        <div class="schedule-content match-flyer-grid"></div>
+        <div class="schedule-content"></div>
       </div>
       <div id="panel-basket" class="schedule-panel">
         <div class="schedule-status-bar">
           <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Basket Live Track</span></div>
           <span class="last-update">Update: -</span>
         </div>
-        <div class="schedule-content match-flyer-grid"></div>
+        <div class="schedule-content"></div>
       </div>
       <div id="panel-volly" class="schedule-panel">
         <div class="schedule-status-bar">
           <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Volly Live Track</span></div>
           <span class="last-update">Update: -</span>
         </div>
-        <div class="schedule-content match-flyer-grid"></div>
+        <div class="schedule-content"></div>
       </div>
       <div id="panel-bulutangkis" class="schedule-panel">
         <div class="schedule-status-bar">
           <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Bulu Tangkis Live Track</span></div>
           <span class="last-update">Update: -</span>
         </div>
-        <div class="schedule-content match-flyer-grid"></div>
+        <div class="schedule-content"></div>
       </div>
       <div id="panel-dance" class="schedule-panel">
         <div class="schedule-status-bar">
           <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Dance Live Track</span></div>
           <span class="last-update">Update: -</span>
         </div>
-        <div class="schedule-content match-flyer-grid"></div>
+        <div class="schedule-content"></div>
       </div>
       <div id="panel-tenismeja" class="schedule-panel">
         <div class="schedule-status-bar">
           <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Tenis Meja Live Track</span></div>
           <span class="last-update">Update: -</span>
         </div>
-        <div class="schedule-content match-flyer-grid"></div>
+        <div class="schedule-content"></div>
       </div>
       <div id="panel-karaoke" class="schedule-panel">
         <div class="schedule-status-bar">
           <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Karaoke Live Track</span></div>
           <span class="last-update">Update: -</span>
         </div>
-        <div class="schedule-content match-flyer-grid"></div>
+        <div class="schedule-content"></div>
       </div>
       <div id="panel-esport" class="schedule-panel">
         <div class="schedule-status-bar">
           <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">E-Sport Live Track</span></div>
           <span class="last-update">Update: -</span>
         </div>
-        <div class="schedule-content match-flyer-grid"></div>
+        <div class="schedule-content"></div>
       </div>
     </div>
   </div>
