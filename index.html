@@ -114,6 +114,7 @@
     <span class="ticker-item"><span class="dot">◆</span> Tenis Meja</span>
     <span class="ticker-item"><span class="dot">◆</span> Karaoke</span>
     <span class="ticker-item"><span class="dot">◆</span> E-Sport Mobile Legend</span>
+    <span class="ticker-item"><span class="dot">◆</span> Catur</span>
   </div>
 </div>
 
@@ -145,12 +146,12 @@
 
     <p class="hero-subtitle">
       Event olahraga se Kalbe Consumer Health.
-      8 cabang perlombaan, ribuan peserta, satu arena pertarungan terbaik.
+      9 cabang perlombaan, ribuan peserta, satu arena pertarungan terbaik.
     </p>
 
     <div class="hero-stats">
       <div class="hero-stat-item">
-        <div class="number" data-count="8">0</div>
+        <div class="number" data-count="9">0</div>
         <div class="label">Cabang Lomba</div>
       </div>
       <div class="hero-stat-item">
@@ -251,7 +252,7 @@
     <div class="sports-header">
       <div>
         <div class="section-label">Cabang Perlombaan</div>
-        <h2 class="section-title">8 Cabang <span class="accent">Lomba</span></h2>
+        <h2 class="section-title">9 Cabang <span class="accent">Lomba</span></h2>
         <p class="section-desc">Pilih cabang yang ingin kamu ikuti dan daftar sekarang.</p>
       </div>
     </div>
@@ -393,6 +394,22 @@
           </div>
         </div>
       </div>
+      <div class="sport-card reveal reveal-delay-1">
+        <div class="sport-card-img">
+          <span class="sport-card-number">09</span>
+          <img src="assets/images/sport-catur.jpg" alt="Catur" loading="lazy"
+            onerror="this.src='https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=600&q=80'" />
+        </div>
+        <div class="sport-card-body">
+          <div class="sport-card-tag">Perorangan</div>
+          <div class="sport-card-name">Catur</div>
+          <div class="sport-card-desc">Adu strategi dan taktik di atas papan 64 kotak. Uji kecerdasan dan kesabaran.</div>
+          <div class="sport-card-actions">
+            <button class="btn-tnc" onclick="openModal('catur')">T&amp;C</button>
+            <button class="btn-daftar" onclick="daftarNow('catur')">Daftar</button>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -414,6 +431,7 @@
       <button class="tab-btn" data-tab="tenismeja">Tenis Meja</button>
       <button class="tab-btn" data-tab="karaoke">Karaoke</button>
       <button class="tab-btn" data-tab="esport">E-Sport</button>
+      <button class="tab-btn" data-tab="catur">Catur</button>
     </div>
 
     <div class="match-center-wrapper">
@@ -469,6 +487,13 @@
       <div id="panel-esport" class="schedule-panel">
         <div class="schedule-status-bar">
           <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">E-Sport Live Track</span></div>
+          <span class="last-update">Update: -</span>
+        </div>
+        <div class="schedule-content"></div>
+      </div>
+      <div id="panel-catur" class="schedule-panel">
+        <div class="schedule-status-bar">
+          <div class="status-indicator"><div class="status-dot"></div><span class="status-live-text">Catur Live Track</span></div>
           <span class="last-update">Update: -</span>
         </div>
         <div class="schedule-content"></div>
@@ -567,6 +592,7 @@
           <li><a href="#sports">Tenis Meja</a></li>
           <li><a href="#sports">Karaoke</a></li>
           <li><a href="#sports">E-Sport MLBB</a></li>
+          <li><a href="#sports">Catur</a></li>
         </ul>
       </div>
       <div class="footer-col">
