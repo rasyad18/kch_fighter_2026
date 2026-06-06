@@ -119,46 +119,52 @@ function parseScheduleRows(rows) {
 
 // Helper untuk standarisasi objek tanggal dari spreadsheet teks
 function parseFlexibleDate(dateStr) {
-  if (!dateStr || dateStr === '-') return new Error('Invalid');
-  
-  if (dateStr.includes('/')) {
-    const parts = dateStr.split('/');
-    if (parts[0].length === 4) {
-      return new Date(parts[0], parts[1] - 1, parts[2]);
-    } else {
-      return new Date(parts[2], parts[1] - 1, parts[0]);
-    }
-  }
-  
-  if (dateStr.includes('-')) {
-    const parts = dateStr.split('-');
-    if (parts[0].length === 4) {
-      return new Date(parts[0], parts[1] - 1, parts[2]);
-    } else {
-      return new Date(parts[2], parts[1] - 1, parts[0]);
-    }
-  }
+  if (!dateStr || dateStr === '-' || dateStr.trim() === '') return null;
 
-  return new Date(dateStr);
+  const s = dateStr.trim();
+
+  // Format DD/MM/YYYY
+  const dmy = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if (dmy) return new Date(parseInt(dmy[3]), parseInt(dmy[2]) - 1, parseInt(dmy[1]));
+
+  // Format YYYY/MM/DD atau YYYY-MM-DD
+  const ymd = s.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+  if (ymd) return new Date(parseInt(ymd[1]), parseInt(ymd[2]) - 1, parseInt(ymd[3]));
+
+  // Format DD/MM/YY
+  const dmyShort = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2})$/);
+  if (dmyShort) return new Date(2000 + parseInt(dmyShort[3]), parseInt(dmyShort[2]) - 1, parseInt(dmyShort[1]));
+
+  // Fallback native parse
+  const native = new Date(s);
+  if (!isNaN(native.getTime())) return native;
+
+  return null;
 }
 
 // ─── RENDER SATU MATCH CARD ──────────────────
 function renderMatchCard(m, strHariIni, strBesok) {
   const matchDateObj = parseFlexibleDate(m.tanggal);
+
+  // Guard: jika tanggal tidak bisa diparsing, tetap tampilkan card
   const formatTanggalKomparasi = (d) => {
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, '0');
     const dd = String(d.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
   };
-  const strMatchDate = formatTanggalKomparasi(matchDateObj);
 
   let dayBadgeHTML = `<span class="match-time-text">${m.tanggal}</span>`;
-  if (strMatchDate === strHariIni) {
-    dayBadgeHTML = `<span class="match-day-badge today">Hari Ini</span>`;
-  } else if (strMatchDate === strBesok) {
-    dayBadgeHTML = `<span class="match-day-badge tomorrow">Besok</span>`;
+  if (matchDateObj && !isNaN(matchDateObj.getTime())) {
+    const strMatchDate = formatTanggalKomparasi(matchDateObj);
+    if (strMatchDate === strHariIni) {
+      dayBadgeHTML = `<span class="match-day-badge today">Hari Ini</span>`;
+    } else if (strMatchDate === strBesok) {
+      dayBadgeHTML = `<span class="match-day-badge tomorrow">Besok</span>`;
+    }
   }
+
+  // ... sisa kode renderMatchCard tidak berubah (statusClean, scoreOrVsHTML, dst)
 
   const statusClean = m.status.toLowerCase();
   let scoreOrVsHTML = `<div class="flyer-vs-box">VS</div>`;
@@ -241,9 +247,9 @@ function renderMatchFlyers(matches) {
   const strBesok   = formatTanggalKomparasi(besok);
 
   // Filter: hanya hari ini & besok
-  const matchesFiltered = matches.filter(m => {
+ const matchesFiltered = matches.filter(m => {
     const matchDateObj = parseFlexibleDate(m.tanggal);
-    if (isNaN(matchDateObj.getTime())) return false;
+    if (!matchDateObj || isNaN(matchDateObj.getTime())) return false;
     const strMatchDate = formatTanggalKomparasi(matchDateObj);
     return strMatchDate === strHariIni || strMatchDate === strBesok;
   });
