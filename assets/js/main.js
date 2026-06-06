@@ -227,93 +227,144 @@ const SITE_META = {
 const SITE_ORDER = ['Cikarang', 'Pulogadung', 'Pulomas'];
 
 // ─── DESAIN FLYER PERTANDINGAN & FILTER OTOMATIS ────────────────
+// ─── RENDER SEMUA JADWAL (ACCORDION PER TANGGAL) ────────────────
 function renderMatchFlyers(matches) {
   if (!matches || matches.length === 0) {
     return `<div class="no-matches-today-box"><p>Belum ada data jadwal di Spreadsheet.</p></div>`;
   }
 
   const hariIni = new Date();
-  const besok = new Date();
-  besok.setDate(hariIni.getDate() + 1);
-
-  const formatTanggalKomparasi = (dateObj) => {
-    const yyyy = dateObj.getFullYear();
-    const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-    const dd = String(dateObj.getDate()).padStart(2, '0');
+  const formatTanggalKomparasi = (d) => {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
   };
-
   const strHariIni = formatTanggalKomparasi(hariIni);
-  const strBesok   = formatTanggalKomparasi(besok);
 
-  // Filter: hanya hari ini & besok
- const matchesFiltered = matches.filter(m => {
-    const matchDateObj = parseFlexibleDate(m.tanggal);
-    if (!matchDateObj || isNaN(matchDateObj.getTime())) return false;
-    const strMatchDate = formatTanggalKomparasi(matchDateObj);
-    return strMatchDate === strHariIni || strMatchDate === strBesok;
+  // ── Filter baris valid saja ──
+  const matchesValid = matches.filter(m => {
+    const d = parseFlexibleDate(m.tanggal);
+    return d && !isNaN(d.getTime());
   });
 
-  if (matchesFiltered.length === 0) {
-    return `
-      <div class="no-matches-today-box">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:0.5rem; opacity:0.6;">
-          <circle cx="12" cy="12" r="10"/><path d="M8 12h8"/>
-        </svg>
-        <p>Tidak ada jadwal pertandingan untuk Hari Ini &amp; Besok.</p>
-      </div>`;
+  if (matchesValid.length === 0) {
+    return `<div class="no-matches-today-box"><p>Belum ada data jadwal di Spreadsheet.</p></div>`;
   }
 
-  // ── Kelompokkan per site ──────────────────
-  // Cek apakah ada kolom site yang terisi
-  const hasSiteData = matchesFiltered.some(m => m.site && m.site.length > 0);
-
-  if (!hasSiteData) {
-    // Fallback: tampilkan tanpa pemisah site (perilaku lama)
-    return `<div class="match-flyer-grid">${matchesFiltered.map(m => renderMatchCard(m, strHariIni, strBesok)).join('')}</div>`;
-  }
-
-  // Kelompokkan
-  const grouped = {};
-  matchesFiltered.forEach(m => {
-    const siteKey = m.site || 'Lainnya';
-    if (!grouped[siteKey]) grouped[siteKey] = [];
-    grouped[siteKey].push(m);
+  // ── Kelompokkan per tanggal ──
+  const byDate = {};
+  matchesValid.forEach(m => {
+    const d = parseFlexibleDate(m.tanggal);
+    const key = formatTanggalKomparasi(d);
+    if (!byDate[key]) byDate[key] = [];
+    byDate[key].push(m);
   });
 
-  // Urutan site: Cikarang → Pulogadung → Pulomas → sisanya
-  const siteKeys = [
-    ...SITE_ORDER.filter(s => grouped[s]),
-    ...Object.keys(grouped).filter(s => !SITE_ORDER.includes(s))
-  ];
+  // ── Urutkan tanggal ascending ──
+  const sortedDates = Object.keys(byDate).sort();
 
-  let html = '';
-  siteKeys.forEach((site, idx) => {
-    const meta   = SITE_META[site] || { icon: '📍', color: '#FF6B00' };
-    const cards  = grouped[site];
-    const count  = cards.length;
+  // ── Format label tanggal ──
+  const formatLabel = (strDate) => {
+    const [y, m, d] = strDate.split('-').map(Number);
+    const dateObj = new Date(y, m - 1, d);
+    const hariNama = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][dateObj.getDay()];
+    const bulanNama = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][m - 1];
+    return `${hariNama}, ${d} ${bulanNama} ${y}`;
+  };
 
+  // ── Hitung total match per tanggal ──
+  let html = '<div class="accordion-schedule">';
+
+  sortedDates.forEach(strDate => {
+    const isToday = strDate === strHariIni;
+    const isPast  = strDate < strHariIni;
+    const matchList = byDate[strDate];
+    const totalMatch = matchList.length;
+
+    // Badge label
+    let dateBadge = '';
+    if (isToday) {
+      dateBadge = `<span class="acc-date-badge today">Hari Ini</span>`;
+    } else if (isPast) {
+      dateBadge = `<span class="acc-date-badge past">Selesai</span>`;
+    } else {
+      dateBadge = `<span class="acc-date-badge upcoming">Upcoming</span>`;
+    }
+
+    // Kelompokkan per site di dalam tanggal ini
+    const hasSiteData = matchList.some(m => m.site && m.site.length > 0);
+    let innerHTML = '';
+
+    if (!hasSiteData) {
+      innerHTML = `<div class="match-flyer-grid">${matchList.map(m => renderMatchCard(m, strHariIni, strHariIni)).join('')}</div>`;
+    } else {
+      const grouped = {};
+      matchList.forEach(m => {
+        const siteKey = m.site || 'Lainnya';
+        if (!grouped[siteKey]) grouped[siteKey] = [];
+        grouped[siteKey].push(m);
+      });
+      const siteKeys = [
+        ...SITE_ORDER.filter(s => grouped[s]),
+        ...Object.keys(grouped).filter(s => !SITE_ORDER.includes(s))
+      ];
+      siteKeys.forEach((site, idx) => {
+        const meta  = SITE_META[site] || { icon: '📍', color: '#FF6B00' };
+        const cards = grouped[site];
+        innerHTML += `
+          <div class="site-section${idx > 0 ? ' site-section--gap' : ''}">
+            <div class="site-divider">
+              <div class="site-divider-line"></div>
+              <div class="site-divider-badge" style="--site-color:${meta.color};">
+                <span class="site-divider-icon">${meta.icon}</span>
+                <span class="site-divider-label">Site ${site}</span>
+                <span class="site-divider-count">${cards.length} Match</span>
+              </div>
+              <div class="site-divider-line"></div>
+            </div>
+            <div class="match-flyer-grid">
+              ${cards.map(m => renderMatchCard(m, strHariIni, strHariIni)).join('')}
+            </div>
+          </div>`;
+      });
+    }
+
+    // Accordion item — hari ini otomatis open
     html += `
-      <div class="site-section${idx > 0 ? ' site-section--gap' : ''}">
-        <div class="site-divider">
-          <div class="site-divider-line"></div>
-          <div class="site-divider-badge" style="--site-color:${meta.color};">
-            <span class="site-divider-icon">${meta.icon}</span>
-            <span class="site-divider-label">Site ${site}</span>
-            <span class="site-divider-count">${count} Match</span>
+      <div class="acc-item${isToday ? ' acc-open' : ''}${isPast ? ' acc-past' : ''}">
+        <button class="acc-header" onclick="toggleAccordion(this)">
+          <div class="acc-header-left">
+            <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+            <span class="acc-date-label">${formatLabel(strDate)}</span>
+            ${dateBadge}
           </div>
-          <div class="site-divider-line"></div>
+          <span class="acc-match-count">${totalMatch} Match</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            ${innerHTML}
+          </div>
         </div>
-        <div class="match-flyer-grid">
-          ${cards.map(m => renderMatchCard(m, strHariIni, strBesok)).join('')}
-        </div>
-      </div>
-    `;
+      </div>`;
   });
 
+  html += '</div>';
   return html;
 }
-
+// ─── ACCORDION TOGGLE ────────────────────────
+function toggleAccordion(btn) {
+  const item = btn.closest('.acc-item');
+  const isOpen = item.classList.contains('acc-open');
+  // Tutup semua accordion dalam panel yang sama
+  const panel = btn.closest('.schedule-panel');
+  panel.querySelectorAll('.acc-item.acc-open').forEach(el => el.classList.remove('acc-open'));
+  // Buka yang diklik (kecuali sudah open → toggle tutup)
+  if (!isOpen) item.classList.add('acc-open');
+}
+window.toggleAccordion = toggleAccordion;
 // ─── AMBIL DATA PER CABANG (LOAD ONE PANEL) ──────────────────────────
 async function loadSchedule(sport, panelId) {
   const panel = document.getElementById(panelId);
