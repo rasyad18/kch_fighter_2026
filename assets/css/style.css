@@ -1446,3 +1446,113 @@ body::before {
   stroke: currentColor;
   opacity: 0.5;
 }
+/* ── ACCORDION SCHEDULE ── */
+.accordion-schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.acc-item {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.03);
+  transition: border-color 0.2s;
+}
+.acc-item:hover {
+  border-color: rgba(255,107,0,0.25);
+}
+.acc-item.acc-open {
+  border-color: rgba(255,107,0,0.4);
+  background: rgba(255,107,0,0.04);
+}
+.acc-item.acc-past {
+  opacity: 0.6;
+}
+
+.acc-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  gap: 1rem;
+  text-align: left;
+}
+.acc-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.acc-chevron {
+  color: #FF6B00;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+.acc-item.acc-open .acc-chevron {
+  transform: rotate(180deg);
+}
+.acc-date-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+}
+.acc-match-count {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #FF6B00;
+  background: rgba(255,107,0,0.12);
+  border: 1px solid rgba(255,107,0,0.25);
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Badge status tanggal */
+.acc-date-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+.acc-date-badge.today {
+  background: rgba(57,255,20,0.15);
+  color: #39FF14;
+  border: 1px solid rgba(57,255,20,0.35);
+}
+.acc-date-badge.upcoming {
+  background: rgba(0,207,255,0.12);
+  color: #00CFFF;
+  border: 1px solid rgba(0,207,255,0.3);
+}
+.acc-date-badge.past {
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Body accordion */
+.acc-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+.acc-item.acc-open .acc-body {
+  grid-template-rows: 1fr;
+}
+.acc-body-inner {
+  overflow: hidden;
+  padding: 0 1.25rem;
+}
+.acc-item.acc-open .acc-body-inner {
+  padding: 0 1.25rem 1.25rem;
+}
