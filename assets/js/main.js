@@ -20,6 +20,7 @@ const CONFIG = {
     tenismeja:    '720813413',
     karaoke:      '2118822557',
     esport:       '20640519',
+   catur: '2074558484',
   }
 };
 
@@ -357,7 +358,7 @@ function saveConfig() {
   localStorage.setItem('kch_sheet_id', sheetId);
 
   const gidFields = [
-    'futsal','basket','volly','bulutangkis','dance','tenismeja','karaoke','esport'
+    'futsal','basket','volly','bulutangkis','dance','tenismeja','karaoke','esport','catur'
   ];
   gidFields.forEach(sport => {
     const el = document.getElementById(`gid_${sport}`);
@@ -726,7 +727,65 @@ const TNC_DATA = {
       </p>
     `
   },
+   catur: {
+  title: 'Term & Condition — Catur',
+  content: `
+    <h3>Peserta</h3>
+    <ul>
+      <li>All Karyawan B7 yang mewakili Bagian/Departemen di Bintang 7</li>
+      <li>Peserta tidak dibatasi gender (boleh campuran pria & wanita)</li>
+      <li>Setiap departemen mengirimkan <strong>3 orang peserta</strong></li>
+    </ul>
 
+    <h3>Tata Cara Pertandingan</h3>
+    <ul>
+      <li>Permainan dilakukan menggunakan papan catur yang telah dipersiapkan panitia</li>
+      <li>Format <strong>3 on 3</strong> — 6 peserta saling berhadapan secara bersamaan (offline)</li>
+      <li>Masing-masing tim menentukan posisi nama pemain (Pemain 1, 2, 3) sebelum pertandingan</li>
+      <li>Tidak dibatasi gender — pertandingan bisa mempertemukan pria dan wanita dalam satu meja</li>
+      <li>Setiap peserta hanya bertanding <strong>1 ronde</strong> hingga babak Perempat Final</li>
+      <li>Penentuan bidak (hitam/putih) berdasarkan undian atau kesepakatan peserta sebelum pertandingan</li>
+      <li>Pemenang tim ditentukan dari poin: <strong>2–1</strong> atau <strong>3–0</strong></li>
+    </ul>
+
+    <h3>Peraturan Pertandingan</h3>
+    <ul>
+      <li>Setiap pemain <strong>dilarang bekerja sama</strong> dengan rekan satu tim selama pertandingan berlangsung</li>
+      <li>Peserta yang mendapatkan bidak <strong>putih</strong> melangkahkan bidak pertama kali</li>
+      <li>Setiap pemain memiliki waktu maksimal <strong>20 detik</strong> per langkah</li>
+      <li>Bidak yang disentuh pertama kali <strong>wajib dijalankan</strong> (touch-move)</li>
+      <li>Peserta <strong>tidak boleh mengulang</strong> langkah bidak yang telah disentuh dan dijalankan</li>
+      <li>Pelanggaran aturan touch-move dicatat wasit dan dapat mempengaruhi hasil jika terjadi REMIS</li>
+      <li>Peserta wajib bermain sportif dan fair play — terbukti melakukan gangguan/intimidasi terhadap lawan → <strong>Diskualifikasi</strong></li>
+    </ul>
+
+    <h3>Kondisi Pertandingan Selesai</h3>
+    <ul>
+      <li>Salah satu peserta melakukan <strong>SKAKMAT</strong> kepada lawannya</li>
+      <li>Pihak lawan <strong>menyerah</strong> sebelum pertandingan selesai</li>
+      <li>Terjadi <strong>REMIS</strong>, yaitu kondisi:
+        <ul style="margin-top:0.4rem; padding-left:1.2rem;">
+          <li>Raja vs Raja</li>
+          <li>Raja &amp; Gajah vs Raja</li>
+          <li>Raja &amp; Kuda vs Raja</li>
+          <li>Raja &amp; Gajah vs Raja &amp; Gajah dengan warna gajah yang sama</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Penentuan Pemenang saat REMIS</h3>
+    <ul>
+      <li>Pemenang ditentukan dari <strong>jumlah pelanggaran</strong> — pemain dengan pelanggaran lebih sedikit menang</li>
+      <li>Jika tidak ada pelanggaran → dilakukan <strong>permainan ulang</strong> dengan pemain yang sama</li>
+    </ul>
+
+    <h3>Format Babak</h3>
+    <ul>
+      <li><strong>Penyisihan s/d Perempat Final:</strong> 1 ronde per pertandingan</li>
+      <li><strong>Semi Final &amp; Final:</strong> 3 ronde — pemenang adalah tim yang memenangkan 2 ronde terlebih dahulu</li>
+    </ul>
+  `
+},
   esport: {
     title: 'Term & Condition — E-Sport Mobile Legends',
     content: `
@@ -842,7 +901,8 @@ const REG_LINKS = {
   dance:        'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551',
   tenismeja:    'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551',
   karaoke:      'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551',
-  esport:       'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551'
+  esport:       'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551',
+   catur:       'https://docs.google.com/spreadsheets/d/1EoVaZBShCSOaphSdqIu-Al6UzZm_XNAyvDvovAvQqo8/edit?gid=1714878551#gid=1714878551'
 };
 
 window.daftarNow = function(sport) {
@@ -876,7 +936,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const inputId = document.getElementById('inputSheetId');
   if (inputId) inputId.value = CONFIG.SHEET_ID;
 
-  const gidFields = ['futsal','basket','volly','bulutangkis','dance','tenismeja','karaoke','esport'];
+  const gidFields = ['futsal','basket','volly','bulutangkis','dance','tenismeja','karaoke','esport','catur'];
   gidFields.forEach(sport => {
     const el = document.getElementById(`gid_${sport}`);
     if (el) el.value = CONFIG.SHEET_GIDS[sport];
