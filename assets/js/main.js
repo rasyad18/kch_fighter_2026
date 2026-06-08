@@ -179,13 +179,14 @@ function renderMatchCard(m, strHariIni, strBesok) {
   }
 
   // Wasit row — hanya tampil kalau ada datanya
-  const wasitHTML = m.wasit ? `
+  const wasitValue = m.wasit && m.wasit.length > 0 ? m.wasit : '-';
+const wasitHTML = `
     <div class="match-card-wasit">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5;flex-shrink:0;">
         <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
       </svg>
-      <span>Wasit: ${m.wasit}</span>
-    </div>` : '';
+      <span>Wasit: ${wasitValue}</span>
+    </div>`;
 
   let footerHTML = `
     <div class="match-card-footer">
