@@ -12,16 +12,19 @@ const CONFIG = {
   REFRESH_INTERVAL: 30000, // auto-refresh tiap 30 detik
 
   SHEET_GIDS: {
-    futsal:       '0', 
-    basket:       '1602342405', 
-    volly:        '1905666751', 
-    bulutangkis:  '1645421078',
-    dance:        '1433423859',
-    tenismeja:    '720813413',
-    karaoke:      '2118822557',
-    esport:       '20640519',
-   catur: '2074558484',
-  }
+  'futsal-putra':  '0',
+  'futsal-putri':  '2031890469',
+  'basket-putra':  '1602342405',
+  'basket-putri':  '1406382190',
+  'volly-putra':   '1905666751',
+  'volly-putri':   '325359823',
+  bulutangkis:     '1645421078',
+  dance:           '1433423859',
+  tenismeja:       '720813413',
+  karaoke:         '2118822557',
+  esport:          '20640519',
+  catur:           '2074558484',
+}
 };
 
 function buildCsvUrl(gid) {
@@ -415,8 +418,11 @@ function saveConfig() {
   localStorage.setItem('kch_sheet_id', sheetId);
 
   const gidFields = [
-    'futsal','basket','volly','bulutangkis','dance','tenismeja','karaoke','esport','catur'
-  ];
+  'futsal-putra','futsal-putri',
+  'basket-putra','basket-putri',
+  'volly-putra','volly-putri',
+  'bulutangkis','dance','tenismeja','karaoke','esport','catur'
+];
   gidFields.forEach(sport => {
     const el = document.getElementById(`gid_${sport}`);
     if (el && el.value.trim() !== '') {
@@ -993,7 +999,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const inputId = document.getElementById('inputSheetId');
   if (inputId) inputId.value = CONFIG.SHEET_ID;
 
-  const gidFields = ['futsal','basket','volly','bulutangkis','dance','tenismeja','karaoke','esport','catur'];
+ const gidFields = [
+  'futsal-putra','futsal-putri',
+  'basket-putra','basket-putri',
+  'volly-putra','volly-putri',
+  'bulutangkis','dance','tenismeja','karaoke','esport','catur'
+];
   gidFields.forEach(sport => {
     const el = document.getElementById(`gid_${sport}`);
     if (el) el.value = CONFIG.SHEET_GIDS[sport];
