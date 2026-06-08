@@ -71,11 +71,9 @@ function parseCsv(text) {
 }
 
 // ─── PARSE SCHEDULE ROWS ─────────────────────
-// Kolom sheet: Site | Tanggal | Waktu | Tim A | Tim B | Skor A | Skor B | Status | Pemenang
 function parseScheduleRows(rows) {
   if (!rows || rows.length < 2) return [];
 
-  // Deteksi posisi kolom dari header row secara otomatis (case-insensitive)
   const headerRow = rows[0].map(h => h.toLowerCase().trim());
   const idx = {
     site:     headerRow.findIndex(h => h === 'site'),
@@ -83,28 +81,29 @@ function parseScheduleRows(rows) {
     waktu:    headerRow.findIndex(h => h.includes('waktu') || h.includes('time') || h.includes('jam')),
     timA:     headerRow.findIndex(h => h.includes('tim a') || h === 'tima' || h.includes('team a')),
     timB:     headerRow.findIndex(h => h.includes('tim b') || h === 'timb' || h.includes('team b')),
+    wasit:    headerRow.findIndex(h => h.includes('wasit') || h.includes('referee')),
     skorA:    headerRow.findIndex(h => h.includes('skor a') || h === 'skora' || h.includes('score a')),
     skorB:    headerRow.findIndex(h => h.includes('skor b') || h === 'skorb' || h.includes('score b')),
     status:   headerRow.findIndex(h => h.includes('status')),
     pemenang: headerRow.findIndex(h => h.includes('pemenang') || h.includes('winner')),
   };
 
-  // Fallback ke urutan default jika header tidak ditemukan
-  // Mendukung dua kemungkinan urutan kolom:
-  //   (A) Site | Tanggal | Waktu | Tim A | Tim B | Skor A | Skor B | Status | Pemenang
-  //   (B) Tanggal | Waktu | Tim A | Tim B | Skor A | Skor B | Status | Pemenang | Site
   const hasSiteFirst = idx.site === 0 || (idx.site === -1 && idx.tanggal === 1);
-  if (idx.site     === -1) idx.site     = hasSiteFirst ? 0 : 8;
+  const hasWasit = idx.wasit !== -1;
+
+  if (idx.site     === -1) idx.site     = hasSiteFirst ? 0 : 9;
   if (idx.tanggal  === -1) idx.tanggal  = hasSiteFirst ? 1 : 0;
   if (idx.waktu    === -1) idx.waktu    = hasSiteFirst ? 2 : 1;
   if (idx.timA     === -1) idx.timA     = hasSiteFirst ? 3 : 2;
   if (idx.timB     === -1) idx.timB     = hasSiteFirst ? 4 : 3;
-  if (idx.skorA    === -1) idx.skorA    = hasSiteFirst ? 5 : 4;
-  if (idx.skorB    === -1) idx.skorB    = hasSiteFirst ? 6 : 5;
-  if (idx.status   === -1) idx.status   = hasSiteFirst ? 7 : 6;
-  if (idx.pemenang === -1) idx.pemenang = hasSiteFirst ? 8 : 7;
+  // wasit di kolom 5 jika ada, skor geser
+  if (idx.wasit    === -1) idx.wasit    = -1; // tidak ada = tidak dipakai
+  if (idx.skorA    === -1) idx.skorA    = hasWasit ? (hasSiteFirst ? 6 : 5) : (hasSiteFirst ? 5 : 4);
+  if (idx.skorB    === -1) idx.skorB    = hasWasit ? (hasSiteFirst ? 7 : 6) : (hasSiteFirst ? 6 : 5);
+  if (idx.status   === -1) idx.status   = hasWasit ? (hasSiteFirst ? 8 : 7) : (hasSiteFirst ? 7 : 6);
+  if (idx.pemenang === -1) idx.pemenang = hasWasit ? (hasSiteFirst ? 9 : 8) : (hasSiteFirst ? 8 : 7);
 
-  const [, ...data] = rows; // skip header row
+  const [, ...data] = rows;
   return data
     .filter(row => row.some(cell => cell && cell.length > 0))
     .map(row => ({
@@ -113,6 +112,7 @@ function parseScheduleRows(rows) {
       waktu:    row[idx.waktu]     || '-',
       timA:     row[idx.timA]      || '-',
       timB:     row[idx.timB]      || '-',
+      wasit:    idx.wasit !== -1 ? (row[idx.wasit] || '').trim() : '',
       skorA:    row[idx.skorA]     || '',
       skorB:    row[idx.skorB]     || '',
       status:   (row[idx.status]   || 'Belum').trim(),
@@ -149,7 +149,6 @@ function parseFlexibleDate(dateStr) {
 function renderMatchCard(m, strHariIni, strBesok) {
   const matchDateObj = parseFlexibleDate(m.tanggal);
 
-  // Guard: jika tanggal tidak bisa diparsing, tetap tampilkan card
   const formatTanggalKomparasi = (d) => {
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -167,8 +166,6 @@ function renderMatchCard(m, strHariIni, strBesok) {
     }
   }
 
-  // ... sisa kode renderMatchCard tidak berubah (statusClean, scoreOrVsHTML, dst)
-
   const statusClean = m.status.toLowerCase();
   let scoreOrVsHTML = `<div class="flyer-vs-box">VS</div>`;
   let statusBadgeHTML = `<span class="flyer-badge-status status-upcoming-match">Upcoming</span>`;
@@ -181,12 +178,27 @@ function renderMatchCard(m, strHariIni, strBesok) {
     scoreOrVsHTML = `<div class="flyer-score-box">${m.skorA || '0'}:${m.skorB || '0'}</div>`;
   }
 
-  let footerHTML = `<div class="match-card-footer">${statusBadgeHTML}</div>`;
+  // Wasit row — hanya tampil kalau ada datanya
+  const wasitHTML = m.wasit ? `
+    <div class="match-card-wasit">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5;flex-shrink:0;">
+        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+      <span>Wasit: ${m.wasit}</span>
+    </div>` : '';
+
+  let footerHTML = `
+    <div class="match-card-footer">
+      ${wasitHTML}
+      ${statusBadgeHTML}
+    </div>`;
+
   if ((statusClean === 'selesai' || statusClean === 'wo') && m.pemenang && m.pemenang !== '-') {
     footerHTML = `
       <div class="match-card-footer">
+        ${wasitHTML}
         <div class="flyer-winner-announcement">
-          <svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:currentColor; margin-right:4px;">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;margin-right:4px;">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
           </svg>
           <span>Winner: ${m.pemenang}</span>
@@ -205,14 +217,14 @@ function renderMatchCard(m, strHariIni, strBesok) {
       </div>
       <div class="match-card-body">
         <div class="match-team-block">
-          <div class="match-team-logo-placeholder" style="border-color: #39FF14;">${inisialA}</div>
+          <div class="match-team-logo-placeholder" style="border-color:#39FF14;">${inisialA}</div>
           <div class="match-team-name-text">${m.timA}</div>
         </div>
         <div class="match-center-score-block">
           ${scoreOrVsHTML}
         </div>
         <div class="match-team-block">
-          <div class="match-team-logo-placeholder" style="border-color: #00CFFF;">${inisialB}</div>
+          <div class="match-team-logo-placeholder" style="border-color:#00CFFF;">${inisialB}</div>
           <div class="match-team-name-text">${m.timB}</div>
         </div>
       </div>
