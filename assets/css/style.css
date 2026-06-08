@@ -1583,3 +1583,18 @@ body::before {
   padding: .18rem .6rem;
   border-radius: 999px;
 }
+/* ── WASIT ROW DI MATCH CARD ── */
+.match-card-wasit {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: var(--text-secondary, rgba(255,255,255,0.5));
+  margin-bottom: 0.35rem;
+}
+
+.match-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
