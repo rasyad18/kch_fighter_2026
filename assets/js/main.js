@@ -488,13 +488,9 @@ async function loadHariIni() {
 
     html += `
       <div class="site-section" style="margin-bottom:1.75rem;">
-        <div class="site-divider">
-          <div class="site-divider-line"></div>
-          <div class="site-divider-badge" style="--site-color:#FF6B00;">
-            <span class="site-divider-label">${label}</span>
-            <span class="site-divider-count">${matches.length} Match</span>
-          </div>
-          <div class="site-divider-line"></div>
+        <div class="cabor-section-header">
+          <div class="cabor-section-title">${label}</div>
+          <div class="cabor-section-count">${matches.length} Match</div>
         </div>`;
 
     // Kelompokkan per site kalau ada
