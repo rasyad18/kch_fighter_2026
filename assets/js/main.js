@@ -400,13 +400,159 @@ async function loadSchedule(sport, panelId) {
     }
   }
 }
+// ─── LOAD TAB HARI INI (SEMUA CABOR) ────────────────
+async function loadHariIni() {
+  const panel = document.getElementById('panel-hari-ini');
+  if (!panel) return;
+  const container = panel.querySelector('.schedule-content');
+  if (!container) return;
 
+  container.innerHTML = `<div class="shimmer" style="height:160px;border-radius:16px;"></div>`;
+
+  const hariIni = new Date();
+  const formatTgl = (d) => {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+  const strHariIni = formatTgl(hariIni);
+
+  // Label nama hari & tanggal
+  const hariNama = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][hariIni.getDay()];
+  const bulanNama = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][hariIni.getMonth()];
+  const labelHariIni = `${hariNama}, ${hariIni.getDate()} ${bulanNama} ${hariIni.getFullYear()}`;
+
+  // Nama display tiap cabor
+  const CABOR_LABEL = {
+    'futsal-putra':  '⚽ Futsal Putra',
+    'futsal-putri':  '⚽ Futsal Putri',
+    'basket-putra':  '🏀 Basket Putra',
+    'basket-putri':  '🏀 Basket Putri',
+    'volly-putra':   '🏐 Volly Putra',
+    'volly-putri':   '🏐 Volly Putri',
+    'bulutangkis':   '🏸 Bulu Tangkis',
+    'dance':         '💃 Senam Kreasi',
+    'tenismeja':     '🏓 Tenis Meja',
+    'karaoke':       '🎤 Karaoke',
+    'esport':        '🎮 E-Sport MLBB',
+    'catur':         '♟️ Catur',
+  };
+
+  // Fetch semua cabor paralel
+  const sports = Object.keys(CONFIG.SHEET_GIDS);
+  const results = await Promise.all(
+    sports.map(async (sport) => {
+      const rows = await fetchSheetData(CONFIG.SHEET_GIDS[sport]);
+      const matches = parseScheduleRows(rows);
+      // Filter hanya hari ini
+      const todayMatches = matches.filter(m => {
+        const d = parseFlexibleDate(m.tanggal);
+        if (!d || isNaN(d.getTime())) return false;
+        return formatTgl(d) === strHariIni;
+      });
+      return { sport, matches: todayMatches };
+    })
+  );
+
+  // Cek apakah ada match sama sekali
+  const totalAll = results.reduce((sum, r) => sum + r.matches.length, 0);
+
+  if (totalAll === 0) {
+    container.innerHTML = `
+      <div style="text-align:center; padding:3rem 1rem; opacity:0.6;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:.75rem; display:block; margin-left:auto; margin-right:auto;">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/>
+          <line x1="9" y1="4" x2="9" y2="9"/>  <line x1="15" y1="4" x2="15" y2="9"/>
+        </svg>
+        <p style="font-size:0.95rem; font-weight:500; margin-bottom:.3rem;">Tidak ada pertandingan hari ini</p>
+        <p style="font-size:0.82rem; opacity:0.7;">${labelHariIni}</p>
+      </div>`;
+
+    const lastUpdate = panel.querySelector('.last-update');
+    if (lastUpdate) lastUpdate.textContent = `Update: ${hariIni.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit'})}`;
+    return;
+  }
+
+  // Render per cabor
+  let html = `
+    <div style="margin-bottom:1.25rem; padding:.65rem 1rem; border-radius:10px; background:rgba(255,107,0,0.07); border:.5px solid rgba(255,107,0,0.25); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem;">
+      <span style="font-size:.85rem; font-weight:600; color:#FF6B00;">📅 ${labelHariIni}</span>
+      <span style="font-size:.75rem; color:#FF6B00; background:rgba(255,107,0,0.12); padding:.2rem .65rem; border-radius:999px; border:.5px solid rgba(255,107,0,0.25);">${totalAll} Pertandingan</span>
+    </div>`;
+
+  results.forEach(({ sport, matches }) => {
+    if (matches.length === 0) return;
+
+    const label = CABOR_LABEL[sport] || sport;
+
+    html += `
+      <div class="site-section" style="margin-bottom:1.75rem;">
+        <div class="site-divider">
+          <div class="site-divider-line"></div>
+          <div class="site-divider-badge" style="--site-color:#FF6B00;">
+            <span class="site-divider-label">${label}</span>
+            <span class="site-divider-count">${matches.length} Match</span>
+          </div>
+          <div class="site-divider-line"></div>
+        </div>`;
+
+    // Kelompokkan per site kalau ada
+    const hasSite = matches.some(m => m.site && m.site.length > 0);
+    if (!hasSite) {
+      html += `<div class="match-flyer-grid">${matches.map(m => renderMatchCard(m, strHariIni, strHariIni)).join('')}</div>`;
+    } else {
+      const grouped = {};
+      matches.forEach(m => {
+        const k = m.site || 'Lainnya';
+        if (!grouped[k]) grouped[k] = [];
+        grouped[k].push(m);
+      });
+      const siteKeys = [
+        ...SITE_ORDER.filter(s => grouped[s]),
+        ...Object.keys(grouped).filter(s => !SITE_ORDER.includes(s))
+      ];
+      siteKeys.forEach((site, i) => {
+        const meta = SITE_META[site] || { icon: '📍', color: '#FF6B00' };
+        html += `
+          <div class="${i > 0 ? 'site-section--gap' : ''}">
+            <div class="site-divider" style="margin-top:${i > 0 ? '1rem' : '0'}">
+              <div class="site-divider-line"></div>
+              <div class="site-divider-badge" style="--site-color:${meta.color};">
+                <span class="site-divider-icon">${meta.icon}</span>
+                <span class="site-divider-label">Site ${site}</span>
+                <span class="site-divider-count">${grouped[site].length} Match</span>
+              </div>
+              <div class="site-divider-line"></div>
+            </div>
+            <div class="match-flyer-grid">
+              ${grouped[site].map(m => renderMatchCard(m, strHariIni, strHariIni)).join('')}
+            </div>
+          </div>`;
+      });
+    }
+
+    html += `</div>`;
+  });
+
+  container.innerHTML = html;
+
+  const lastUpdate = panel.querySelector('.last-update');
+  if (lastUpdate) lastUpdate.textContent = `Update: ${hariIni.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit'})}`;
+
+  const dot = panel.querySelector('.status-dot');
+  if (dot) dot.style.background = '#39FF14';
+}
+
+window.loadHariIni = loadHariIni;
 // ─── REFRESH ALL PANELS ──────────────────────
 async function refreshAll() {
   const sports = Object.keys(CONFIG.SHEET_GIDS);
   for (const sport of sports) {
     await loadSchedule(sport, `panel-${sport}`);
   }
+  await loadHariIni();      // ← tambah ini
+  populateDropdown();       // ← kalau sudah ada filter dropdown
 }
 
 // ─── SAVE CONFIG ─────────────────────────────
