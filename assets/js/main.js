@@ -19,11 +19,12 @@ const CONFIG = {
   'volly-putra':   '1905666751',
   'volly-putri':   '325359823',
   bulutangkis:     '1645421078',
-  dance:           '1433423859',
+ 
   tenismeja:       '720813413',
-  karaoke:         '2118822557',
+ 
   esport:          '20640519',
   catur:           '2074558484',
+GROUP_SPORTS: ['karaoke', 'dance'],
 }
 };
 
@@ -120,6 +121,55 @@ function parseScheduleRows(rows) {
     }));
 }
 
+// ─── PARSE SCHEDULE ROWS (FORMAT MULTI-TIM: KARAOKE/SENAM) ────────
+function parseGroupScheduleRows(rows) {
+  if (!rows || rows.length < 2) return [];
+
+  const headerRow = rows[0].map(h => h.toLowerCase().trim());
+  const idx = {
+    site:    headerRow.findIndex(h => h === 'site'),
+    tanggal: headerRow.findIndex(h => h.includes('tanggal') || h.includes('date')),
+    waktu:   headerRow.findIndex(h => h.includes('waktu') || h.includes('time') || h.includes('jam')),
+    timA:    headerRow.findIndex(h => h.includes('tim a') || h === 'tima'),
+    timB:    headerRow.findIndex(h => h.includes('tim b') || h === 'timb'),
+    timC:    headerRow.findIndex(h => h.includes('tim c') || h === 'timc'),
+    timD:    headerRow.findIndex(h => h.includes('tim d') || h === 'timd'),
+    timE:    headerRow.findIndex(h => h.includes('tim e') || h === 'time'),
+    skorA:   headerRow.findIndex(h => h.includes('skor a') || h === 'skora'),
+    skorB:   headerRow.findIndex(h => h.includes('skor b') || h === 'skorb'),
+    skorC:   headerRow.findIndex(h => h.includes('skor c') || h === 'skorc'),
+    skorD:   headerRow.findIndex(h => h.includes('skor d') || h === 'skord'),
+    skorE:   headerRow.findIndex(h => h.includes('skor e') || h === 'skore'),
+    status:  headerRow.findIndex(h => h.includes('status')),
+    lolos1:  headerRow.findIndex(h => h.includes('lolos 1') || h === 'lolos1'),
+    lolos2:  headerRow.findIndex(h => h.includes('lolos 2') || h === 'lolos2'),
+  };
+
+  const [, ...data] = rows;
+  return data
+    .filter(row => row.some(cell => cell && cell.length > 0))
+    .map(row => {
+      const get = (i) => (i !== -1 && row[i]) ? row[i].trim() : '';
+      const teams = [
+        { label: 'A', name: get(idx.timA), skor: get(idx.skorA) },
+        { label: 'B', name: get(idx.timB), skor: get(idx.skorB) },
+        { label: 'C', name: get(idx.timC), skor: get(idx.skorC) },
+        { label: 'D', name: get(idx.timD), skor: get(idx.skorD) },
+        { label: 'E', name: get(idx.timE), skor: get(idx.skorE) },
+      ].filter(t => t.name && t.name.length > 0);
+
+      return {
+        site:    get(idx.site),
+        tanggal: get(idx.tanggal) || '-',
+        waktu:   get(idx.waktu)   || '-',
+        teams,
+        status:  get(idx.status)  || 'Belum',
+        lolos1:  get(idx.lolos1),
+        lolos2:  get(idx.lolos2),
+        isGroup: true,
+      };
+    });
+}
 // Helper untuk standarisasi objek tanggal dari spreadsheet teks
 function parseFlexibleDate(dateStr) {
   if (!dateStr || dateStr === '-' || dateStr.trim() === '') return null;
@@ -144,7 +194,12 @@ function parseFlexibleDate(dateStr) {
 
   return null;
 }
-
+function formatDateKey(d) {
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
 // ─── RENDER SATU MATCH CARD ──────────────────
 function renderMatchCard(m, strHariIni, strBesok) {
   const matchDateObj = parseFlexibleDate(m.tanggal);
@@ -244,21 +299,14 @@ const SITE_ORDER = ['Cikarang', 'Pulogadung', 'Pulomas'];
 
 // ─── DESAIN FLYER PERTANDINGAN & FILTER OTOMATIS ────────────────
 // ─── RENDER SEMUA JADWAL (ACCORDION PER TANGGAL) ────────────────
-function renderMatchFlyers(matches) {
+function renderMatchFlyers(matches, isGroupSport) {
   if (!matches || matches.length === 0) {
     return `<div class="no-matches-today-box"><p>Belum ada data jadwal di Spreadsheet.</p></div>`;
   }
 
-  const hariIni = new Date();
-  const formatTanggalKomparasi = (d) => {
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-  };
-  const strHariIni = formatTanggalKomparasi(hariIni);
+  const hariIni   = new Date();
+  const strHariIni = formatDateKey(hariIni);
 
-  // ── Filter baris valid saja ──
   const matchesValid = matches.filter(m => {
     const d = parseFlexibleDate(m.tanggal);
     return d && !isNaN(d.getTime());
@@ -268,52 +316,64 @@ function renderMatchFlyers(matches) {
     return `<div class="no-matches-today-box"><p>Belum ada data jadwal di Spreadsheet.</p></div>`;
   }
 
-  // ── Kelompokkan per tanggal ──
   const byDate = {};
   matchesValid.forEach(m => {
-    const d = parseFlexibleDate(m.tanggal);
-    const key = formatTanggalKomparasi(d);
+    const d   = parseFlexibleDate(m.tanggal);
+    const key = formatDateKey(d);
     if (!byDate[key]) byDate[key] = [];
     byDate[key].push(m);
   });
 
-  // ── Urutkan tanggal ascending ──
-  const sortedDates = Object.keys(byDate).sort();
+  // Past dates geser ke bawah
+  const allDates    = Object.keys(byDate);
+  const futureDates = allDates.filter(d => d >= strHariIni).sort();           // asc
+  const pastDates   = allDates.filter(d => d <  strHariIni).sort().reverse(); // desc
+  const sortedDates = [...futureDates, ...pastDates];
 
-  // ── Format label tanggal ──
   const formatLabel = (strDate) => {
-    const [y, m, d] = strDate.split('-').map(Number);
-    const dateObj = new Date(y, m - 1, d);
-    const hariNama = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][dateObj.getDay()];
-    const bulanNama = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][m - 1];
+    const [y, m, d]  = strDate.split('-').map(Number);
+    const dateObj    = new Date(y, m - 1, d);
+    const hariNama   = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][dateObj.getDay()];
+    const bulanNama  = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][m - 1];
     return `${hariNama}, ${d} ${bulanNama} ${y}`;
   };
 
-  // ── Hitung total match per tanggal ──
   let html = '<div class="accordion-schedule">';
+  let pastSeparatorInserted = false;
 
   sortedDates.forEach(strDate => {
     const isToday = strDate === strHariIni;
-    const isPast  = strDate < strHariIni;
-    const matchList = byDate[strDate];
+    const isPast  = strDate <  strHariIni;
+    const matchList  = byDate[strDate];
     const totalMatch = matchList.length;
 
-    // Badge label
+    // Separator visual sebelum blok masa lalu
+    if (isPast && !pastSeparatorInserted) {
+      pastSeparatorInserted = true;
+      html += `
+        <div class="acc-past-separator">
+          <span class="acc-past-separator-label">⬆ Mendatang &nbsp;|&nbsp; Sudah Berlalu ⬇</span>
+        </div>`;
+    }
+
     let dateBadge = '';
     if (isToday) {
       dateBadge = `<span class="acc-date-badge today">Hari Ini</span>`;
     } else if (isPast) {
-      dateBadge = `<span class="acc-date-badge past">Selesai</span>`;
+      dateBadge = `<span class="acc-date-badge past">Sudah Berlalu</span>`;
     } else {
       dateBadge = `<span class="acc-date-badge upcoming">Upcoming</span>`;
     }
 
-    // Kelompokkan per site di dalam tanggal ini
     const hasSiteData = matchList.some(m => m.site && m.site.length > 0);
     let innerHTML = '';
 
     if (!hasSiteData) {
-      innerHTML = `<div class="match-flyer-grid">${matchList.map(m => renderMatchCard(m, strHariIni, strHariIni)).join('')}</div>`;
+      const gridClass = isGroupSport ? 'match-group-grid' : 'match-flyer-grid';
+      const cards = isGroupSport
+        ? matchList.map(m => renderGroupMatchCard(m, strHariIni)).join('')
+        : matchList.map(m => renderMatchCard(m, strHariIni, strHariIni)).join('');
+      innerHTML = `<div class="${gridClass}">${cards}</div>`;
     } else {
       const grouped = {};
       matchList.forEach(m => {
@@ -326,8 +386,12 @@ function renderMatchFlyers(matches) {
         ...Object.keys(grouped).filter(s => !SITE_ORDER.includes(s))
       ];
       siteKeys.forEach((site, idx) => {
-        const meta  = SITE_META[site] || { icon: '📍', color: '#FF6B00' };
-        const cards = grouped[site];
+        const meta      = SITE_META[site] || { icon: '📍', color: '#FF6B00' };
+        const cards     = grouped[site];
+        const gridClass = isGroupSport ? 'match-group-grid' : 'match-flyer-grid';
+        const rendered  = isGroupSport
+          ? cards.map(m => renderGroupMatchCard(m, strHariIni)).join('')
+          : cards.map(m => renderMatchCard(m, strHariIni, strHariIni)).join('');
         innerHTML += `
           <div class="site-section${idx > 0 ? ' site-section--gap' : ''}">
             <div class="site-divider">
@@ -335,18 +399,17 @@ function renderMatchFlyers(matches) {
               <div class="site-divider-badge" style="--site-color:${meta.color};">
                 <span class="site-divider-icon">${meta.icon}</span>
                 <span class="site-divider-label">Site ${site}</span>
-                <span class="site-divider-count">${cards.length} Match</span>
+                <span class="site-divider-count">${cards.length} ${isGroupSport ? 'Grup' : 'Match'}</span>
               </div>
               <div class="site-divider-line"></div>
             </div>
-            <div class="match-flyer-grid">
-              ${cards.map(m => renderMatchCard(m, strHariIni, strHariIni)).join('')}
+            <div class="${gridClass}">
+              ${rendered}
             </div>
           </div>`;
       });
     }
 
-    // Accordion item — hari ini otomatis open
     html += `
       <div class="acc-item${isToday ? ' acc-open' : ''}${isPast ? ' acc-past' : ''}">
         <button class="acc-header" onclick="toggleAccordion(this)">
@@ -357,7 +420,7 @@ function renderMatchFlyers(matches) {
             <span class="acc-date-label">${formatLabel(strDate)}</span>
             ${dateBadge}
           </div>
-          <span class="acc-match-count">${totalMatch} Match</span>
+          <span class="acc-match-count">${totalMatch} ${isGroupSport ? 'Grup' : 'Match'}</span>
         </button>
         <div class="acc-body">
           <div class="acc-body-inner">
@@ -369,6 +432,84 @@ function renderMatchFlyers(matches) {
 
   html += '</div>';
   return html;
+}
+// ─── RENDER MATCH CARD (FORMAT GRUP: KARAOKE/SENAM) ──────────────
+function renderGroupMatchCard(m, strHariIni) {
+  const matchDateObj = parseFlexibleDate(m.tanggal);
+  const hariIni = new Date();
+  const strBesok = formatDateKey(new Date(hariIni.getFullYear(), hariIni.getMonth(), hariIni.getDate() + 1));
+
+  let dayBadgeHTML = `<span class="match-time-text">${m.tanggal}</span>`;
+  if (matchDateObj && !isNaN(matchDateObj.getTime())) {
+    const strMatchDate = formatDateKey(matchDateObj);
+    if (strMatchDate === strHariIni) {
+      dayBadgeHTML = `<span class="match-day-badge today">Hari Ini</span>`;
+    } else if (strMatchDate === strBesok) {
+      dayBadgeHTML = `<span class="match-day-badge tomorrow">Besok</span>`;
+    }
+  }
+
+  const statusClean = m.status.toLowerCase();
+  let statusBadgeHTML = `<span class="flyer-badge-status status-upcoming-match">Upcoming</span>`;
+  if (statusClean === 'berlangsung' || statusClean === 'live') {
+    statusBadgeHTML = `<span class="flyer-badge-status status-live-match">LIVE</span>`;
+  } else if (statusClean === 'selesai' || statusClean === 'wo') {
+    statusBadgeHTML = `<span class="flyer-badge-status status-ended-match">Ended</span>`;
+  }
+
+  const hasSkor = m.teams.some(t => t.skor && t.skor.length > 0);
+  const TEAM_COLORS = ['#FF6B00', '#00CFFF', '#39FF14', '#FFD700', '#FF4FA1'];
+
+  const teamsHTML = m.teams.map((t, i) => {
+    const inisial = t.name.substring(0, 2).toUpperCase();
+    const color   = TEAM_COLORS[i % TEAM_COLORS.length];
+    const isLolos = (m.lolos1 && m.lolos1 === t.name) || (m.lolos2 && m.lolos2 === t.name);
+    const lolosTag  = isLolos ? `<span class="group-team-lolos">✓ Lolos</span>` : '';
+    const skorDisplay = hasSkor ? `<span class="group-team-skor">${t.skor || '-'}</span>` : '';
+    return `
+      <div class="group-team-row ${isLolos ? 'group-team-row--lolos' : ''}">
+        <div class="group-team-avatar" style="border-color:${color};color:${color};">${inisial}</div>
+        <div class="group-team-info">
+          <span class="group-team-name">${t.name}</span>
+          ${lolosTag}
+        </div>
+        ${skorDisplay}
+      </div>`;
+  }).join('');
+
+  let footerHTML = `<div class="group-card-footer">${statusBadgeHTML}</div>`;
+  if (statusClean === 'selesai' && (m.lolos1 || m.lolos2)) {
+    const lolosNames = [m.lolos1, m.lolos2].filter(l => l && l.length > 0);
+    footerHTML = `
+      <div class="group-card-footer group-card-footer--result">
+        <div class="group-lolos-info">
+          <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:#FFD700;flex-shrink:0;">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span>Lolos: ${lolosNames.join(' & ')}</span>
+        </div>
+        ${statusBadgeHTML}
+      </div>`;
+  }
+
+  return `
+    <div class="match-card-group reveal visible">
+      <div class="match-card-header">
+        ${dayBadgeHTML}
+        <div class="match-time-text">${m.waktu} WIB</div>
+      </div>
+      <div class="group-match-label">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/>
+        </svg>
+        ${m.teams.length} Penampil
+      </div>
+      <div class="group-teams-list">
+        ${teamsHTML}
+      </div>
+      ${footerHTML}
+    </div>`;
 }
 // ─── ACCORDION TOGGLE ────────────────────────
 function toggleAccordion(btn) {
@@ -391,10 +532,11 @@ async function loadSchedule(sport, panelId) {
   container.innerHTML = `<div class="shimmer" style="height:160px; border-radius:16px; grid-column:1/-1;"></div>`;
 
   const gid = CONFIG.SHEET_GIDS[sport];
-  const rows = await fetchSheetData(gid);
-  const matches = parseScheduleRows(rows);
-  
-  container.innerHTML = renderMatchFlyers(matches);
+ const rows     = await fetchSheetData(gid);
+  const isGroup  = CONFIG.GROUP_SPORTS.includes(sport);
+  const matches  = isGroup ? parseGroupScheduleRows(rows) : parseScheduleRows(rows);
+
+  container.innerHTML = renderMatchFlyers(matches, isGroup);
 
   const lastUpdate = panel.querySelector('.last-update');
   if (lastUpdate) {
@@ -456,15 +598,15 @@ async function loadHariIni() {
   const sports = Object.keys(CONFIG.SHEET_GIDS);
   const results = await Promise.all(
     sports.map(async (sport) => {
-      const rows = await fetchSheetData(CONFIG.SHEET_GIDS[sport]);
-      const matches = parseScheduleRows(rows);
-      // Filter hanya hari ini
+      const isGroup = CONFIG.GROUP_SPORTS.includes(sport);
+      const rows    = await fetchSheetData(CONFIG.SHEET_GIDS[sport]);
+      const matches = isGroup ? parseGroupScheduleRows(rows) : parseScheduleRows(rows);
       const todayMatches = matches.filter(m => {
         const d = parseFlexibleDate(m.tanggal);
         if (!d || isNaN(d.getTime())) return false;
         return formatTgl(d) === strHariIni;
       });
-      return { sport, matches: todayMatches };
+     return { sport, matches: todayMatches, isGroup };
     })
   );
 
@@ -503,13 +645,16 @@ async function loadHariIni() {
       <div class="site-section" style="margin-bottom:1.75rem;">
         <div class="cabor-section-header">
           <div class="cabor-section-title">${label}</div>
-          <div class="cabor-section-count">${matches.length} Match</div>
+          <div class="cabor-section-count">${matches.length} ${isGroup ? 'Grup' : 'Match'}</div>
         </div>`;
 
-    // Kelompokkan per site kalau ada
     const hasSite = matches.some(m => m.site && m.site.length > 0);
     if (!hasSite) {
-      html += `<div class="match-flyer-grid">${matches.map(m => renderMatchCard(m, strHariIni, strHariIni)).join('')}</div>`;
+      const gridClass = isGroup ? 'match-group-grid' : 'match-flyer-grid';
+      const cards = isGroup
+        ? matches.map(m => renderGroupMatchCard(m, strHariIni)).join('')
+        : matches.map(m => renderMatchCard(m, strHariIni, strHariIni)).join('');
+      html += `<div class="${gridClass}">${cards}</div>`;
     } else {
       const grouped = {};
       matches.forEach(m => {
@@ -522,7 +667,11 @@ async function loadHariIni() {
         ...Object.keys(grouped).filter(s => !SITE_ORDER.includes(s))
       ];
       siteKeys.forEach((site, i) => {
-        const meta = SITE_META[site] || { icon: '📍', color: '#FF6B00' };
+        const meta      = SITE_META[site] || { icon: '📍', color: '#FF6B00' };
+        const gridClass = isGroup ? 'match-group-grid' : 'match-flyer-grid';
+        const rendered  = isGroup
+          ? grouped[site].map(m => renderGroupMatchCard(m, strHariIni)).join('')
+          : grouped[site].map(m => renderMatchCard(m, strHariIni, strHariIni)).join('');
         html += `
           <div class="${i > 0 ? 'site-section--gap' : ''}">
             <div class="site-divider" style="margin-top:${i > 0 ? '1rem' : '0'}">
@@ -530,12 +679,12 @@ async function loadHariIni() {
               <div class="site-divider-badge" style="--site-color:${meta.color};">
                 <span class="site-divider-icon">${meta.icon}</span>
                 <span class="site-divider-label">Site ${site}</span>
-                <span class="site-divider-count">${grouped[site].length} Match</span>
+                <span class="site-divider-count">${grouped[site].length} ${isGroup ? 'Grup' : 'Match'}</span>
               </div>
               <div class="site-divider-line"></div>
             </div>
-            <div class="match-flyer-grid">
-              ${grouped[site].map(m => renderMatchCard(m, strHariIni, strHariIni)).join('')}
+            <div class="${gridClass}">
+              ${rendered}
             </div>
           </div>`;
       });
