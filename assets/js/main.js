@@ -710,8 +710,7 @@ async function refreshAll() {
   for (const sport of sports) {
     await loadSchedule(sport, `panel-${sport}`);
   }
-  await loadHariIni();      // ← tambah ini
-  populateDropdown();       // ← kalau sudah ada filter dropdown
+  await loadHariIni();
 }
 
 // ─── SAVE CONFIG ─────────────────────────────
