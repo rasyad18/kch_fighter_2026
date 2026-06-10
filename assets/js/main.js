@@ -19,13 +19,14 @@ const CONFIG = {
   'volly-putra':   '1905666751',
   'volly-putri':   '325359823',
   bulutangkis:     '1645421078',
- 
+   dance:           '339502222',
   tenismeja:       '720813413',
- 
+ karaoke:         '2118822557',
   esport:          '20640519',
   catur:           '2074558484',
-GROUP_SPORTS: ['karaoke', 'dance'],
+
 }
+   GROUP_SPORTS: ['karaoke', 'dance'],
 };
 
 function buildCsvUrl(gid) {
@@ -636,7 +637,7 @@ async function loadHariIni() {
       <span style="font-size:.75rem; color:#FF6B00; background:rgba(255,107,0,0.12); padding:.2rem .65rem; border-radius:999px; border:.5px solid rgba(255,107,0,0.25);">${totalAll} Pertandingan</span>
     </div>`;
 
-  results.forEach(({ sport, matches }) => {
+  results.forEach(({ sport, matches, isGroup }) => {
     if (matches.length === 0) return;
 
     const label = CABOR_LABEL[sport] || sport;
