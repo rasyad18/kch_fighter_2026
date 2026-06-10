@@ -25,7 +25,7 @@ const CONFIG = {
   esport:          '20640519',
   catur:           '2074558484',
 
-}
+},
    GROUP_SPORTS: ['karaoke', 'dance'],
 };
 
