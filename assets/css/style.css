@@ -1751,3 +1751,40 @@ body::before {
   text-transform: uppercase;
   white-space: nowrap;
 }
+/* ── Venue di match card ── */
+.match-card-venue {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  opacity: 0.7;
+  width: 100%;
+  margin-bottom: 0.2rem;
+}
+.match-card-venue span,
+.match-card-venue a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.venue-link {
+  color: #00CFFF;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(0,207,255,0.4);
+  transition: opacity 0.15s;
+}
+.venue-link:hover {
+  opacity: 0.8;
+}
+
+/* Footer jadi kolom kalau ada venue */
+.match-card-footer {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+/* Baris bawah: wasit + status tetap sejajar */
+.match-card-footer .match-card-wasit {
+  width: 100%;
+}
