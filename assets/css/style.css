@@ -1783,7 +1783,7 @@ body::before {
 /* Footer jadi kolom kalau ada venue */
 .match-card-footer {
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.35rem;
 }
 /* Baris bawah: wasit + status tetap sejajar */
