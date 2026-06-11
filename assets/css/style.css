@@ -1751,50 +1751,12 @@ body::before {
   text-transform: uppercase;
   white-space: nowrap;
 }
-/* ── Venue di match card ── */
-.match-card-venue {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.72rem;
-  
-  width: 100%;
-  margin-bottom: 0.2rem;
-}
-.match-card-venue span,
-.match-card-venue a {
-    color: inherit;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-.venue-link {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px dashed rgba(255,255,255,0.3);
-}
-.venue-link:hover {
-  opacity: 0.8;
-}
-
-/* Footer jadi kolom kalau ada venue */
-/* Venue di atas, wasit + status tetap sejajar di bawah */
-/* Footer jadi kolom kalau ada venue */
-.match-card-footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-}
-/* Baris bawah: wasit + status tetap sejajar */
 .match-card-venue {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
   font-size: 0.72rem;
-
   width: 100%;
   padding-bottom: 0.3rem;
   border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -1802,6 +1764,7 @@ body::before {
 }
 .match-card-venue span,
 .match-card-venue a {
+  color: inherit;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1810,6 +1773,21 @@ body::before {
 .venue-link {
   color: inherit;
   text-decoration: none;
-  border-bottom: 1px dashed rgba(255,255,255,0.3);
+  border-bottom: 1px dashed rgba(255,255,255,0.4);
+  cursor: pointer;
 }
-.venue-link:hover { opacity: 0.8; }
+.venue-link:hover {
+  opacity: 0.8;
+}
+.match-card-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+.match-card-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
