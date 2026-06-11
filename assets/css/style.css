@@ -1772,7 +1772,7 @@ body::before {
 }
 .venue-link {
   color: inherit;
-  text-decoration: none;
+  text-decoration: underline;
   border-bottom: 1px dashed rgba(255,255,255,0.4);
   cursor: pointer;
 }
