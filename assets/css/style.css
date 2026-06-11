@@ -1780,15 +1780,14 @@ body::before {
 
 /* Footer jadi kolom kalau ada venue */
 /* Venue di atas, wasit + status tetap sejajar di bawah */
+/* Footer jadi kolom kalau ada venue */
 .match-card-footer {
   flex-direction: column;
-  align-items: stretch;
-  gap: 0.3rem;
+  align-items: flex-start;
+  gap: 0.35rem;
 }
-.match-card-footer-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* Baris bawah: wasit + status tetap sejajar */
+.match-card-footer .match-card-wasit {
   width: 100%;
 }
 /* Baris bawah: wasit + status tetap sejajar */
