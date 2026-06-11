@@ -1773,6 +1773,9 @@ body::before {
 .venue-link {
   color: inherit;
   text-decoration: underline;
+   
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
   border-bottom: 1px dashed rgba(255,255,255,0.4);
   cursor: pointer;
 }
