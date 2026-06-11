@@ -272,6 +272,7 @@ const wasitHTML = `
   if ((statusClean === 'selesai' || statusClean === 'wo') && m.pemenang && m.pemenang !== '-') {
     footerHTML = `
       <div class="match-card-footer">
+       ${venueHTML}
         ${wasitHTML}
         <div class="flyer-winner-announcement">
           <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;margin-right:4px;">
@@ -507,7 +508,7 @@ const venueHTML = m.venue ? `
       }
     </div>` : '';
 
-  let footerHTML = `
+ let footerHTML = `
     <div class="group-card-footer">
       ${venueHTML}
       ${statusBadgeHTML}
@@ -518,12 +519,6 @@ const venueHTML = m.venue ? `
       <div class="group-card-footer group-card-footer--result">
         ${venueHTML}
         <div class="group-lolos-info">
-  let footerHTML = `<div class="group-card-footer">${statusBadgeHTML}</div>`;
-  if (statusClean === 'selesai' && (m.lolos1 || m.lolos2)) {
-    const lolosNames = [m.lolos1, m.lolos2].filter(l => l && l.length > 0);
-    footerHTML = `
-      <div class="group-card-footer group-card-footer--result">
-        <div class="group-lolos-info">
           <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:#FFD700;flex-shrink:0;">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
           </svg>
@@ -532,7 +527,6 @@ const venueHTML = m.venue ? `
         ${statusBadgeHTML}
       </div>`;
   }
-
   return `
     <div class="match-card-group reveal visible">
       <div class="match-card-header">
