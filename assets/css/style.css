@@ -1787,10 +1787,28 @@ body::before {
   gap: 0.35rem;
 }
 /* Baris bawah: wasit + status tetap sejajar */
-.match-card-footer .match-card-wasit {
+.match-card-venue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  opacity: 0.7;
   width: 100%;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 0.15rem;
 }
-/* Baris bawah: wasit + status tetap sejajar */
-.match-card-footer .match-card-wasit {
-  width: 100%;
+.match-card-venue span,
+.match-card-venue a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
 }
+.venue-link {
+  color: #00CFFF;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(0,207,255,0.4);
+}
+.venue-link:hover { opacity: 0.8; }
