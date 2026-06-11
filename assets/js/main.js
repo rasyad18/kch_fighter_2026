@@ -84,6 +84,8 @@ function parseScheduleRows(rows) {
     timA:     headerRow.findIndex(h => h.includes('tim a') || h === 'tima' || h.includes('team a')),
     timB:     headerRow.findIndex(h => h.includes('tim b') || h === 'timb' || h.includes('team b')),
     wasit:    headerRow.findIndex(h => h.includes('wasit') || h.includes('referee')),
+   venue:    headerRow.findIndex(h => h.includes('venue') || h.includes('tempat') || h.includes('lokasi')),
+    mapsLink: headerRow.findIndex(h => h.includes('maps') || h.includes('link maps') || h.includes('gmaps')),
     skorA:    headerRow.findIndex(h => h.includes('skor a') || h === 'skora' || h.includes('score a')),
     skorB:    headerRow.findIndex(h => h.includes('skor b') || h === 'skorb' || h.includes('score b')),
     status:   headerRow.findIndex(h => h.includes('status')),
@@ -115,6 +117,8 @@ function parseScheduleRows(rows) {
       timA:     row[idx.timA]      || '-',
       timB:     row[idx.timB]      || '-',
       wasit:    idx.wasit !== -1 ? (row[idx.wasit] || '').trim() : '',
+      venue:    idx.venue    !== -1 ? (row[idx.venue]    || '').trim() : '',
+      mapsLink: idx.mapsLink !== -1 ? (row[idx.mapsLink] || '').trim() : '',
       skorA:    row[idx.skorA]     || '',
       skorB:    row[idx.skorB]     || '',
       status:   (row[idx.status]   || 'Belum').trim(),
@@ -141,6 +145,8 @@ function parseGroupScheduleRows(rows) {
     skorC:   headerRow.findIndex(h => h.includes('skor c') || h === 'skorc'),
     skorD:   headerRow.findIndex(h => h.includes('skor d') || h === 'skord'),
     skorE:   headerRow.findIndex(h => h.includes('skor e') || h === 'skore'),
+     venue:    headerRow.findIndex(h => h.includes('venue') || h.includes('tempat') || h.includes('lokasi')),
+    mapsLink: headerRow.findIndex(h => h.includes('maps') || h.includes('link maps') || h.includes('gmaps')),
     status:  headerRow.findIndex(h => h.includes('status')),
     lolos1:  headerRow.findIndex(h => h.includes('lolos 1') || h === 'lolos1'),
     lolos2:  headerRow.findIndex(h => h.includes('lolos 2') || h === 'lolos2'),
@@ -164,6 +170,8 @@ function parseGroupScheduleRows(rows) {
         tanggal: get(idx.tanggal) || '-',
         waktu:   get(idx.waktu)   || '-',
         teams,
+         venue:    get(idx.venue),
+        mapsLink: get(idx.mapsLink),
         status:  get(idx.status)  || 'Belum',
         lolos1:  get(idx.lolos1),
         lolos2:  get(idx.lolos2),
@@ -243,9 +251,20 @@ const wasitHTML = `
       </svg>
       <span>Wasit: ${wasitValue}</span>
     </div>`;
+   const venueHTML = m.venue ? `
+    <div class="match-card-venue">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5;flex-shrink:0;">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+      </svg>
+      ${m.mapsLink
+        ? `<a href="${m.mapsLink}" target="_blank" rel="noopener" class="venue-link">${m.venue}</a>`
+        : `<span>${m.venue}</span>`
+      }
+    </div>` : '';
 
   let footerHTML = `
     <div class="match-card-footer">
+     ${venueHTML}
       ${wasitHTML}
       ${statusBadgeHTML}
     </div>`;
@@ -477,7 +496,28 @@ function renderGroupMatchCard(m, strHariIni) {
         ${skorDisplay}
       </div>`;
   }).join('');
+const venueHTML = m.venue ? `
+    <div class="match-card-venue">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5;flex-shrink:0;">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+      </svg>
+      ${m.mapsLink
+        ? `<a href="${m.mapsLink}" target="_blank" rel="noopener" class="venue-link">${m.venue}</a>`
+        : `<span>${m.venue}</span>`
+      }
+    </div>` : '';
 
+  let footerHTML = `
+    <div class="group-card-footer">
+      ${venueHTML}
+      ${statusBadgeHTML}
+    </div>`;
+  if (statusClean === 'selesai' && (m.lolos1 || m.lolos2)) {
+    const lolosNames = [m.lolos1, m.lolos2].filter(l => l && l.length > 0);
+    footerHTML = `
+      <div class="group-card-footer group-card-footer--result">
+        ${venueHTML}
+        <div class="group-lolos-info">
   let footerHTML = `<div class="group-card-footer">${statusBadgeHTML}</div>`;
   if (statusClean === 'selesai' && (m.lolos1 || m.lolos2)) {
     const lolosNames = [m.lolos1, m.lolos2].filter(l => l && l.length > 0);
