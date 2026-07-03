@@ -1230,7 +1230,74 @@ const TNC_DATA = {
     `
   }
 };
+// ─── DATA GAMBAR KLASEMEN PER CABANG ───
+// 1 gambar = 1 cabor, berisi tabel/poster klasemen sementara + tim yang lolos
+const KLASEMEN_IMAGES = {
+  futsal:      'assets/images/klasemen/futsal.jpg',
+  basket:      'assets/images/klasemen/basket.jpg',
+  volly:       'assets/images/klasemen/volly.jpg',
+  bulutangkis: 'assets/images/klasemen/bulutangkis.jpg',
+  dance:       'assets/images/klasemen/dance.jpg',
+  tenismeja:   'assets/images/klasemen/tenismeja.jpg',
+  karaoke:     'assets/images/klasemen/karaoke.jpg',
+  esport:      'assets/images/klasemen/esport.jpg',
+  catur:       'assets/images/klasemen/catur.jpg',
+};
 
+const KLASEMEN_LABEL = {
+  futsal: 'Futsal', basket: 'Basket', volly: 'Volley Ball',
+  bulutangkis: 'Bulu Tangkis', dance: 'Senam Kreasi',
+  tenismeja: 'Tenis Meja', karaoke: 'Karaoke',
+  esport: 'E-Sport MLBB', catur: 'Catur',
+};
+
+// Ubah jadi true setelah gambar klasemen cabang tsb sudah di-upload
+const KLASEMEN_READY = {
+  futsal: false, basket: false, volly: false,
+  bulutangkis: false, dance: false, tenismeja: false,
+  karaoke: false, esport: false, catur: false,
+};
+
+function updateKlasemenCounts() {
+  Object.keys(KLASEMEN_READY).forEach(sport => {
+    const el = document.getElementById(`count-${sport}`);
+    if (!el) return;
+    el.textContent = KLASEMEN_READY[sport] ? 'Lihat Klasemen' : 'Belum Diumumkan';
+  });
+}
+
+function openKlasemenModal(sport) {
+  const label = KLASEMEN_LABEL[sport] || sport;
+  const ready = KLASEMEN_READY[sport];
+  const src   = KLASEMEN_IMAGES[sport];
+
+  modalTitle.textContent = `Klasemen & Tim Lolos — ${label}`;
+
+  modalBody.innerHTML = !ready
+    ? `<div class="klasemen-empty">Hasil klasemen ${label} belum diumumkan. Cek kembali nanti.</div>`
+    : `<div class="klasemen-image-wrap" onclick="openImageLightbox('${src}')">
+        <img src="${src}" alt="Klasemen ${label}" loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80'" />
+        <span class="klasemen-image-hint">Klik untuk perbesar</span>
+      </div>`;
+
+  modalOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+window.openKlasemenModal = openKlasemenModal;
+
+function openImageLightbox(src) {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:10000;
+    display:flex;align-items:center;justify-content:center;cursor:zoom-out;animation:fadeIn 0.3s ease;`;
+  const image = document.createElement('img');
+  image.src = src;
+  image.style.cssText = 'max-width:90vw;max-height:90vh;border-radius:8px;object-fit:contain;';
+  overlay.appendChild(image);
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', () => overlay.remove());
+}
+window.openImageLightbox = openImageLightbox;
 function openModal(sport) {
   const data = TNC_DATA[sport];
   if (!data || !modalOverlay) return;
