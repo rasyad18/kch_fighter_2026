@@ -1280,7 +1280,8 @@ function updateKlasemenCounts() {
     el.textContent = n > 0 ? `${n} Site Tersedia` : 'Belum Diumumkan';
   });
 }
-
+updateKlasemenCounts();
+  initKlasemenNotif();
 function openKlasemenModal(sport) {
   const label = KLASEMEN_LABEL[sport] || sport;
   const siteImages = KLASEMEN_IMAGES[sport] || {};
