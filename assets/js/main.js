@@ -1230,18 +1230,32 @@ const TNC_DATA = {
     `
   }
 };
-// ─── DATA GAMBAR KLASEMEN PER CABANG ───
-// 1 gambar = 1 cabor, berisi tabel/poster klasemen sementara + tim yang lolos
+// ─── DATA GAMBAR KLASEMEN PER CABANG × PER SITE ───
+// Setiap cabor punya gambar klasemen berbeda per site.
+// Kosongkan/hapus key site yang belum ada gambarnya — otomatis tidak ditampilkan.
+const KLASEMEN_SITE_META = {
+  'B7 Pulogadung': { icon: '🏢' },
+  'B7 Cikarang':   { icon: '🏭' },
+  'HO Pulomas':    { icon: '🏟️' },
+  'SFL Cikarang':  { icon: '🏭' },
+};
+const KLASEMEN_SITE_ORDER = ['B7 Pulogadung', 'B7 Cikarang', 'HO Pulomas', 'SFL Cikarang'];
+
 const KLASEMEN_IMAGES = {
-  futsal:      'assets/images/klasemen/futsal.jpg',
-  basket:      'assets/images/klasemen/basket.jpg',
-  volly:       'assets/images/klasemen/volly.jpg',
-  bulutangkis: 'assets/images/klasemen/bulutangkis.jpg',
-  dance:       'assets/images/klasemen/dance.jpg',
-  tenismeja:   'assets/images/klasemen/tenismeja.jpg',
-  karaoke:     'assets/images/klasemen/karaoke.jpg',
-  esport:      'assets/images/klasemen/esport.jpg',
-  catur:       'assets/images/klasemen/catur.jpg',
+  futsal: {
+    // 'B7 Pulogadung': 'assets/images/klasemen/futsal/b7-pulogadung.jpg',
+    // 'B7 Cikarang':   'assets/images/klasemen/futsal/b7-cikarang.jpg',
+    // 'HO Pulomas':    'assets/images/klasemen/futsal/ho-pulomas.jpg',
+    // 'SFL Cikarang':  'assets/images/klasemen/futsal/sfl-cikarang.jpg',
+  },
+  basket: {},
+  volly: {},
+  bulutangkis: {},
+  dance: {},
+  tenismeja: {},
+  karaoke: {},
+  esport: {},
+  catur: {},
 };
 
 const KLASEMEN_LABEL = {
@@ -1251,35 +1265,42 @@ const KLASEMEN_LABEL = {
   esport: 'E-Sport MLBB', catur: 'Catur',
 };
 
-// Ubah jadi true setelah gambar klasemen cabang tsb sudah di-upload
-const KLASEMEN_READY = {
-  futsal: false, basket: false, volly: false,
-  bulutangkis: false, dance: false, tenismeja: false,
-  karaoke: false, esport: false, catur: false,
-};
-
 function updateKlasemenCounts() {
-  Object.keys(KLASEMEN_READY).forEach(sport => {
+  Object.keys(KLASEMEN_IMAGES).forEach(sport => {
     const el = document.getElementById(`count-${sport}`);
     if (!el) return;
-    el.textContent = KLASEMEN_READY[sport] ? 'Lihat Klasemen' : 'Belum Diumumkan';
+    const n = Object.keys(KLASEMEN_IMAGES[sport] || {}).length;
+    el.textContent = n > 0 ? `${n} Site Tersedia` : 'Belum Diumumkan';
   });
 }
 
 function openKlasemenModal(sport) {
   const label = KLASEMEN_LABEL[sport] || sport;
-  const ready = KLASEMEN_READY[sport];
-  const src   = KLASEMEN_IMAGES[sport];
+  const siteImages = KLASEMEN_IMAGES[sport] || {};
+  const siteKeys = KLASEMEN_SITE_ORDER.filter(s => siteImages[s]);
 
   modalTitle.textContent = `Klasemen & Tim Lolos — ${label}`;
 
-  modalBody.innerHTML = !ready
-    ? `<div class="klasemen-empty">Hasil klasemen ${label} belum diumumkan. Cek kembali nanti.</div>`
-    : `<div class="klasemen-image-wrap" onclick="openImageLightbox('${src}')">
-        <img src="${src}" alt="Klasemen ${label}" loading="lazy"
-          onerror="this.src='https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80'" />
-        <span class="klasemen-image-hint">Klik untuk perbesar</span>
-      </div>`;
+  if (siteKeys.length === 0) {
+    modalBody.innerHTML = `<div class="klasemen-empty">Hasil klasemen ${label} belum diumumkan. Cek kembali nanti.</div>`;
+  } else {
+    modalBody.innerHTML = siteKeys.map(site => {
+      const meta = KLASEMEN_SITE_META[site] || { icon: '📍' };
+      const src  = siteImages[site];
+      return `
+        <div class="klasemen-site-block">
+          <div class="klasemen-site-header">
+            <span class="klasemen-site-icon">${meta.icon}</span>
+            <span class="klasemen-site-label">Site ${site}</span>
+          </div>
+          <div class="klasemen-image-wrap" onclick="openImageLightbox('${src}')">
+            <img src="${src}" alt="Klasemen ${label} - ${site}" loading="lazy"
+              onerror="this.src='https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80'" />
+            <span class="klasemen-image-hint">Klik untuk perbesar</span>
+          </div>
+        </div>`;
+    }).join('');
+  }
 
   modalOverlay.classList.add('active');
   document.body.style.overflow = 'hidden';
