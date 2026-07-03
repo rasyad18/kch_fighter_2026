@@ -1427,7 +1427,35 @@ document.querySelectorAll('.gallery-item').forEach(item => {
     overlay.addEventListener('click', () => overlay.remove());
   });
 });
+// ─── NOTIFIKASI KLASEMEN ───
+function gotoKlasemen() {
+  closeKlasemenNotif();
+  const target = document.getElementById('klasemen');
+  if (target) {
+    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' });
+  }
+}
+window.gotoKlasemen = gotoKlasemen;
 
+function closeKlasemenNotif() {
+  const notif = document.getElementById('klasemenNotif');
+  if (!notif) return;
+  notif.classList.remove('show');
+  sessionStorage.setItem('klasemenNotifClosed', '1');
+}
+window.closeKlasemenNotif = closeKlasemenNotif;
+
+function initKlasemenNotif() {
+  const notif = document.getElementById('klasemenNotif');
+  if (!notif) return;
+
+  // Jangan tampilkan lagi kalau sudah ditutup di tab/sesi ini
+  if (sessionStorage.getItem('klasemenNotifClosed') === '1') return;
+
+  setTimeout(() => {
+    notif.classList.add('show');
+  }, 1500); // muncul 1.5 detik setelah halaman dibuka
+}
 // ─── INIT ────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   const inputId = document.getElementById('inputSheetId');
