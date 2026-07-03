@@ -1415,7 +1415,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(`gid_${sport}`);
     if (el) el.value = CONFIG.SHEET_GIDS[sport];
   });
-
+updateKlasemenCounts();
   if (CONFIG.SHEET_ID) {
     refreshAll();
   }
