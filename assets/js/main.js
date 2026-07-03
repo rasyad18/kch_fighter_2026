@@ -1255,7 +1255,6 @@ const KLASEMEN_IMAGES = {
   tenismeja: {
       'B7 Pulogadung': 'assets/images/klasemen/tenismeja/b7-pulogadung.jpeg',
     'B7 Cikarang':   'assets/images/klasemen/tenismeja/b7-cikarang.jpeg',
-     'HO Pulomas':    'assets/images/klasemen/tenismeja/ho-pulomas.jpeg',
      'SFL Cikarang':  'assets/images/klasemen/tenismeja/sfl-cikarang.jpeg',
   },
   karaoke: {
