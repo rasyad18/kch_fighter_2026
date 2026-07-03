@@ -1969,3 +1969,105 @@ body::before {
   color: var(--text-muted);
   font-size: 0.9rem;
 }
+/* ─── NOTIFIKASI KLASEMEN ─── */
+.klasemen-notif {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(150%);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,107,0,0.3);
+  border-radius: 16px;
+  padding: 0.9rem 1rem 0.9rem 1.1rem;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,107,0,0.05);
+  max-width: 420px;
+  width: calc(100% - 2rem);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.klasemen-notif.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+.klasemen-notif-icon {
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(255,107,0,0.1);
+  border: 1px solid rgba(255,107,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange);
+}
+
+.klasemen-notif-text { flex: 1; min-width: 0; }
+
+.klasemen-notif-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  margin-bottom: 0.15rem;
+  line-height: 1.2;
+}
+
+.klasemen-notif-desc {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.klasemen-notif-btn {
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+  padding: 8px 16px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: var(--transition);
+  box-shadow: 0 2px 0 var(--orange-dark);
+}
+
+.klasemen-notif-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--orange-dark);
+}
+
+.klasemen-notif-close {
+  width: 26px; height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--bg-glass);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.klasemen-notif-close:hover {
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
+}
+
+@media (max-width: 480px) {
+  .klasemen-notif {
+    flex-wrap: wrap;
+    bottom: 1rem;
+    padding: 0.85rem;
+  }
+  .klasemen-notif-desc { display: none; }
+  .klasemen-notif-btn { padding: 7px 14px; font-size: 0.72rem; }
+}
