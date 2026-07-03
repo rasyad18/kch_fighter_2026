@@ -1250,11 +1250,11 @@ const KLASEMEN_IMAGES = {
   volly: {},
   bulutangkis: {},
   dance: {
-      'B7 Pulogadung': 'assets/images/klasemen/senamkreasi/b7-cikarang.jpeg',
+      'B7 Cikarang': 'assets/images/klasemen/senamkreasi/b7-cikarang.jpeg',
   },
   tenismeja: {
       'B7 Pulogadung': 'assets/images/klasemen/tenismeja/b7-pulogadung.jpeg',
-    'B7 Cikarang':   'assets/images/klasemen/tenismeja/b7-cikarang.jpg',
+    'B7 Cikarang':   'assets/images/klasemen/tenismeja/b7-cikarang.jpeg',
      'HO Pulomas':    'assets/images/klasemen/tenismeja/ho-pulomas.jpeg',
      'SFL Cikarang':  'assets/images/klasemen/tenismeja/sfl-cikarang.jpeg',
   },
