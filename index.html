@@ -761,7 +761,25 @@
     <div class="modal-body" id="modalBody"></div>
   </div>
 </div>
-
+<!-- ░░ NOTIFIKASI KLASEMEN ░░ -->
+<div class="klasemen-notif" id="klasemenNotif">
+  <div class="klasemen-notif-icon">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M9 20h6M10 20l-1-6h6l-1 6M9 14c-1-3 1-4 1-6a2 2 0 114 0c0 2 2 3 1 6"/>
+    </svg>
+  </div>
+  <div class="klasemen-notif-text">
+    <div class="klasemen-notif-title">Klasemen Sementara Sudah Terbit!</div>
+    <div class="klasemen-notif-desc">Cek tim yang lolos ke babak selanjutnya di tiap cabang lomba.</div>
+  </div>
+  <button class="klasemen-notif-btn" onclick="gotoKlasemen()">Lihat</button>
+  <button class="klasemen-notif-close" onclick="closeKlasemenNotif()" aria-label="Tutup">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
+    </svg>
+  </button>
+</div>
 <script src="assets/js/main.js"></script>
+  
 </body>
 </html>
