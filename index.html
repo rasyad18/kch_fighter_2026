@@ -415,7 +415,88 @@
     </div>
   </div>
 </section>
+<!-- ░░ KLASEMEN & TIM LOLOS SECTION ░░ -->
+<section class="section klasemen-section" id="klasemen">
+  <div class="container">
+    <div class="section-label">Hasil Sementara</div>
+    <h2 class="section-title">Klasemen &amp; Tim <span class="accent">Lolos Ke Babak Selanjutnya</span></h2>
+    <p class="section-desc">Klik salah satu cabang lomba untuk melihat klasemen sementara dan tim yang lolos ke babak selanjutnya.</p>
 
+    <div class="klasemen-grid">
+      <div class="klasemen-card reveal" onclick="openKlasemenModal('futsal')">
+        <div class="klasemen-card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+        </div>
+        <div class="klasemen-card-name">Futsal</div>
+        <div class="klasemen-card-count" id="count-futsal">Belum Diumumkan</div>
+      </div>
+
+      <div class="klasemen-card reveal reveal-delay-1" onclick="openKlasemenModal('basket')">
+        <div class="klasemen-card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 010 18M12 3a13 13 0 000 18"/></svg>
+        </div>
+        <div class="klasemen-card-name">Basket</div>
+        <div class="klasemen-card-count" id="count-basket">Belum Diumumkan</div>
+      </div>
+
+      <div class="klasemen-card reveal reveal-delay-2" onclick="openKlasemenModal('volly')">
+        <div class="klasemen-card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3c3 3 3 15 0 18M6 6c3 2 9 2 12 0M6 18c3-2 9-2 12 0"/></svg>
+        </div>
+        <div class="klasemen-card-name">Volley Ball</div>
+        <div class="klasemen-card-count" id="count-volly">Belum Diumumkan</div>
+      </div>
+
+      <div class="klasemen-card reveal reveal-delay-3" onclick="openKlasemenModal('bulutangkis')">
+        <div class="klasemen-card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="6"/><path d="M13.5 13.5L21 21"/></svg>
+        </div>
+        <div class="klasemen-card-name">Bulu Tangkis</div>
+        <div class="klasemen-card-count" id="count-bulutangkis">Belum Diumumkan</div>
+      </div>
+
+      <div class="klasemen-card reveal" onclick="openKlasemenModal('dance')">
+        <div class="klasemen-card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v6M12 14l-4 6M12 14l4 6M9 11l-4 2M15 11l4 2"/></svg>
+        </div>
+        <div class="klasemen-card-name">Senam Kreasi</div>
+        <div class="klasemen-card-count" id="count-dance">Belum Diumumkan</div>
+      </div>
+
+      <div class="klasemen-card reveal reveal-delay-1" onclick="openKlasemenModal('tenismeja')">
+        <div class="klasemen-card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="12" rx="9" ry="5"/><path d="M6 9l12 6M18 9L6 15"/></svg>
+        </div>
+        <div class="klasemen-card-name">Tenis Meja</div>
+        <div class="klasemen-card-count" id="count-tenismeja">Belum Diumumkan</div>
+      </div>
+
+      <div class="klasemen-card reveal reveal-delay-2" onclick="openKlasemenModal('karaoke')">
+        <div class="klasemen-card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0012 0M12 17v4M9 21h6"/></svg>
+        </div>
+        <div class="klasemen-card-name">Karaoke</div>
+        <div class="klasemen-card-count" id="count-karaoke">Belum Diumumkan</div>
+      </div>
+
+      <div class="klasemen-card reveal reveal-delay-3" onclick="openKlasemenModal('esport')">
+        <div class="klasemen-card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="7" width="20" height="10" rx="4"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="10.5" r="1"/><circle cx="18" cy="13" r="1"/></svg>
+        </div>
+        <div class="klasemen-card-name">E-Sport MLBB</div>
+        <div class="klasemen-card-count" id="count-esport">Belum Diumumkan</div>
+      </div>
+
+      <div class="klasemen-card reveal" onclick="openKlasemenModal('catur')">
+        <div class="klasemen-card-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 20h6M10 20l-1-6h6l-1 6M9 14c-1-3 1-4 1-6a2 2 0 114 0c0 2 2 3 1 6"/></svg>
+        </div>
+        <div class="klasemen-card-name">Catur</div>
+        <div class="klasemen-card-count" id="count-catur">Belum Diumumkan</div>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- ░░ SCHEDULE SECTION ░░ -->
 <section class="section schedule-section" id="schedule">
   <div class="container">
@@ -547,88 +628,7 @@
 </div>
   </div>
 </section>
-<!-- ░░ KLASEMEN & TIM LOLOS SECTION ░░ -->
-<section class="section klasemen-section" id="klasemen">
-  <div class="container">
-    <div class="section-label">Hasil Sementara</div>
-    <h2 class="section-title">Klasemen &amp; Tim <span class="accent">Lolos Ke Babak Selanjutnya</span></h2>
-    <p class="section-desc">Klik salah satu cabang lomba untuk melihat klasemen sementara dan tim yang lolos ke babak selanjutnya.</p>
 
-    <div class="klasemen-grid">
-      <div class="klasemen-card reveal" onclick="openKlasemenModal('futsal')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
-        </div>
-        <div class="klasemen-card-name">Futsal</div>
-        <div class="klasemen-card-count" id="count-futsal">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal reveal-delay-1" onclick="openKlasemenModal('basket')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 010 18M12 3a13 13 0 000 18"/></svg>
-        </div>
-        <div class="klasemen-card-name">Basket</div>
-        <div class="klasemen-card-count" id="count-basket">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal reveal-delay-2" onclick="openKlasemenModal('volly')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3c3 3 3 15 0 18M6 6c3 2 9 2 12 0M6 18c3-2 9-2 12 0"/></svg>
-        </div>
-        <div class="klasemen-card-name">Volley Ball</div>
-        <div class="klasemen-card-count" id="count-volly">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal reveal-delay-3" onclick="openKlasemenModal('bulutangkis')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="6"/><path d="M13.5 13.5L21 21"/></svg>
-        </div>
-        <div class="klasemen-card-name">Bulu Tangkis</div>
-        <div class="klasemen-card-count" id="count-bulutangkis">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal" onclick="openKlasemenModal('dance')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v6M12 14l-4 6M12 14l4 6M9 11l-4 2M15 11l4 2"/></svg>
-        </div>
-        <div class="klasemen-card-name">Senam Kreasi</div>
-        <div class="klasemen-card-count" id="count-dance">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal reveal-delay-1" onclick="openKlasemenModal('tenismeja')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="12" rx="9" ry="5"/><path d="M6 9l12 6M18 9L6 15"/></svg>
-        </div>
-        <div class="klasemen-card-name">Tenis Meja</div>
-        <div class="klasemen-card-count" id="count-tenismeja">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal reveal-delay-2" onclick="openKlasemenModal('karaoke')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0012 0M12 17v4M9 21h6"/></svg>
-        </div>
-        <div class="klasemen-card-name">Karaoke</div>
-        <div class="klasemen-card-count" id="count-karaoke">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal reveal-delay-3" onclick="openKlasemenModal('esport')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="7" width="20" height="10" rx="4"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="10.5" r="1"/><circle cx="18" cy="13" r="1"/></svg>
-        </div>
-        <div class="klasemen-card-name">E-Sport MLBB</div>
-        <div class="klasemen-card-count" id="count-esport">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal" onclick="openKlasemenModal('catur')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 20h6M10 20l-1-6h6l-1 6M9 14c-1-3 1-4 1-6a2 2 0 114 0c0 2 2 3 1 6"/></svg>
-        </div>
-        <div class="klasemen-card-name">Catur</div>
-        <div class="klasemen-card-count" id="count-catur">Belum Diumumkan</div>
-      </div>
-    </div>
-  </div>
-</section>
 <!-- ░░ GALLERY SECTION ░░ -->
 <section class="section gallery-section" id="gallery">
   <div class="container">
