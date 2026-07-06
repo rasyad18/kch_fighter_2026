@@ -1249,7 +1249,7 @@ const KLASEMEN_IMAGES = {
   basket: {},
   volly: {
       'B7 Cikarang': 'assets/images/klasemen/volley/putripb7ckr.jpeg',
-    'B7 Cikarang':   'assets/images/klasemen/volley/putrab7ckr.jpeg',
+    'B7 Pulogadung':   'assets/images/klasemen/volley/putrab7ckr.jpeg',
     
   },
   bulutangkis: {
