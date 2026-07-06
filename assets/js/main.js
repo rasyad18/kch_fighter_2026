@@ -1248,12 +1248,12 @@ const KLASEMEN_IMAGES = {
   },
   basket: {},
   volly: {
-      'B7 Pulogadung': 'assets/images/klasemen/volley/putripb7ckr.jpeg',
+      'B7 Cikarang': 'assets/images/klasemen/volley/putripb7ckr.jpeg',
     'B7 Cikarang':   'assets/images/klasemen/volley/putrab7ckr.jpeg',
     
   },
   bulutangkis: {
-     'B7 Cikarang':   'assets/images/klasemen/bulotangkis/gabungan-bultang.jpeg',
+     'B7 Cikarang':   'assets/images/klasemen/bulutangkis/gabungan-bultang.jpeg',
   },
   dance: {
       'B7 Cikarang': 'assets/images/klasemen/senamkreasi/b7-cikarang.jpeg',
