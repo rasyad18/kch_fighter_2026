@@ -17,7 +17,7 @@ const CONFIG = {
   'basket-putra':  '1602342405',
   'basket-putri':  '1406382190',
   'volly-putra':   '1905666751',
-  'volly-putri':   '325359823',
+  'volly-':   '325359823',
   bulutangkis:     '1645421078',
    dance:           '339502222',
   tenismeja:       '720813413',
@@ -1247,8 +1247,8 @@ const KLASEMEN_IMAGES = {
   ],
   basket: [],
   volly: [
-    { label: 'Putra B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/volley/putripb7ckr.jpeg' },
-    { label: 'Putri B7 Cikarang', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7ckr.jpeg' },
+    { label: 'Putra B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/volley/putripb7ckr2.jpeg' },
+    { label: 'Putri B7 Cikarang', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7ckr2.jpeg' },
   ],
   bulutangkis: [
     { label: 'Gabungan Seluruh Site', icon: '🏆', src: 'assets/images/klasemen/bulutangkis/gabungan-bultang.jpeg' },
