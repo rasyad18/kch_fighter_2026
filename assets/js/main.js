@@ -1252,7 +1252,7 @@ const KLASEMEN_IMAGES = {
     { label: 'Gabungan Seluruh Site', icon: '🏆', src: 'assets/images/klasemen/bulutangkis/gabungan-bultang.jpeg' },
   ],
   dance: [
-    { label: 'B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/senamkreasi/b7-cikarang.jpeg' },
+    { label: 'All Site', icon: '🏭', src: 'assets/images/klasemen/senamkreasi/b7-cikarang.jpeg' },
   ],
   tenismeja: [
     { label: 'B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/tenismeja/b7-pulogadung.jpeg' },
@@ -1260,7 +1260,7 @@ const KLASEMEN_IMAGES = {
     { label: 'SFL Cikarang',  icon: '🏭', src: 'assets/images/klasemen/tenismeja/sfl-cikarang.jpeg' },
   ],
   karaoke: [
-    { label: 'B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/karaoke/b7-cikarang.jpeg' },
+    { label: 'All Site', icon: '🏢', src: 'assets/images/klasemen/karaoke/b7-cikarang.jpeg' },
   ],
   esport: [
     { label: 'B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/mlbb/b7-pulogadung.jpeg' },
