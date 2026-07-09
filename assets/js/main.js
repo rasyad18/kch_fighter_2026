@@ -1247,8 +1247,8 @@ const KLASEMEN_IMAGES = {
   ],
   basket: [],
   volly: [
-    { label: 'Putri B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/volley/putripb7ckr.jpeg' },
-    { label: 'Putra B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7ckr.jpeg' },
+    { label: 'Putra B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/volley/putripb7ckr.jpeg' },
+    { label: 'Putri B7 Cikarang', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7ckr.jpeg' },
   ],
   bulutangkis: [
     { label: 'Gabungan Seluruh Site', icon: '🏆', src: 'assets/images/klasemen/bulutangkis/gabungan-bultang.jpeg' },
