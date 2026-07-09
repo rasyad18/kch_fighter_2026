@@ -1242,38 +1242,35 @@ const KLASEMEN_SITE_META = {
 const KLASEMEN_SITE_ORDER = ['B7 Pulogadung', 'B7 Cikarang', 'HO Pulomas', 'SFL Cikarang'];
 
 const KLASEMEN_IMAGES = {
-  futsal: {
-     'B7 Pulogadung': 'assets/images/klasemen/futsal/b7-pulogadung.jpeg',
-    
-  },
-  basket: {},
-  volly: {
-      'B7 Cikarang': 'assets/images/klasemen/volley/putripb7ckr.jpeg',
-    'B7 Pulogadung':   'assets/images/klasemen/volley/putrab7ckr.jpeg',
-    
-  },
-  bulutangkis: {
-     'B7 Cikarang':   'assets/images/klasemen/bulutangkis/gabungan-bultang.jpeg',
-  },
-  dance: {
-      'B7 Cikarang': 'assets/images/klasemen/senamkreasi/b7-cikarang.jpeg',
-  },
-  tenismeja: {
-      'B7 Pulogadung': 'assets/images/klasemen/tenismeja/b7-pulogadung.jpeg',
-    'B7 Cikarang':   'assets/images/klasemen/tenismeja/b7-cikarang.jpeg',
-     'SFL Cikarang':  'assets/images/klasemen/tenismeja/sfl-cikarang.jpeg',
-  },
-  karaoke: {
-      'B7 Pulogadung': 'assets/images/klasemen/karaoke/b7-cikarang.jpeg',
-   
-  },
-  esport: {
-     'B7 Pulogadung': 'assets/images/klasemen/mlbb/b7-pulogadung.jpeg',
-    'B7 Cikarang':   'assets/images/klasemen/mlbb/b7-cikarang.jpeg',
-     'SFL Cikarang':  'assets/images/klasemen/mlbb/sfl-cikarang.jpeg',
-     'HO Pulomas':  'assets/images/klasemen/mlbb/ho-pulomas.jpeg',
-  },
-  catur: {},
+  futsal: [
+    { label: 'B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/futsal/b7-pulogadung.jpeg' },
+  ],
+  basket: [],
+  volly: [
+    { label: 'Putri B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/volley/putripb7ckr.jpeg' },
+    { label: 'Putra B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7ckr.jpeg' },
+  ],
+  bulutangkis: [
+    { label: 'Gabungan Seluruh Site', icon: '🏆', src: 'assets/images/klasemen/bulutangkis/gabungan-bultang.jpeg' },
+  ],
+  dance: [
+    { label: 'B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/senamkreasi/b7-cikarang.jpeg' },
+  ],
+  tenismeja: [
+    { label: 'B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/tenismeja/b7-pulogadung.jpeg' },
+    { label: 'B7 Cikarang',   icon: '🏭', src: 'assets/images/klasemen/tenismeja/b7-cikarang.jpeg' },
+    { label: 'SFL Cikarang',  icon: '🏭', src: 'assets/images/klasemen/tenismeja/sfl-cikarang.jpeg' },
+  ],
+  karaoke: [
+    { label: 'B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/karaoke/b7-cikarang.jpeg' },
+  ],
+  esport: [
+    { label: 'B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/mlbb/b7-pulogadung.jpeg' },
+    { label: 'B7 Cikarang',   icon: '🏭', src: 'assets/images/klasemen/mlbb/b7-cikarang.jpeg' },
+    { label: 'SFL Cikarang',  icon: '🏭', src: 'assets/images/klasemen/mlbb/sfl-cikarang.jpeg' },
+    { label: 'HO Pulomas',    icon: '🏟️', src: 'assets/images/klasemen/mlbb/ho-pulomas.jpeg' },
+  ],
+  catur: [],
 };
 
 const KLASEMEN_LABEL = {
@@ -1287,43 +1284,40 @@ function updateKlasemenCounts() {
   Object.keys(KLASEMEN_IMAGES).forEach(sport => {
     const el = document.getElementById(`count-${sport}`);
     if (!el) return;
-    const n = Object.keys(KLASEMEN_IMAGES[sport] || {}).length;
-    el.textContent = n > 0 ? `${n} Site Tersedia` : 'Belum Diumumkan';
+    const n = (KLASEMEN_IMAGES[sport] || []).length;
+    el.textContent = n > 0 ? `${n} Data Tersedia` : 'Belum Diumumkan';
   });
 }
 updateKlasemenCounts();
   initKlasemenNotif();
 function openKlasemenModal(sport) {
   const label = KLASEMEN_LABEL[sport] || sport;
-  const siteImages = KLASEMEN_IMAGES[sport] || {};
-  const siteKeys = KLASEMEN_SITE_ORDER.filter(s => siteImages[s]);
+  const items = KLASEMEN_IMAGES[sport] || [];
 
   modalTitle.textContent = `Klasemen & Tim Lolos — ${label}`;
 
-  if (siteKeys.length === 0) {
+  if (items.length === 0) {
     modalBody.innerHTML = `<div class="klasemen-empty">Hasil klasemen ${label} belum diumumkan. Cek kembali nanti.</div>`;
   } else {
-    modalBody.innerHTML = siteKeys.map(site => {
-      const meta = KLASEMEN_SITE_META[site] || { icon: '📍' };
-      const src  = siteImages[site];
-      return `
-        <div class="klasemen-site-block">
-          <div class="klasemen-site-header">
-            <span class="klasemen-site-icon">${meta.icon}</span>
-            <span class="klasemen-site-label">Site ${site}</span>
-          </div>
-          <div class="klasemen-image-wrap" onclick="openImageLightbox('${src}')">
-            <img src="${src}" alt="Klasemen ${label} - ${site}" loading="lazy"
-              onerror="this.src='https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80'" />
-            <span class="klasemen-image-hint">Klik untuk perbesar</span>
-          </div>
-        </div>`;
-    }).join('');
+    modalBody.innerHTML = items.map(item => `
+      <div class="klasemen-site-block">
+        <div class="klasemen-site-header">
+          <span class="klasemen-site-icon">${item.icon || '📍'}</span>
+          <span class="klasemen-site-label">${item.label}</span>
+        </div>
+        <div class="klasemen-image-wrap" onclick="openImageLightbox('${item.src}')">
+          <img src="${item.src}" alt="Klasemen ${label} - ${item.label}" loading="lazy"
+            onerror="this.src='https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80'" />
+          <span class="klasemen-image-hint">Klik untuk perbesar</span>
+        </div>
+      </div>`).join('');
   }
 
   modalOverlay.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
+
+ 
 window.openKlasemenModal = openKlasemenModal;
 
 function openImageLightbox(src) {
