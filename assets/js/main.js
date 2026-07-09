@@ -1241,7 +1241,7 @@ const KLASEMEN_IMAGES = {
   ],
   basket: [],
   volly: [
-    { label: 'Putri B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/volley/putripb7ckr2.jpeg' },
+    { label: 'Putri B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/volley/putrib7ckr2.jpeg' },
     { label: 'Putra B7 Cikarang', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7ckr2.jpeg' },
      { label: 'Putri HO Pulomas', icon: '🏢', src: 'assets/images/klasemen/volley/putrib7plm.jpeg' },
      { label: 'Putra HO Pulomas', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7plm.jpeg' },
