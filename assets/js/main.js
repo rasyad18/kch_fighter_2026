@@ -1233,13 +1233,7 @@ const TNC_DATA = {
 // ─── DATA GAMBAR KLASEMEN PER CABANG × PER SITE ───
 // Setiap cabor punya gambar klasemen berbeda per site.
 // Kosongkan/hapus key site yang belum ada gambarnya — otomatis tidak ditampilkan.
-const KLASEMEN_SITE_META = {
-  'B7 Pulogadung': { icon: '🏢' },
-  'B7 Cikarang':   { icon: '🏭' },
-  'HO Pulomas':    { icon: '🏟️' },
-  'SFL Cikarang':  { icon: '🏭' },
-};
-const KLASEMEN_SITE_ORDER = ['B7 Pulogadung', 'B7 Cikarang', 'HO Pulomas', 'SFL Cikarang'];
+
 
 const KLASEMEN_IMAGES = {
   futsal: [
@@ -1247,8 +1241,8 @@ const KLASEMEN_IMAGES = {
   ],
   basket: [],
   volly: [
-    { label: 'Putra B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/volley/putripb7ckr2.jpeg' },
-    { label: 'Putri B7 Cikarang', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7ckr2.jpeg' },
+    { label: 'Putri B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/volley/putripb7ckr2.jpeg' },
+    { label: 'Putra B7 Cikarang', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7ckr2.jpeg' },
      { label: 'Putri HO Pulomas', icon: '🏢', src: 'assets/images/klasemen/volley/putrib7plm.jpeg' },
      { label: 'Putra HO Pulomas', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7plm.jpeg' },
      { label: 'Putri B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/volley/putrib7plg.jpeg' },
