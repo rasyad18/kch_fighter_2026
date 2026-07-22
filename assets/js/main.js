@@ -17,7 +17,7 @@ const CONFIG = {
   'basket-putra':  '1602342405',
   'basket-putri':  '1406382190',
   'volly-putra':   '1905666751',
-  'volly-':   '325359823',
+  'volly-putri':   '325359823',
   bulutangkis:     '1645421078',
    dance:           '339502222',
   tenismeja:       '720813413',
