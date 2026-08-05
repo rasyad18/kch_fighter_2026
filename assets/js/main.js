@@ -1230,106 +1230,7 @@ const TNC_DATA = {
     `
   }
 };
-// ─── DATA GAMBAR KLASEMEN PER CABANG × PER SITE ───
-// Setiap cabor punya gambar klasemen berbeda per site.
-// Kosongkan/hapus key site yang belum ada gambarnya — otomatis tidak ditampilkan.
 
-
-const KLASEMEN_IMAGES = {
-  futsal: [
-    { label: 'B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/futsal/b7-pulogadung.jpeg' },
-  ],
-  basket: [],
-  volly: [
-    { label: 'Putri B7 Cikarang', icon: '🏭', src: 'assets/images/klasemen/volley/putrib7ckr2.jpeg' },
-    { label: 'Putra B7 Cikarang', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7ckr2.jpeg' },
-     { label: 'Putri HO Pulomas', icon: '🏢', src: 'assets/images/klasemen/volley/putrib7plm.jpeg' },
-     { label: 'Putra HO Pulomas', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7plm.jpeg' },
-     { label: 'Putri B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/volley/putrib7plg.jpeg' },
-     { label: 'Putra B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/volley/putrab7plg.jpeg' },
-  ],
-  bulutangkis: [
-    { label: 'Gabungan Seluruh Site', icon: '🏆', src: 'assets/images/klasemen/bulutangkis/gabungan-bultang.jpeg' },
-  ],
-  dance: [
-    { label: 'All Site', icon: '🏭', src: 'assets/images/klasemen/senamkreasi/b7-cikarang.jpeg' },
-  ],
-  tenismeja: [
-    { label: 'B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/tenismeja/b7-pulogadung.jpeg' },
-    { label: 'B7 Cikarang',   icon: '🏭', src: 'assets/images/klasemen/tenismeja/b7-cikarang.jpeg' },
-    { label: 'SFL Cikarang',  icon: '🏭', src: 'assets/images/klasemen/tenismeja/sfl-cikarang.jpeg' },
-  ],
-  karaoke: [
-    { label: 'All Site', icon: '🏢', src: 'assets/images/klasemen/karaoke/b7-cikarang.jpeg' },
-  ],
-  esport: [
-    { label: 'B7 Pulogadung', icon: '🏢', src: 'assets/images/klasemen/mlbb/b7-pulogadung.jpeg' },
-    { label: 'B7 Cikarang',   icon: '🏭', src: 'assets/images/klasemen/mlbb/b7-cikarang.jpeg' },
-    { label: 'SFL Cikarang',  icon: '🏭', src: 'assets/images/klasemen/mlbb/sfl-cikarang.jpeg' },
-    { label: 'HO Pulomas',    icon: '🏟️', src: 'assets/images/klasemen/mlbb/ho-pulomas.jpeg' },
-  ],
-  catur: [],
-};
-
-const KLASEMEN_LABEL = {
-  futsal: 'Futsal', basket: 'Basket', volly: 'Volley Ball',
-  bulutangkis: 'Bulu Tangkis', dance: 'Senam Kreasi',
-  tenismeja: 'Tenis Meja', karaoke: 'Karaoke',
-  esport: 'E-Sport MLBB', catur: 'Catur',
-};
-
-function updateKlasemenCounts() {
-  Object.keys(KLASEMEN_IMAGES).forEach(sport => {
-    const el = document.getElementById(`count-${sport}`);
-    if (!el) return;
-    const n = (KLASEMEN_IMAGES[sport] || []).length;
-    el.textContent = n > 0 ? `${n} Data Tersedia` : 'Belum Diumumkan';
-  });
-}
-updateKlasemenCounts();
-  initKlasemenNotif();
-function openKlasemenModal(sport) {
-  const label = KLASEMEN_LABEL[sport] || sport;
-  const items = KLASEMEN_IMAGES[sport] || [];
-
-  modalTitle.textContent = `Klasemen & Tim Lolos — ${label}`;
-
-  if (items.length === 0) {
-    modalBody.innerHTML = `<div class="klasemen-empty">Hasil klasemen ${label} belum diumumkan. Cek kembali nanti.</div>`;
-  } else {
-    modalBody.innerHTML = items.map(item => `
-      <div class="klasemen-site-block">
-        <div class="klasemen-site-header">
-          <span class="klasemen-site-icon">${item.icon || '📍'}</span>
-          <span class="klasemen-site-label">${item.label}</span>
-        </div>
-        <div class="klasemen-image-wrap" onclick="openImageLightbox('${item.src}')">
-          <img src="${item.src}" alt="Klasemen ${label} - ${item.label}" loading="lazy"
-            onerror="this.src='https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80'" />
-          <span class="klasemen-image-hint">Klik untuk perbesar</span>
-        </div>
-      </div>`).join('');
-  }
-
-  modalOverlay.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
- 
-window.openKlasemenModal = openKlasemenModal;
-
-function openImageLightbox(src) {
-  const overlay = document.createElement('div');
-  overlay.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:10000;
-    display:flex;align-items:center;justify-content:center;cursor:zoom-out;animation:fadeIn 0.3s ease;`;
-  const image = document.createElement('img');
-  image.src = src;
-  image.style.cssText = 'max-width:90vw;max-height:90vh;border-radius:8px;object-fit:contain;';
-  overlay.appendChild(image);
-  document.body.appendChild(overlay);
-  overlay.addEventListener('click', () => overlay.remove());
-}
-window.openImageLightbox = openImageLightbox;
 function openModal(sport) {
   const data = TNC_DATA[sport];
   if (!data || !modalOverlay) return;
@@ -1349,16 +1250,170 @@ document.getElementById('modalClose')?.addEventListener('click', closeModal);
 window.openModal  = openModal;
 window.closeModal = closeModal;
 
-// ─── TABS ────────────────────────────────────
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.tab;
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.schedule-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(`panel-${target}`)?.classList.add('active');
+// ══════════════════════════════════════════════════
+// ─── LEADERBOARD — HASIL AKHIR JUARA TIAP CABANG ───
+// ══════════════════════════════════════════════════
+// Setiap cabor bisa punya 1 atau lebih "divisi" (mis. Putra/Putri).
+// podium: [Juara 1, Juara 2, Juara 3] — isi null jika belum ada hasil.
+const LEADERBOARD_DATA = [
+  {
+    id: 'tenismeja', label: 'Tenis Meja', icon: '🏓', color: '#00CFFF',
+    divisions: [
+      { name: null, podium: ['HR-GAL HO PLM', 'WHGA B7 CKR', 'PROD B7 CKR'] },
+    ],
+  },
+  {
+    id: 'futsal', label: 'Futsal', icon: '⚽', color: '#FF6B00',
+    divisions: [
+      { name: 'Putra', podium: ['PROD B7 PG', 'PROD B7 CKR', 'WHGA B7 CKR'] },
+      { name: 'Putri', podium: ['PROD B7 PG', 'MARKETING SALES HO PLM', 'TEKNIK B7 CKR'] },
+    ],
+  },
+  {
+    id: 'volly', label: 'Volley Ball', icon: '🏐', color: '#39FF14',
+    divisions: [
+      { name: 'Putra', podium: ['WHGA PPIC B7 PG', 'PROD B7 PG', 'PROD B7 CKR'] },
+      { name: 'Putri', podium: ['MARKETING SALES HO PLM', 'PROD B7 PG', 'HR-GAL HO PLM'] },
+    ],
+  },
+  {
+    id: 'basket', label: 'Basket', icon: '🏀', color: '#FFD700',
+    divisions: [
+      { name: 'Putri', podium: ['MARKETING SALES HO PLM', 'QO B7 CKR', 'Produksi PG'] },
+      { name: 'Putra', podium: null },
+    ],
+  },
+  {
+    id: 'bulutangkis', label: 'Bulu Tangkis', icon: '🏸', color: '#00CFFF',
+    divisions: [
+      { name: null, podium: ['MARKETING SALES HO PLM', 'Produksi B7 CKR', 'RND - TS - PPIC - Purch - GA SFL'] },
+    ],
+  },
+  {
+    id: 'dance', label: 'Senam Kreasi', icon: '💃', color: '#FF4FA1',
+    divisions: [
+      { name: null, podium: ['Produksi PG', 'QO PG', 'QO B7 CKR'] },
+    ],
+  },
+  {
+    id: 'catur', label: 'Catur', icon: '♟️', color: '#39FF14',
+    divisions: [
+      { name: null, podium: ['FA-IT HO', 'HR-GAL HO PLM', 'WH-GA B7 CKR'] },
+    ],
+  },
+  {
+    id: 'karaoke', label: 'Karaoke', icon: '🎤', color: '#FF6B00',
+    divisions: [
+      { name: null, podium: null },
+    ],
+  },
+  {
+    id: 'esport', label: 'E-Sport MLBB', icon: '🎮', color: '#00CFFF',
+    divisions: [
+      { name: null, podium: null },
+    ],
+  },
+];
+
+const MEDAL_EMOJI = ['🥇', '🥈', '🥉'];
+const CONFETTI_CHARS = ['🎉', '✦', '★', '🎊', '●'];
+
+function lbHasAnyResult(sport) {
+  return sport.divisions.some(d => Array.isArray(d.podium) && d.podium.some(Boolean));
+}
+
+function renderConfettiLayer() {
+  const pieces = Array.from({ length: 10 }).map((_, i) => {
+    const left = Math.round(Math.random() * 96);
+    const delay = (Math.random() * 4).toFixed(2);
+    const duration = (5 + Math.random() * 4).toFixed(2);
+    const char = CONFETTI_CHARS[i % CONFETTI_CHARS.length];
+    return `<span style="left:${left}%; animation-delay:${delay}s; animation-duration:${duration}s;">${char}</span>`;
+  }).join('');
+  return `<div class="lb-confetti" aria-hidden="true">${pieces}</div>`;
+}
+
+function renderPodium(podium) {
+  if (!podium || !podium.some(Boolean)) {
+    return `
+      <div class="lb-pending">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
+        </svg>
+        <div class="lb-pending-title">Hasil Belum Diumumkan</div>
+        <div class="lb-pending-sub">Nantikan pengumuman juara untuk kategori ini.</div>
+      </div>`;
+  }
+
+  // urutan render: 2, 1, 3 — tapi order visual diatur lewat CSS order per data-rank
+  const ranks = [1, 2, 3];
+  const slots = ranks.map(rank => {
+    const name = podium[rank - 1];
+    if (!name) return '';
+    const crown = rank === 1 ? `<div class="lb-crown">👑</div>` : '';
+    return `
+      <div class="lb-slot" data-rank="${rank}">
+        ${crown}
+        <div class="lb-medal-badge">${MEDAL_EMOJI[rank - 1]}</div>
+        <div class="lb-team-name">${name}</div>
+        <div class="lb-step">${rank}</div>
+      </div>`;
+  }).join('');
+
+  return `<div class="lb-podium">${slots}</div>`;
+}
+
+function renderLeaderboardPanel(sportId) {
+  const sport = LEADERBOARD_DATA.find(s => s.id === sportId) || LEADERBOARD_DATA[0];
+  const panel = document.getElementById('leaderboardPanel');
+  if (!panel) return;
+
+  const divisionsHTML = sport.divisions.map(div => `
+    <div class="lb-division">
+      ${div.name ? `<span class="lb-division-label">${sport.icon} ${div.name}</span>` : ''}
+      ${renderPodium(div.podium)}
+    </div>`).join('');
+
+  panel.innerHTML = `
+    <div class="lb-panel-card" style="--sport-color:${sport.color};">
+      ${renderConfettiLayer()}
+      <div class="lb-panel-head">
+        <div class="lb-panel-icon" style="color:${sport.color};">${sport.icon}</div>
+        <div>
+          <div class="lb-panel-title">${sport.label}</div>
+          <div class="lb-panel-sub">Juara 1 · Juara 2 · Juara 3</div>
+        </div>
+      </div>
+      ${divisionsHTML}
+    </div>`;
+}
+
+function setActiveLeaderboardTab(sportId) {
+  document.querySelectorAll('.lb-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.sport === sportId);
   });
-});
+  renderLeaderboardPanel(sportId);
+}
+window.setActiveLeaderboardTab = setActiveLeaderboardTab;
+
+function initLeaderboard() {
+  const tabsWrap = document.getElementById('leaderboardTabs');
+  if (!tabsWrap) return;
+
+  tabsWrap.innerHTML = LEADERBOARD_DATA.map((sport, i) => {
+    const pending = !lbHasAnyResult(sport);
+    return `
+      <button class="lb-tab-btn${i === 0 ? ' active' : ''}${pending ? ' pending' : ''}"
+        data-sport="${sport.id}" style="--tab-color:${sport.color};"
+        onclick="setActiveLeaderboardTab('${sport.id}')">
+        <span class="lb-tab-icon">${sport.icon}</span>
+        <span>${sport.label}</span>
+        ${pending ? '<span class="lb-tab-dot"></span>' : ''}
+      </button>`;
+  }).join('');
+
+  renderLeaderboardPanel(LEADERBOARD_DATA[0].id);
+}
 
 // ─── COUNTER ANIMATION ───────────────────────
 function animateCount(el, target, duration = 1500) {
@@ -1431,7 +1486,7 @@ document.querySelectorAll('.gallery-item').forEach(item => {
     overlay.addEventListener('click', () => overlay.remove());
   });
 });
-// ─── NOTIFIKASI KLASEMEN ───
+// ─── NOTIFIKASI LEADERBOARD ───
 function gotoKlasemen() {
   closeKlasemenNotif();
   const target = document.getElementById('klasemen');
@@ -1475,7 +1530,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(`gid_${sport}`);
     if (el) el.value = CONFIG.SHEET_GIDS[sport];
   });
-updateKlasemenCounts();
+
+  initLeaderboard();
+  initKlasemenNotif();
+
   if (CONFIG.SHEET_ID) {
     refreshAll();
   }
