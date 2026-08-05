@@ -1280,7 +1280,7 @@ const LEADERBOARD_DATA = [
     id: 'basket', label: 'Basket', icon: '🏀', color: '#FFD700',
     divisions: [
       { name: 'Putri', podium: ['MARKETING SALES HO PLM', 'QO B7 CKR', 'Produksi PG'] },
-      { name: 'Putra', podium: null },
+      { name: 'Putra', podium: ['Produksi SFL', 'QO SFL', 'QO B7 CKR'] },
     ],
   },
   {
@@ -1310,7 +1310,7 @@ const LEADERBOARD_DATA = [
   {
     id: 'esport', label: 'E-Sport MLBB', icon: '🎮', color: '#00CFFF',
     divisions: [
-      { name: null, podium: null },
+      { name: null, podium: ['Produksi B7 CKR', 'Warehouse - Packaging - Teknik SFL', 'QO B7 PG'] },
     ],
   },
 ];
