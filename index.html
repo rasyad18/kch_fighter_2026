@@ -73,6 +73,210 @@
       }
     }
   </style>
+
+  <!-- ░░ LEADERBOARD STYLES ░░ -->
+  <style>
+    :root{
+      --lb-gold:#FFD700;
+      --lb-silver:#C9D3DC;
+      --lb-bronze:#E2924D;
+    }
+
+    .leaderboard-section{ position:relative; overflow:hidden; }
+
+    .leaderboard-intro{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      flex-wrap:wrap; gap:1rem; margin-bottom:1.75rem;
+    }
+    .leaderboard-intro-text{ max-width:640px; }
+    .leaderboard-live-chip{
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:.5rem 1rem; border-radius:999px;
+      border:1px solid color-mix(in srgb, var(--lb-gold) 45%, transparent);
+      background:color-mix(in srgb, var(--lb-gold) 12%, transparent);
+      font-size:.78rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+      color:#B8860B; white-space:nowrap;
+    }
+    .leaderboard-live-chip .dot-pulse{
+      width:8px; height:8px; border-radius:50%; background:var(--lb-gold);
+      box-shadow:0 0 0 0 rgba(255,215,0,0.6);
+      animation:lbPulse 1.8s infinite;
+    }
+    @keyframes lbPulse{
+      0%{ box-shadow:0 0 0 0 rgba(255,215,0,0.55); }
+      70%{ box-shadow:0 0 0 9px rgba(255,215,0,0); }
+      100%{ box-shadow:0 0 0 0 rgba(255,215,0,0); }
+    }
+
+    /* ── Tabs cabor ── */
+    .leaderboard-tabs{
+      display:flex; gap:.6rem; overflow-x:auto; padding-bottom:.5rem; margin-bottom:1.75rem;
+      scrollbar-width:thin;
+    }
+    .leaderboard-tabs::-webkit-scrollbar{ height:5px; }
+    .leaderboard-tabs::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.15); border-radius:99px; }
+
+    .lb-tab-btn{
+      flex:0 0 auto; display:inline-flex; align-items:center; gap:.5rem;
+      padding:.65rem 1.15rem; border-radius:999px; cursor:pointer;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.03);
+      font-size:.85rem; font-weight:600; color:inherit; opacity:.72;
+      transition:all .25s ease; white-space:nowrap;
+    }
+    .lb-tab-btn:hover{ opacity:1; transform:translateY(-2px); }
+    .lb-tab-btn .lb-tab-icon{ font-size:1rem; }
+    .lb-tab-btn.active{
+      opacity:1; color:var(--tab-color,#FF6B00);
+      border-color:color-mix(in srgb, var(--tab-color,#FF6B00) 55%, transparent);
+      background:color-mix(in srgb, var(--tab-color,#FF6B00) 14%, transparent);
+      box-shadow:0 4px 18px -6px color-mix(in srgb, var(--tab-color,#FF6B00) 60%, transparent);
+    }
+    .lb-tab-btn.pending{ opacity:.4; }
+    .lb-tab-btn.pending .lb-tab-dot{
+      width:6px; height:6px; border-radius:50%; background:currentColor; opacity:.5;
+    }
+
+    /* ── Panel ── */
+    .leaderboard-panel{ position:relative; }
+    .lb-panel-card{
+      border-radius:22px; padding:2rem 1.5rem 1.5rem;
+      border:1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--sport-color,#FF6B00) 14%, transparent), transparent 55%),
+        radial-gradient(circle at 85% 100%, color-mix(in srgb, var(--sport-color,#FF6B00) 10%, transparent), transparent 55%),
+        rgba(255,255,255,0.02);
+      overflow:hidden; position:relative;
+    }
+    .lb-panel-head{
+      display:flex; align-items:center; gap:.75rem; margin-bottom:1.75rem; flex-wrap:wrap;
+    }
+    .lb-panel-icon{
+      width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center;
+      font-size:1.3rem; flex-shrink:0;
+      background:color-mix(in srgb, var(--sport-color,#FF6B00) 18%, transparent);
+      border:1px solid color-mix(in srgb, var(--sport-color,#FF6B00) 40%, transparent);
+    }
+    .lb-panel-title{ font-size:1.3rem; font-weight:800; letter-spacing:-0.01em; }
+    .lb-panel-sub{ font-size:.8rem; opacity:.6; margin-top:.15rem; }
+
+    /* ── confetti decor ── */
+    .lb-confetti{ position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+    .lb-confetti span{
+      position:absolute; top:-10%; font-size:.9rem; opacity:.55;
+      animation:lbFall linear infinite;
+    }
+    @keyframes lbFall{
+      0%{ transform:translateY(0) rotate(0deg); opacity:0; }
+      10%{ opacity:.6; }
+      100%{ transform:translateY(340px) rotate(200deg); opacity:0; }
+    }
+
+    /* ── division block ── */
+    .lb-division{ position:relative; z-index:1; margin-bottom:2.25rem; }
+    .lb-division:last-child{ margin-bottom:0; }
+    .lb-division-label{
+      display:inline-flex; align-items:center; gap:.4rem;
+      font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+      color:var(--sport-color,#FF6B00); margin-bottom:1.1rem;
+      padding:.3rem .8rem; border-radius:999px;
+      border:1px solid color-mix(in srgb, var(--sport-color,#FF6B00) 35%, transparent);
+      background:color-mix(in srgb, var(--sport-color,#FF6B00) 8%, transparent);
+    }
+
+    /* ── podium ── */
+    .lb-podium{
+      display:flex; align-items:flex-end; justify-content:center;
+      gap:.85rem; max-width:640px; margin:0 auto;
+    }
+    .lb-slot{
+      flex:1 1 0; max-width:190px; display:flex; flex-direction:column; align-items:center;
+      animation:lbRise .6s cubic-bezier(.2,.8,.2,1) both;
+    }
+    .lb-slot[data-rank="1"]{ order:2; animation-delay:.05s; }
+    .lb-slot[data-rank="2"]{ order:1; animation-delay:.15s; }
+    .lb-slot[data-rank="3"]{ order:3; animation-delay:.25s; }
+    @keyframes lbRise{
+      from{ opacity:0; transform:translateY(24px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    .lb-crown{
+      font-size:1.4rem; margin-bottom:.3rem;
+      animation:lbFloat 2.4s ease-in-out infinite;
+      filter:drop-shadow(0 2px 6px rgba(255,215,0,0.5));
+    }
+    @keyframes lbFloat{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-5px);} }
+
+    .lb-medal-badge{
+      width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:1.1rem; margin-bottom:.65rem; position:relative;
+      border:2px solid rgba(255,255,255,0.25);
+    }
+    .lb-slot[data-rank="1"] .lb-medal-badge{
+      width:62px; height:62px; font-size:1.3rem;
+      background:linear-gradient(150deg,#FFE58A,var(--lb-gold) 55%,#B8860B);
+      color:#5c4300; box-shadow:0 6px 20px -4px rgba(255,215,0,0.65);
+    }
+    .lb-slot[data-rank="2"] .lb-medal-badge{
+      background:linear-gradient(150deg,#F2F5F8,var(--lb-silver) 55%,#8D98A3);
+      color:#33393f; box-shadow:0 6px 16px -4px rgba(180,190,200,0.5);
+    }
+    .lb-slot[data-rank="3"] .lb-medal-badge{
+      background:linear-gradient(150deg,#F3B27E,var(--lb-bronze) 55%,#9C5A22);
+      color:#4a2a0d; box-shadow:0 6px 16px -4px rgba(200,120,50,0.5);
+    }
+
+    .lb-team-name{
+      font-size:.83rem; font-weight:700; text-align:center; line-height:1.3;
+      min-height:2.6em; display:flex; align-items:center; justify-content:center;
+      margin-bottom:.85rem; padding:0 .35rem;
+    }
+
+    .lb-step{
+      width:100%; border-radius:14px 14px 0 0;
+      display:flex; align-items:flex-start; justify-content:center; padding-top:.6rem;
+      font-size:2rem; font-weight:900; font-family:inherit;
+      position:relative; overflow:hidden;
+    }
+    .lb-step::after{
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,0.12), transparent 60%);
+    }
+    .lb-slot[data-rank="1"] .lb-step{
+      height:132px; background:linear-gradient(160deg,#FFD700,#C9960B);
+      color:rgba(60,42,0,0.55); box-shadow:0 -4px 24px -6px rgba(255,215,0,0.55);
+    }
+    .lb-slot[data-rank="2"] .lb-step{
+      height:98px; background:linear-gradient(160deg,#D7DEE5,#9AA5AF);
+      color:rgba(35,42,48,0.5);
+    }
+    .lb-slot[data-rank="3"] .lb-step{
+      height:76px; background:linear-gradient(160deg,#E2924D,#A85F26);
+      color:rgba(60,32,8,0.5);
+    }
+
+    /* ── pending / belum diumumkan ── */
+    .lb-pending{
+      position:relative; z-index:1;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:.5rem; padding:2.25rem 1rem; text-align:center; opacity:.65;
+    }
+    .lb-pending svg{ opacity:.5; }
+    .lb-pending-title{ font-size:.92rem; font-weight:600; }
+    .lb-pending-sub{ font-size:.78rem; opacity:.7; }
+
+    @media (max-width:560px){
+      .lb-podium{ gap:.5rem; }
+      .lb-medal-badge{ width:42px; height:42px; font-size:.95rem; }
+      .lb-slot[data-rank="1"] .lb-medal-badge{ width:52px; height:52px; font-size:1.1rem; }
+      .lb-team-name{ font-size:.72rem; }
+      .lb-slot[data-rank="1"] .lb-step{ height:108px; }
+      .lb-slot[data-rank="2"] .lb-step{ height:80px; }
+      .lb-slot[data-rank="3"] .lb-step{ height:62px; }
+      .lb-panel-card{ padding:1.5rem 1rem 1.25rem; }
+    }
+  </style>
 </head>
 <body>
 
@@ -415,86 +619,21 @@
     </div>
   </div>
 </section>
-<!-- ░░ KLASEMEN & TIM LOLOS SECTION ░░ -->
-<section class="section klasemen-section" id="klasemen">
+<!-- ░░ KLASEMEN / LEADERBOARD SECTION ░░ -->
+<section class="section klasemen-section leaderboard-section" id="klasemen">
   <div class="container">
-    <div class="section-label">Hasil Sementara</div>
-    <h2 class="section-title">Klasemen &amp; Tim <span class="accent">Lolos Ke Babak Selanjutnya</span></h2>
-    <p class="section-desc">Klik salah satu cabang lomba untuk melihat klasemen sementara dan tim yang lolos ke babak selanjutnya.</p>
-
-    <div class="klasemen-grid">
-      <div class="klasemen-card reveal" onclick="openKlasemenModal('futsal')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
-        </div>
-        <div class="klasemen-card-name">Futsal</div>
-        <div class="klasemen-card-count" id="count-futsal">Belum Diumumkan</div>
+    <div class="leaderboard-intro">
+      <div class="leaderboard-intro-text">
+        <div class="section-label">Hasil Akhir</div>
+        <h2 class="section-title">Leaderboard <span class="accent">Juara Tiap Cabang</span></h2>
+        <p class="section-desc">Pilih cabang lomba di bawah untuk melihat Juara 1, 2, dan 3.</p>
       </div>
-
-      <div class="klasemen-card reveal reveal-delay-1" onclick="openKlasemenModal('basket')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 010 18M12 3a13 13 0 000 18"/></svg>
-        </div>
-        <div class="klasemen-card-name">Basket</div>
-        <div class="klasemen-card-count" id="count-basket">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal reveal-delay-2" onclick="openKlasemenModal('volly')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3c3 3 3 15 0 18M6 6c3 2 9 2 12 0M6 18c3-2 9-2 12 0"/></svg>
-        </div>
-        <div class="klasemen-card-name">Volley Ball</div>
-        <div class="klasemen-card-count" id="count-volly">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal reveal-delay-3" onclick="openKlasemenModal('bulutangkis')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="6"/><path d="M13.5 13.5L21 21"/></svg>
-        </div>
-        <div class="klasemen-card-name">Bulu Tangkis</div>
-        <div class="klasemen-card-count" id="count-bulutangkis">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal" onclick="openKlasemenModal('dance')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v6M12 14l-4 6M12 14l4 6M9 11l-4 2M15 11l4 2"/></svg>
-        </div>
-        <div class="klasemen-card-name">Senam Kreasi</div>
-        <div class="klasemen-card-count" id="count-dance">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal reveal-delay-1" onclick="openKlasemenModal('tenismeja')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="12" rx="9" ry="5"/><path d="M6 9l12 6M18 9L6 15"/></svg>
-        </div>
-        <div class="klasemen-card-name">Tenis Meja</div>
-        <div class="klasemen-card-count" id="count-tenismeja">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal reveal-delay-2" onclick="openKlasemenModal('karaoke')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0012 0M12 17v4M9 21h6"/></svg>
-        </div>
-        <div class="klasemen-card-name">Karaoke</div>
-        <div class="klasemen-card-count" id="count-karaoke">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal reveal-delay-3" onclick="openKlasemenModal('esport')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="7" width="20" height="10" rx="4"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="10.5" r="1"/><circle cx="18" cy="13" r="1"/></svg>
-        </div>
-        <div class="klasemen-card-name">E-Sport MLBB</div>
-        <div class="klasemen-card-count" id="count-esport">Belum Diumumkan</div>
-      </div>
-
-      <div class="klasemen-card reveal" onclick="openKlasemenModal('catur')">
-        <div class="klasemen-card-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 20h6M10 20l-1-6h6l-1 6M9 14c-1-3 1-4 1-6a2 2 0 114 0c0 2 2 3 1 6"/></svg>
-        </div>
-        <div class="klasemen-card-name">Catur</div>
-        <div class="klasemen-card-count" id="count-catur">Belum Diumumkan</div>
-      </div>
+      <div class="leaderboard-live-chip"><span class="dot-pulse"></span> Hasil Terupdate</div>
     </div>
+
+    <div class="leaderboard-tabs" id="leaderboardTabs"></div>
+
+    <div class="leaderboard-panel" id="leaderboardPanel"></div>
   </div>
 </section>
 <!-- ░░ SCHEDULE SECTION ░░ -->
@@ -761,16 +900,16 @@
     <div class="modal-body" id="modalBody"></div>
   </div>
 </div>
-<!-- ░░ NOTIFIKASI KLASEMEN ░░ -->
+<!-- ░░ NOTIFIKASI LEADERBOARD ░░ -->
 <div class="klasemen-notif" id="klasemenNotif">
   <div class="klasemen-notif-icon">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M9 20h6M10 20l-1-6h6l-1 6M9 14c-1-3 1-4 1-6a2 2 0 114 0c0 2 2 3 1 6"/>
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
     </svg>
   </div>
   <div class="klasemen-notif-text">
-    <div class="klasemen-notif-title">Klasemen Sementara Sudah Terbit!</div>
-    <div class="klasemen-notif-desc">Cek tim yang lolos ke babak selanjutnya di tiap cabang lomba.</div>
+    <div class="klasemen-notif-title">Hasil Akhir Sudah Terbit! 🎉</div>
+    <div class="klasemen-notif-desc">Cek siapa Juara 1, 2, dan 3 di tiap cabang lomba.</div>
   </div>
   <button class="klasemen-notif-btn" onclick="gotoKlasemen()">Lihat</button>
   <button class="klasemen-notif-close" onclick="closeKlasemenNotif()" aria-label="Tutup">
