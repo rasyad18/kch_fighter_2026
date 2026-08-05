@@ -1316,7 +1316,9 @@ const LEADERBOARD_DATA = [
 ];
 
 const MEDAL_EMOJI = ['🥇', '🥈', '🥉'];
-const CONFETTI_CHARS = ['🎉', '✦', '★', '🎊', '●'];
+const CONFETTI_CHARS = ['✦', '★', '●', '✧'];
+const LB_RANK_LABEL = ['Juara 1', 'Juara 2', 'Juara 3'];
+const LB_TIER_CLASS = ['tier-gold', 'tier-silver', 'tier-bronze'];
 
 function lbHasAnyResult(sport) {
   return sport.divisions.some(d => Array.isArray(d.podium) && d.podium.some(Boolean));
@@ -1355,8 +1357,9 @@ function renderPodium(podium) {
       <div class="lb-slot" data-rank="${rank}">
         ${crown}
         <div class="lb-medal-badge">${MEDAL_EMOJI[rank - 1]}</div>
+        <div class="lb-rank-tag">${LB_RANK_LABEL[rank - 1]}</div>
         <div class="lb-team-name">${name}</div>
-        <div class="lb-step">${rank}</div>
+        <div class="lb-step"><span class="lb-step-num">${rank}</span></div>
       </div>`;
   }).join('');
 
@@ -1377,6 +1380,7 @@ function renderLeaderboardPanel(sportId) {
   panel.innerHTML = `
     <div class="lb-panel-card" style="--sport-color:${sport.color};">
       ${renderConfettiLayer()}
+      <div class="lb-panel-watermark" aria-hidden="true">${sport.icon}</div>
       <div class="lb-panel-head">
         <div class="lb-panel-icon" style="color:${sport.color};">${sport.icon}</div>
         <div>
@@ -1388,10 +1392,34 @@ function renderLeaderboardPanel(sportId) {
     </div>`;
 }
 
+function updateTabIndicator(btn) {
+  const indicator = document.getElementById('lbTabIndicator');
+  if (!indicator || !btn) return;
+  const tabColor = btn.style.getPropertyValue('--tab-color') || '#FF6B00';
+  indicator.style.setProperty('--tab-color', tabColor);
+  indicator.style.left = btn.offsetLeft + 'px';
+  indicator.style.width = btn.offsetWidth + 'px';
+}
+
+function updateTabsFade() {
+  const wrap = document.getElementById('leaderboardTabs');
+  const fadeL = document.getElementById('lbFadeL');
+  const fadeR = document.getElementById('lbFadeR');
+  if (!wrap || !fadeL || !fadeR) return;
+  const maxScroll = wrap.scrollWidth - wrap.clientWidth;
+  fadeL.style.opacity = wrap.scrollLeft > 4 ? '1' : '0';
+  fadeR.style.opacity = (maxScroll - wrap.scrollLeft) > 4 ? '1' : '0';
+}
+
 function setActiveLeaderboardTab(sportId) {
-  document.querySelectorAll('.lb-tab-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.sport === sportId);
+  const btn = document.querySelector(`.lb-tab-btn[data-sport="${sportId}"]`);
+  document.querySelectorAll('.lb-tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.sport === sportId);
   });
+  if (btn) {
+    updateTabIndicator(btn);
+    btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }
   renderLeaderboardPanel(sportId);
 }
 window.setActiveLeaderboardTab = setActiveLeaderboardTab;
@@ -1400,19 +1428,143 @@ function initLeaderboard() {
   const tabsWrap = document.getElementById('leaderboardTabs');
   if (!tabsWrap) return;
 
-  tabsWrap.innerHTML = LEADERBOARD_DATA.map((sport, i) => {
+  const buttonsHTML = LEADERBOARD_DATA.map((sport, i) => {
     const pending = !lbHasAnyResult(sport);
     return `
       <button class="lb-tab-btn${i === 0 ? ' active' : ''}${pending ? ' pending' : ''}"
         data-sport="${sport.id}" style="--tab-color:${sport.color};"
         onclick="setActiveLeaderboardTab('${sport.id}')">
-        <span class="lb-tab-icon">${sport.icon}</span>
+        <span class="lb-tab-icon-ring">${sport.icon}</span>
         <span>${sport.label}</span>
         ${pending ? '<span class="lb-tab-dot"></span>' : ''}
       </button>`;
   }).join('');
 
+  tabsWrap.innerHTML = `<div class="lb-tab-indicator" id="lbTabIndicator"></div>${buttonsHTML}`;
+
   renderLeaderboardPanel(LEADERBOARD_DATA[0].id);
+
+  requestAnimationFrame(() => {
+    const firstBtn = tabsWrap.querySelector('.lb-tab-btn.active');
+    updateTabIndicator(firstBtn);
+    updateTabsFade();
+  });
+
+  tabsWrap.addEventListener('scroll', updateTabsFade, { passive: true });
+  window.addEventListener('resize', () => {
+    const activeBtn = tabsWrap.querySelector('.lb-tab-btn.active');
+    updateTabIndicator(activeBtn);
+    updateTabsFade();
+  });
+}
+
+// ══════════════════════════════════════════════════
+// ─── JUARA UMUM — OVERALL MEDAL TALLY (premium) ────
+// ══════════════════════════════════════════════════
+const MEDAL_TALLY_DATA = [
+  { rank: 1,  team: 'PROD B7 PG / Produksi PG',            gold: 3, silver: 2, bronze: 1, total: 6 },
+  { rank: 2,  team: 'MARKETING SALES HO PLM',               gold: 3, silver: 1, bronze: 0, total: 4 },
+  { rank: 3,  team: 'PROD B7 CKR',                          gold: 1, silver: 2, bronze: 2, total: 5 },
+  { rank: 4,  team: 'HR-GAL HO PLM',                        gold: 1, silver: 1, bronze: 1, total: 3 },
+  { rank: 5,  team: 'FA-IT HO',                             gold: 1, silver: 0, bronze: 0, total: 1 },
+  { rank: 5,  team: 'Produksi SFL',                         gold: 1, silver: 0, bronze: 0, total: 1 },
+  { rank: 5,  team: 'WHGA PPIC B7 PG',                      gold: 1, silver: 0, bronze: 0, total: 1 },
+  { rank: 8,  team: 'QO B7 CKR',                            gold: 0, silver: 1, bronze: 2, total: 3 },
+  { rank: 8,  team: 'WHGA B7 CKR',                          gold: 0, silver: 1, bronze: 2, total: 3 },
+  { rank: 10, team: 'QO B7 PG',                             gold: 0, silver: 1, bronze: 1, total: 2 },
+  { rank: 11, team: 'QO SFL',                                gold: 0, silver: 1, bronze: 0, total: 1 },
+  { rank: 11, team: 'WH - Packaging - Teknik SFL CKR',      gold: 0, silver: 1, bronze: 0, total: 1 },
+  { rank: 13, team: 'RND - TS - PPIC - Purch - GA SFL',     gold: 0, silver: 0, bronze: 1, total: 1 },
+  { rank: 13, team: 'TEKNIK B7 CKR',                        gold: 0, silver: 0, bronze: 1, total: 1 },
+];
+
+// Ikon medali premium (SVG, bukan emoji) — pakai currentColor, warna diatur lewat class tier-*
+function svgMedalIcon(extraClass) {
+  return `
+    <svg class="mt-icon ${extraClass || ''}" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="9.5" r="6" fill="currentColor" opacity="0.16"/>
+      <circle cx="12" cy="9.5" r="6" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M9 14.7L7.3 21l4.7-2.4 4.7 2.4-1.7-6.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M12 6.7l.9 1.85 2.05.3-1.48 1.44.35 2.04L12 11.35l-1.82.98.35-2.04-1.48-1.44 2.05-.3z" fill="currentColor"/>
+    </svg>`;
+}
+
+// Ikon trofi premium untuk badge peringkat 1–3
+function svgTrophyIcon() {
+  return `
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 4h10v4.2a5 5 0 0 1-10 0V4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      <path d="M7 5.2H4.3a1 1 0 0 0-1 1.1c.18 2.03 1.02 3.98 3.7 4.5M17 5.2h2.7a1 1 0 0 1 1 1.1c-.18 2.03-1.02 3.98-3.7 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      <path d="M12 13.2V17M8.5 20.5h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+    </svg>`;
+}
+
+function mtMedalCell(count, tierClass) {
+  const zero = count === 0 ? ' is-zero' : '';
+  return `<span class="mt-medal-count${zero}">${count}</span>`;
+}
+
+function renderMedalTally() {
+  const wrap = document.getElementById('medalTallyWrap');
+  if (!wrap) return;
+
+  const rows = MEDAL_TALLY_DATA.map(row => {
+    const tier = row.rank === 1 ? 'mt-top1' : row.rank === 2 ? 'mt-top2' : row.rank === 3 ? 'mt-top3' : '';
+    const tierClass = row.rank === 1 ? 'tier-gold' : row.rank === 2 ? 'tier-silver' : row.rank === 3 ? 'tier-bronze' : '';
+    const rankBadge = tierClass
+      ? `<span class="mt-rank-badge ${tierClass}">${svgTrophyIcon()}</span>`
+      : `<span class="mt-rank-badge">${row.rank}</span>`;
+
+    return `
+      <tr class="${tier}">
+        <td>
+          <div class="mt-rank-cell">
+            ${rankBadge}
+            ${tierClass ? `<span style="font-size:.72rem; font-weight:700; opacity:.55;">#${row.rank}</span>` : ''}
+          </div>
+        </td>
+        <td class="mt-team-name">${row.team}</td>
+        <td class="mt-col-center">${mtMedalCell(row.gold)}</td>
+        <td class="mt-col-center">${mtMedalCell(row.silver)}</td>
+        <td class="mt-col-center">${mtMedalCell(row.bronze)}</td>
+        <td class="mt-col-center"><span class="mt-total-pill">${row.total}</span></td>
+      </tr>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="mt-head">
+      <div class="mt-head-left">
+        <div class="mt-head-icon">${svgTrophyIcon()}</div>
+        <div>
+          <div class="mt-head-title">Juara Umum</div>
+          <div class="mt-head-sub">Klasemen perolehan medali seluruh departemen / tim</div>
+        </div>
+      </div>
+      <div class="mt-legend">
+        <span class="mt-legend-item">${svgMedalIcon('tier-gold')} Emas</span>
+        <span class="mt-legend-item">${svgMedalIcon('tier-silver')} Perak</span>
+        <span class="mt-legend-item">${svgMedalIcon('tier-bronze')} Perunggu</span>
+      </div>
+    </div>
+    <div class="mt-table-scroll">
+      <table class="mt-table">
+        <thead>
+          <tr>
+            <th>Peringkat</th>
+            <th>Departemen / Tim</th>
+            <th class="mt-col-center"><span class="mt-th-icon-label">${svgMedalIcon('tier-gold')} Emas</span></th>
+            <th class="mt-col-center"><span class="mt-th-icon-label">${svgMedalIcon('tier-silver')} Perak</span></th>
+            <th class="mt-col-center"><span class="mt-th-icon-label">${svgMedalIcon('tier-bronze')} Perunggu</span></th>
+            <th class="mt-col-center">Total</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="mt-foot-note">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+      Peringkat sama menandakan jumlah medali yang setara antar departemen / tim.
+    </div>`;
 }
 
 // ─── COUNTER ANIMATION ───────────────────────
@@ -1531,6 +1683,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (el) el.value = CONFIG.SHEET_GIDS[sport];
   });
 
+  renderMedalTally();
   initLeaderboard();
   initKlasemenNotif();
 
