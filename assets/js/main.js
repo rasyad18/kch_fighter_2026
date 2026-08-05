@@ -1280,7 +1280,7 @@ const LEADERBOARD_DATA = [
     id: 'basket', label: 'Basket', icon: '🏀', color: '#FFD700',
     divisions: [
       { name: 'Putri', podium: ['MARKETING SALES HO PLM', 'QO B7 CKR', 'Produksi PG'] },
-      { name: 'Putra', podium: null },
+      { name: 'Putra', podium: ['Produksi SFL', 'QO SFL', 'QO B7 CKR'] },
     ],
   },
   {
