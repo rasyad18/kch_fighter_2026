@@ -357,6 +357,120 @@
       .lb-panel-watermark{ font-size:5.5rem; }
       .lb-tab-btn{ padding:.5rem .85rem .5rem .5rem; font-size:.78rem; }
     }
+
+    /* ══════════════ Juara Umum — medal tally table ══════════════ */
+    .medal-tally-wrap{
+      position:relative; margin-bottom:2.5rem; border-radius:22px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--lb-gold) 9%, transparent), transparent 45%),
+        rgba(255,255,255,0.018);
+      overflow:hidden;
+    }
+    .mt-head{
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.75rem;
+      padding:1.5rem 1.5rem 1.1rem;
+      border-bottom:1px solid rgba(255,255,255,0.07);
+    }
+    .mt-head-left{ display:flex; align-items:center; gap:.85rem; }
+    .mt-head-icon{
+      width:44px; height:44px; border-radius:13px; display:flex; align-items:center; justify-content:center;
+      flex-shrink:0; color:var(--lb-gold);
+      background:color-mix(in srgb, var(--lb-gold) 16%, transparent);
+      border:1px solid color-mix(in srgb, var(--lb-gold) 40%, transparent);
+    }
+    .mt-head-title{ font-size:1.2rem; font-weight:800; letter-spacing:-0.01em; }
+    .mt-head-sub{ font-size:.76rem; opacity:.55; margin-top:.15rem; }
+    .mt-legend{ display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
+    .mt-legend-item{ display:flex; align-items:center; gap:.4rem; font-size:.74rem; font-weight:600; opacity:.75; }
+    .mt-legend-item .mt-icon{ width:16px; height:16px; }
+
+    .mt-icon{ display:inline-block; flex-shrink:0; }
+    .mt-icon.tier-gold{ color:var(--lb-gold); }
+    .mt-icon.tier-silver{ color:var(--lb-silver); }
+    .mt-icon.tier-bronze{ color:var(--lb-bronze); }
+
+    .mt-table-scroll{ overflow-x:auto; }
+    .mt-table{ width:100%; border-collapse:separate; border-spacing:0; min-width:640px; }
+    .mt-table thead th{
+      text-align:left; font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+      opacity:.45; padding:.9rem 1rem; white-space:nowrap;
+    }
+    .mt-table thead th.mt-col-center{ text-align:center; }
+    .mt-table thead th .mt-th-icon-label{ display:inline-flex; align-items:center; gap:.35rem; justify-content:center; }
+
+    .mt-table tbody tr{
+      transition:background .2s ease;
+      border-top:1px solid rgba(255,255,255,0.05);
+    }
+    .mt-table tbody tr:hover{ background:rgba(255,255,255,0.025); }
+    .mt-table tbody td{ padding:.85rem 1rem; font-size:.86rem; vertical-align:middle; }
+    .mt-table tbody td.mt-col-center{ text-align:center; }
+
+    .mt-table tbody tr.mt-top1{ background:linear-gradient(90deg, color-mix(in srgb, var(--lb-gold) 12%, transparent), transparent 70%); border-top-color:color-mix(in srgb, var(--lb-gold) 30%, transparent); }
+    .mt-table tbody tr.mt-top2{ background:linear-gradient(90deg, color-mix(in srgb, var(--lb-silver) 10%, transparent), transparent 70%); border-top-color:color-mix(in srgb, var(--lb-silver) 26%, transparent); }
+    .mt-table tbody tr.mt-top3{ background:linear-gradient(90deg, color-mix(in srgb, var(--lb-bronze) 10%, transparent), transparent 70%); border-top-color:color-mix(in srgb, var(--lb-bronze) 26%, transparent); }
+
+    .mt-rank-cell{ display:flex; align-items:center; gap:.65rem; }
+    .mt-rank-badge{
+      width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:.82rem; flex-shrink:0;
+      background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); opacity:.8;
+    }
+    .mt-rank-badge.tier-gold{
+      background:linear-gradient(150deg,#FFE58A,var(--lb-gold) 60%,var(--lb-gold-deep)); color:#4a3400; opacity:1;
+      border-color:transparent; box-shadow:0 4px 14px -4px rgba(255,215,0,0.6);
+    }
+    .mt-rank-badge.tier-silver{
+      background:linear-gradient(150deg,#FFFFFF,var(--lb-silver) 55%,var(--lb-silver-deep)); color:#2b3238; opacity:1;
+      border-color:transparent; box-shadow:0 4px 14px -4px rgba(160,172,184,0.5);
+    }
+    .mt-rank-badge.tier-bronze{
+      background:linear-gradient(150deg,#F7C08E,var(--lb-bronze) 55%,var(--lb-bronze-deep)); color:#3d2007; opacity:1;
+      border-color:transparent; box-shadow:0 4px 14px -4px rgba(200,120,50,0.5);
+    }
+    .mt-rank-badge svg{ width:16px; height:16px; }
+
+    .mt-team-name{ font-weight:700; }
+    .mt-top1 .mt-team-name{ color:var(--lb-gold); }
+    .mt-top2 .mt-team-name{ color:var(--lb-silver); }
+    .mt-top3 .mt-team-name{ color:var(--lb-bronze); }
+
+    .mt-medal-count{ display:inline-flex; align-items:center; justify-content:center; gap:.4rem; font-weight:700; font-variant-numeric:tabular-nums; min-width:2.2em; }
+    .mt-medal-count.is-zero{ opacity:.28; font-weight:500; }
+
+    .mt-total-pill{
+      display:inline-flex; align-items:center; justify-content:center; min-width:2.4em;
+      padding:.3rem .7rem; border-radius:999px; font-weight:800; font-variant-numeric:tabular-nums;
+      background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+    }
+    .mt-top1 .mt-total-pill{ background:color-mix(in srgb, var(--lb-gold) 22%, transparent); border-color:color-mix(in srgb, var(--lb-gold) 55%, transparent); color:var(--lb-gold); }
+    .mt-top2 .mt-total-pill{ background:color-mix(in srgb, var(--lb-silver) 18%, transparent); border-color:color-mix(in srgb, var(--lb-silver) 50%, transparent); color:var(--lb-silver); }
+    .mt-top3 .mt-total-pill{ background:color-mix(in srgb, var(--lb-bronze) 18%, transparent); border-color:color-mix(in srgb, var(--lb-bronze) 50%, transparent); color:var(--lb-bronze); }
+
+    .mt-foot-note{
+      display:flex; align-items:center; gap:.5rem; padding:.9rem 1.5rem 1.25rem;
+      font-size:.72rem; opacity:.45;
+    }
+
+    /* section divider "Rincian Per Cabang Lomba" */
+    .leaderboard-divider{
+      display:flex; align-items:center; gap:1rem; margin:0 0 1.5rem;
+    }
+    .leaderboard-divider::before, .leaderboard-divider::after{
+      content:''; flex:1; height:1px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+    }
+    .leaderboard-divider span{
+      font-size:.72rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; opacity:.5;
+      white-space:nowrap;
+    }
+
+    @media (max-width:640px){
+      .mt-head{ padding:1.25rem 1.1rem .9rem; }
+      .mt-table thead th, .mt-table tbody td{ padding:.7rem .65rem; font-size:.78rem; }
+      .mt-legend{ gap:.65rem; }
+    }
   </style>
 </head>
 <body>
@@ -706,13 +820,24 @@
     <div class="leaderboard-intro">
       <div class="leaderboard-intro-text">
         <div class="section-label">Hasil Akhir</div>
-        <h2 class="section-title">Leaderboard <span class="accent">Juara Tiap Cabang</span></h2>
-        <p class="section-desc">Pilih cabang lomba di bawah untuk melihat Juara 1, 2, dan 3.</p>
+        <h2 class="section-title">Leaderboard <span class="accent">Juara KCH Fighter</span></h2>
+        <p class="section-desc">Klasemen juara umum seluruh departemen, serta rincian Juara 1, 2, dan 3 di tiap cabang lomba.</p>
       </div>
       <div class="leaderboard-live-chip"><span class="dot-pulse"></span> Hasil Terupdate</div>
     </div>
 
-    <div class="leaderboard-tabs" id="leaderboardTabs"></div>
+    <!-- ░░ JUARA UMUM — MEDAL TALLY ░░ -->
+    <div class="medal-tally-wrap" id="medalTallyWrap"></div>
+
+    <div class="leaderboard-divider"><span>Rincian Per Cabang Lomba</span></div>
+
+    <div class="leaderboard-tabs-outer">
+      <div class="lb-tabs-fade-l" id="lbFadeL"></div>
+      <div class="lb-tabs-fade-r" id="lbFadeR"></div>
+      <div class="leaderboard-tabs" id="leaderboardTabs">
+        <div class="lb-tab-indicator" id="lbTabIndicator"></div>
+      </div>
+    </div>
 
     <div class="leaderboard-panel" id="leaderboardPanel"></div>
   </div>
