@@ -120,8 +120,8 @@
       position:relative;
       display:flex; gap:.25rem; overflow-x:auto;
       padding:.4rem; border-radius:18px;
-      border:1px solid rgba(255,255,255,0.08);
-      background:rgba(255,255,255,0.025);
+      border:1px solid rgba(0,0,0,0.1);
+      background:rgba(0,0,0,0.025);
       backdrop-filter:blur(6px);
       scrollbar-width:none;
     }
@@ -150,12 +150,12 @@
     .lb-tab-btn:hover{ opacity:.9; }
     .lb-tab-icon-ring{
       width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-      font-size:.85rem; flex-shrink:0; background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.1);
+      font-size:.85rem; flex-shrink:0; background:rgba(0,0,0,0.05);
+      border:1px solid rgba(0,0,0,0.12);
       transition:background .3s ease, border-color .3s ease, transform .3s ease;
     }
     .lb-tab-btn.active{
-      opacity:1; color:var(--tab-color,#FF6B00); font-weight:700;
+      opacity:1; color:color-mix(in srgb, var(--tab-color,#FF6B00) 78%, black); font-weight:700;
     }
     .lb-tab-btn.active .lb-tab-icon-ring{
       background:color-mix(in srgb, var(--tab-color,#FF6B00) 22%, transparent);
@@ -172,19 +172,19 @@
       position:absolute; top:0; bottom:0; width:28px; pointer-events:none; z-index:2;
       opacity:0; transition:opacity .25s ease;
     }
-    .lb-tabs-fade-l{ left:0; background:linear-gradient(90deg, var(--bg,rgba(10,10,12,1)), transparent); }
-    .lb-tabs-fade-r{ right:0; background:linear-gradient(270deg, var(--bg,rgba(10,10,12,1)), transparent); }
+    .lb-tabs-fade-l{ left:0; background:linear-gradient(90deg, var(--bg,#fff), transparent); }
+    .lb-tabs-fade-r{ right:0; background:linear-gradient(270deg, var(--bg,#fff), transparent); }
 
     /* ══════════════ Panel ══════════════ */
     .leaderboard-panel{ position:relative; }
     .lb-panel-card{
       border-radius:24px; padding:2.25rem 1.5rem 2rem;
-      border:1px solid rgba(255,255,255,0.08);
+      border:1px solid rgba(0,0,0,0.08);
       border-top:3px solid color-mix(in srgb, var(--sport-color,#FF6B00) 70%, transparent);
       background:
-        radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--sport-color,#FF6B00) 16%, transparent), transparent 50%),
-        radial-gradient(circle at 88% 108%, color-mix(in srgb, var(--sport-color,#FF6B00) 12%, transparent), transparent 50%),
-        rgba(255,255,255,0.018);
+        radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--sport-color,#FF6B00) 12%, transparent), transparent 50%),
+        radial-gradient(circle at 88% 108%, color-mix(in srgb, var(--sport-color,#FF6B00) 9%, transparent), transparent 50%),
+        rgba(0,0,0,0.015);
       overflow:hidden; position:relative;
     }
     .lb-panel-watermark{
@@ -197,10 +197,10 @@
     }
     .lb-panel-icon{
       width:50px; height:50px; border-radius:15px; display:flex; align-items:center; justify-content:center;
-      font-size:1.5rem; flex-shrink:0;
-      background:color-mix(in srgb, var(--sport-color,#FF6B00) 20%, transparent);
+      font-size:1.75rem; flex-shrink:0;
+      background:color-mix(in srgb, var(--sport-color,#FF6B00) 22%, transparent);
       border:1px solid color-mix(in srgb, var(--sport-color,#FF6B00) 45%, transparent);
-      box-shadow:0 6px 18px -8px color-mix(in srgb, var(--sport-color,#FF6B00) 70%, transparent);
+      box-shadow:0 6px 18px -8px color-mix(in srgb, var(--sport-color,#FF6B00) 55%, transparent);
     }
     .lb-panel-title{ font-size:1.45rem; font-weight:800; letter-spacing:-0.015em; }
     .lb-panel-sub{
@@ -226,10 +226,10 @@
     .lb-division-label{
       display:inline-flex; align-items:center; gap:.45rem;
       font-size:.7rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
-      color:var(--sport-color,#FF6B00); margin-bottom:1.5rem;
+      color:color-mix(in srgb, var(--sport-color,#FF6B00) 78%, black); margin-bottom:1.5rem;
       padding:.35rem .85rem; border-radius:999px;
-      border:1px solid color-mix(in srgb, var(--sport-color,#FF6B00) 40%, transparent);
-      background:color-mix(in srgb, var(--sport-color,#FF6B00) 9%, transparent);
+      border:1px solid color-mix(in srgb, var(--sport-color,#FF6B00) 45%, transparent);
+      background:color-mix(in srgb, var(--sport-color,#FF6B00) 12%, transparent);
     }
 
     /* ══════════════ podium — bold, high-contrast ══════════════ */
@@ -283,9 +283,9 @@
       font-size:.62rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
       margin-bottom:.4rem; opacity:.55;
     }
-    .lb-slot[data-rank="1"] .lb-rank-tag{ color:var(--lb-gold); opacity:.9; }
-    .lb-slot[data-rank="2"] .lb-rank-tag{ color:var(--lb-silver); }
-    .lb-slot[data-rank="3"] .lb-rank-tag{ color:var(--lb-bronze); }
+    .lb-slot[data-rank="1"] .lb-rank-tag{ color:var(--lb-gold-deep); opacity:.95; }
+    .lb-slot[data-rank="2"] .lb-rank-tag{ color:var(--lb-silver-deep); }
+    .lb-slot[data-rank="3"] .lb-rank-tag{ color:var(--lb-bronze-deep); }
 
     .lb-team-name{
       font-size:.86rem; font-weight:800; text-align:center; line-height:1.28;
@@ -361,23 +361,23 @@
     /* ══════════════ Juara Umum — medal tally table ══════════════ */
     .medal-tally-wrap{
       position:relative; margin-bottom:2.5rem; border-radius:22px;
-      border:1px solid rgba(255,255,255,0.08);
+      border:1px solid rgba(0,0,0,0.09);
       background:
-        radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--lb-gold) 9%, transparent), transparent 45%),
-        rgba(255,255,255,0.018);
+        radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--lb-gold-deep) 8%, transparent), transparent 45%),
+        rgba(0,0,0,0.014);
       overflow:hidden;
     }
     .mt-head{
       display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.75rem;
       padding:1.5rem 1.5rem 1.1rem;
-      border-bottom:1px solid rgba(255,255,255,0.07);
+      border-bottom:1px solid rgba(0,0,0,0.08);
     }
     .mt-head-left{ display:flex; align-items:center; gap:.85rem; }
     .mt-head-icon{
       width:44px; height:44px; border-radius:13px; display:flex; align-items:center; justify-content:center;
-      flex-shrink:0; color:var(--lb-gold);
-      background:color-mix(in srgb, var(--lb-gold) 16%, transparent);
-      border:1px solid color-mix(in srgb, var(--lb-gold) 40%, transparent);
+      flex-shrink:0; color:var(--lb-gold-deep);
+      background:color-mix(in srgb, var(--lb-gold) 22%, transparent);
+      border:1px solid color-mix(in srgb, var(--lb-gold-deep) 45%, transparent);
     }
     .mt-head-title{ font-size:1.2rem; font-weight:800; letter-spacing:-0.01em; }
     .mt-head-sub{ font-size:.76rem; opacity:.55; margin-top:.15rem; }
@@ -386,9 +386,9 @@
     .mt-legend-item .mt-icon{ width:16px; height:16px; }
 
     .mt-icon{ display:inline-block; flex-shrink:0; }
-    .mt-icon.tier-gold{ color:var(--lb-gold); }
-    .mt-icon.tier-silver{ color:var(--lb-silver); }
-    .mt-icon.tier-bronze{ color:var(--lb-bronze); }
+    .mt-icon.tier-gold{ color:var(--lb-gold-deep); }
+    .mt-icon.tier-silver{ color:var(--lb-silver-deep); }
+    .mt-icon.tier-bronze{ color:var(--lb-bronze-deep); }
 
     .mt-table-scroll{ overflow-x:auto; }
     .mt-table{ width:100%; border-collapse:separate; border-spacing:0; min-width:640px; }
@@ -401,21 +401,21 @@
 
     .mt-table tbody tr{
       transition:background .2s ease;
-      border-top:1px solid rgba(255,255,255,0.05);
+      border-top:1px solid rgba(0,0,0,0.06);
     }
-    .mt-table tbody tr:hover{ background:rgba(255,255,255,0.025); }
+    .mt-table tbody tr:hover{ background:rgba(0,0,0,0.035); }
     .mt-table tbody td{ padding:.85rem 1rem; font-size:.86rem; vertical-align:middle; }
     .mt-table tbody td.mt-col-center{ text-align:center; }
 
-    .mt-table tbody tr.mt-top1{ background:linear-gradient(90deg, color-mix(in srgb, var(--lb-gold) 12%, transparent), transparent 70%); border-top-color:color-mix(in srgb, var(--lb-gold) 30%, transparent); }
-    .mt-table tbody tr.mt-top2{ background:linear-gradient(90deg, color-mix(in srgb, var(--lb-silver) 10%, transparent), transparent 70%); border-top-color:color-mix(in srgb, var(--lb-silver) 26%, transparent); }
-    .mt-table tbody tr.mt-top3{ background:linear-gradient(90deg, color-mix(in srgb, var(--lb-bronze) 10%, transparent), transparent 70%); border-top-color:color-mix(in srgb, var(--lb-bronze) 26%, transparent); }
+    .mt-table tbody tr.mt-top1{ background:linear-gradient(90deg, color-mix(in srgb, var(--lb-gold) 16%, transparent), transparent 75%); border-top-color:color-mix(in srgb, var(--lb-gold-deep) 35%, transparent); }
+    .mt-table tbody tr.mt-top2{ background:linear-gradient(90deg, color-mix(in srgb, var(--lb-silver-deep) 14%, transparent), transparent 75%); border-top-color:color-mix(in srgb, var(--lb-silver-deep) 32%, transparent); }
+    .mt-table tbody tr.mt-top3{ background:linear-gradient(90deg, color-mix(in srgb, var(--lb-bronze) 15%, transparent), transparent 75%); border-top-color:color-mix(in srgb, var(--lb-bronze-deep) 32%, transparent); }
 
     .mt-rank-cell{ display:flex; align-items:center; gap:.65rem; }
     .mt-rank-badge{
       width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center;
       font-weight:800; font-size:.82rem; flex-shrink:0;
-      background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); opacity:.8;
+      background:rgba(0,0,0,0.045); border:1px solid rgba(0,0,0,0.12); opacity:.85;
     }
     .mt-rank-badge.tier-gold{
       background:linear-gradient(150deg,#FFE58A,var(--lb-gold) 60%,var(--lb-gold-deep)); color:#4a3400; opacity:1;
@@ -432,9 +432,9 @@
     .mt-rank-badge svg{ width:16px; height:16px; }
 
     .mt-team-name{ font-weight:700; }
-    .mt-top1 .mt-team-name{ color:var(--lb-gold); }
-    .mt-top2 .mt-team-name{ color:var(--lb-silver); }
-    .mt-top3 .mt-team-name{ color:var(--lb-bronze); }
+    .mt-top1 .mt-team-name{ color:var(--lb-gold-deep); }
+    .mt-top2 .mt-team-name{ color:var(--lb-silver-deep); }
+    .mt-top3 .mt-team-name{ color:var(--lb-bronze-deep); }
 
     .mt-medal-count{ display:inline-flex; align-items:center; justify-content:center; gap:.4rem; font-weight:700; font-variant-numeric:tabular-nums; min-width:2.2em; }
     .mt-medal-count.is-zero{ opacity:.28; font-weight:500; }
@@ -442,11 +442,11 @@
     .mt-total-pill{
       display:inline-flex; align-items:center; justify-content:center; min-width:2.4em;
       padding:.3rem .7rem; border-radius:999px; font-weight:800; font-variant-numeric:tabular-nums;
-      background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+      background:rgba(0,0,0,0.045); border:1px solid rgba(0,0,0,0.12);
     }
-    .mt-top1 .mt-total-pill{ background:color-mix(in srgb, var(--lb-gold) 22%, transparent); border-color:color-mix(in srgb, var(--lb-gold) 55%, transparent); color:var(--lb-gold); }
-    .mt-top2 .mt-total-pill{ background:color-mix(in srgb, var(--lb-silver) 18%, transparent); border-color:color-mix(in srgb, var(--lb-silver) 50%, transparent); color:var(--lb-silver); }
-    .mt-top3 .mt-total-pill{ background:color-mix(in srgb, var(--lb-bronze) 18%, transparent); border-color:color-mix(in srgb, var(--lb-bronze) 50%, transparent); color:var(--lb-bronze); }
+    .mt-top1 .mt-total-pill{ background:color-mix(in srgb, var(--lb-gold) 28%, transparent); border-color:color-mix(in srgb, var(--lb-gold-deep) 55%, transparent); color:var(--lb-gold-deep); }
+    .mt-top2 .mt-total-pill{ background:color-mix(in srgb, var(--lb-silver-deep) 20%, transparent); border-color:color-mix(in srgb, var(--lb-silver-deep) 50%, transparent); color:var(--lb-silver-deep); }
+    .mt-top3 .mt-total-pill{ background:color-mix(in srgb, var(--lb-bronze) 24%, transparent); border-color:color-mix(in srgb, var(--lb-bronze-deep) 50%, transparent); color:var(--lb-bronze-deep); }
 
     .mt-foot-note{
       display:flex; align-items:center; gap:.5rem; padding:.9rem 1.5rem 1.25rem;
@@ -459,7 +459,7 @@
     }
     .leaderboard-divider::before, .leaderboard-divider::after{
       content:''; flex:1; height:1px;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+      background:linear-gradient(90deg, transparent, rgba(0,0,0,0.14), transparent);
     }
     .leaderboard-divider span{
       font-size:.72rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; opacity:.5;
