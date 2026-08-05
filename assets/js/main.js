@@ -1462,7 +1462,7 @@ function initLeaderboard() {
 // ─── JUARA UMUM — OVERALL MEDAL TALLY (premium) ────
 // ══════════════════════════════════════════════════
 const MEDAL_TALLY_DATA = [
-  { rank: 1,  team: 'PROD B7 PG / Produksi PG',            gold: 3, silver: 2, bronze: 1, total: 6 },
+  { rank: 1,  team: 'PROD B7 PG',            gold: 3, silver: 2, bronze: 1, total: 6 },
   { rank: 2,  team: 'MARKETING SALES HO PLM',               gold: 3, silver: 1, bronze: 0, total: 4 },
   { rank: 3,  team: 'PROD B7 CKR',                          gold: 1, silver: 2, bronze: 2, total: 5 },
   { rank: 4,  team: 'HR-GAL HO PLM',                        gold: 1, silver: 1, bronze: 1, total: 3 },
