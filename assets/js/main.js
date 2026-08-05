@@ -1536,7 +1536,7 @@ function renderMedalTally() {
       <div class="mt-head-left">
         <div class="mt-head-icon">${svgTrophyIcon()}</div>
         <div>
-          <div class="mt-head-title">Juara Umum</div>
+          <div class="mt-head-title">Perolehan Medali Sementara</div>
           <div class="mt-head-sub">Klasemen perolehan medali seluruh departemen / tim</div>
         </div>
       </div>
